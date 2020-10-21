@@ -111,7 +111,8 @@ public class ForegroundService extends Service {
                     Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                     throw new RuntimeException("InvalidVideoSplicer");
                 }
-                work.run();                stopForeground(true);
+                work.run();
+                stopForeground(true);
                 stopSelf();
             }
         });
