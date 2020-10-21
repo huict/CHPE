@@ -1,14 +1,6 @@
 package com.mygdx.game.Analysis;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.ArrayList;
-
 import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
-import com.mygdx.game.PoseEstimation.nn.PoseModel;
-
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -24,29 +16,46 @@ public interface Data {
      * @return A 2 component integer vector that contains the specified body part's coordinate
      * in indexed frames' screen space.
      */
-    public abstract Vector3 getCoord(int frame, body_part bp);
+    Vector3 getCoord(int frame, body_part bp);
+
+    /**
+     * Sets the X component of a specific coordinate of a body part and frame.
+     * @param frame Frame index.
+     * @param bp Body part.
+     * @param x new component value.
+     */
+     void setX(int frame, body_part bp, double x);
+
+    /**
+     * Sets the Y component of a specific coordinate of a body part and frame.
+     * @param frame Frame index.
+     * @param bp Body part.
+     * @param y new component value.
+     */
+    void setY(int frame, body_part bp, double  y);
 
     /**
      * 
      * @return The number of body parts used in the data structure.
      */
-    public abstract int getBodyPartCount();
+    int getBodyPartCount();
 
     /**
      * 
      * @return The number of total frames in the videos' data structure.
      */
-    public abstract int getFrameCount();
+    int getFrameCount();
 
     /**
      * 
      * @return The number of frames per second of the original video.
      */
-    public abstract float getFps();
+    float getFps();
 
     /**
      * Serializes the processed data back to the data structure object.
      * TODO: WIP, this might end up being split into multiple functions
      */
-    public abstract void serialize();
+    void serialize();
+
 }

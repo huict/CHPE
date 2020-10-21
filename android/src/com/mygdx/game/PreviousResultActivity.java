@@ -1,30 +1,29 @@
 package com.mygdx.game;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.HashMap;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import com.mygdx.game.Analysis.Data;
-import com.mygdx.game.Analysis.Action;
-import com.mygdx.game.Analysis.Analysis;
-import com.mygdx.game.Analysis.DatabaseData;
-import com.mygdx.game.persistance.PersistenceClient;
-
+import androidx.appcompat.app.AppCompatActivity;
+/**
+ * Class to show the user previous received results
+ * @author Gianluca Piccardo
+ */
 public class PreviousResultActivity extends AppCompatActivity {
-//  Button to return the user to the home screen.
+    /**
+     * Button to return the user to the home screen
+     */
     Button homeScreenButton;
-
+    /**
+     * Constructor
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_previous_result);
-
+        /**
+         * Initializes the button
+         */
         homeScreenButton = findViewById(R.id.homeScreenButton);
         homeScreenButton.setOnClickListener(new View.OnClickListener() {
             @Override

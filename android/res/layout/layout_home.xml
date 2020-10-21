@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".UI.a_Home">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontalCenterGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_percent=".50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/verticalCenterGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_percent=".50" />
+
+    <Button
+        android:id="@+id/b_archive"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="128dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintHeight_percent=".06"
+        android:background="@drawable/btn_transparent"
+        android:text="@string/btn_archive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"/>
+
+    <Button
+        android:id="@+id/b_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="128dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintHeight_percent=".06"
+        android:background="@drawable/start_button"
+        android:shadowRadius="0"
+        android:text="START"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

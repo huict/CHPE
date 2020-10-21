@@ -19,7 +19,9 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertEquals;
 
 
-
+/**
+ * Tests the Analysis class and its methods.
+ */
 @RunWith(AndroidJUnit4.class)
 public class AnalysisTest {
 
@@ -30,6 +32,10 @@ public class AnalysisTest {
     private NNVideoDAO nnVideoDAO;
     private long insertId;
 
+    /**
+     * connects to the database and inserts the mock data.
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
@@ -46,17 +52,22 @@ public class AnalysisTest {
         // Initialising with mock data
     }
 
+    /**
+     * cleans up the database.
+     * @throws Exception
+     */
     @After
     public void tearDown() throws Exception {
         this.nnVideoDAO.nukeTable();
     }
 
+    /**
+     * Tests the if we're able to get coordinates.
+     */
     @Test
     public void get_coordinates() {
 
         NNCoordinate coordinate = this.nnVideoDAO.get_coordinates(2,0,0);
-        System.out.println(coordinate.x);
-        System.out.println(coordinate.y);
         assertEquals(361, coordinate.x,0.0);
         assertEquals(62, coordinate.y, 0.0);
     }

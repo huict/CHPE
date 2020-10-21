@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_background_color">#FFFFFFFF</color>
+    <color name="transparent1">#FFF0F8FF</color>
+    <color name="ok_color">#4FDE84</color>
+    <color name="cancel_color">#FF647A</color>
+    <color name="text_shadow">#7F000000</color>
+
 </resources>
