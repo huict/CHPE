@@ -13,12 +13,15 @@ import android.widget.Button;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Analysis.JSONLoader;
+import com.mygdx.game.Persistance.AppDatabase;
 import com.mygdx.game.Simulation.MyGdxGame;
-import com.mygdx.game.persistance.PersistenceClient;
+import com.mygdx.game.Persistance.PersistenceClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import static com.mygdx.game.Persistance.PersistenceClient.getInstance;
 
 public class HomeScreen extends AndroidApplication {
     /**
@@ -56,7 +59,7 @@ public class HomeScreen extends AndroidApplication {
         /**
          * Temporary code for Database testing purposes, will be removed upon final stages of the app
          */
-        PersistenceClient.getInstance(getApplicationContext());
+        getInstance(getApplicationContext());
         AssetManager am = getApplicationContext().getAssets();
         InputStream is = null;
         try {
@@ -84,8 +87,9 @@ public class HomeScreen extends AndroidApplication {
         loader = new JSONLoader(r);
         DebugLog.log(loader.toString());
         DebugLog.log(String.valueOf(loader.getFrameCount()));
-        MockData mockData = new MockData(PersistenceClient.getInstance(getApplicationContext()).getAppDatabase(), loader.getArray());
-        //mockData.executeInserts();
+        AppDatabase appDatabase = PersistenceClient.getInstance(getApplicationContext()).getAppDatabase();
+        MockData mockData = new MockData(appDatabase, loader.getArray());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         /**

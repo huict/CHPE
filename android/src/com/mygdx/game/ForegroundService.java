@@ -10,11 +10,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.mygdx.game.Exceptions.InvalidVideoSplicerType;
+import com.mygdx.game.PoseEstimation.Session;
 import com.mygdx.game.UI.a_Loading;
+import com.mygdx.game.VideoHandler.VideoSplicer;
+import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
 /**
  * Class where the neural network will analyze the video footage
@@ -27,6 +32,7 @@ public class ForegroundService extends Service {
     public String CHANNEL_ID = "ForegroundService";
     static Thread thread;
     static Runnable work;
+    private VideoSplicer videoSplicer;
 
     /**
      * This function sets the work that the foreground service will perform on start command.
@@ -59,10 +65,8 @@ public class ForegroundService extends Service {
         /**
          * Creating Uri for MediaMetadataRetriever
          */
-        Uri otherUri = intent.getData();
-        /**
-         * Creating NotificationChannel & NotificationManager with necessary Intents
-         */
+
+
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), a_Loading.class), PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -84,16 +88,33 @@ public class ForegroundService extends Service {
          */
         startForeground(7, notification);
         /**
-            Launch a thread that performs the actual work
+         Launch thread that performs the actual work
          */
-        thread = new Thread(new Runnable() {
-            public void run() {
-                work.run();
-                //DebugLog.log("LOGGER: DONE WORKING");
-                stopForeground(true);
-                stopSelf();
-            }
-        });
+
+        /**
+         * Cannot use MediaRetriever. Not imported     -Robert
+         * TODO: make this code work:
+         */
+//        final Uri otherUri = intent.getData();
+//        thread = new Thread(new Runnable() {
+//            public void run() {
+//
+//                MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+//                metadataRetriever.setDataSource(getApplicationContext(), otherUri);
+//                try {
+//                    VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
+//                    Session session = new Session(getApplicationContext(), videoSplicer);
+//                    session.runVideo();
+//                    session.normaliseData();
+//                }catch (InvalidVideoSplicerType splicerType){
+//                    Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
+//                    throw new RuntimeException("InvalidVideoSplicer");
+//                }
+//                work.run();
+//                stopForeground(true);
+//                stopSelf();
+//            }
+//        });
         thread.start();
 
         return START_NOT_STICKY;

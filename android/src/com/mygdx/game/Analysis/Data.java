@@ -1,6 +1,6 @@
 package com.mygdx.game.Analysis;
 
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI.body_part;
 import com.badlogic.gdx.math.Vector3;
 
 /**
@@ -10,13 +10,13 @@ import com.badlogic.gdx.math.Vector3;
  */
 public interface Data {
     /**
-     * 
+     *
      * @param frame Integer index to a specific frame in the data structure.
      * @param bp Body part (also used as index) you want the coordinate for.
      * @return A 2 component integer vector that contains the specified body part's coordinate
      * in indexed frames' screen space.
      */
-    Vector3 getCoord(int frame, body_part bp);
+    Vector3 getCoord(long frame, body_part bp);
 
     /**
      * Sets the X component of a specific coordinate of a body part and frame.
@@ -24,7 +24,7 @@ public interface Data {
      * @param bp Body part.
      * @param x new component value.
      */
-     void setX(int frame, body_part bp, double x);
+    void setX(long frame, body_part bp, double x);
 
     /**
      * Sets the Y component of a specific coordinate of a body part and frame.
@@ -32,22 +32,22 @@ public interface Data {
      * @param bp Body part.
      * @param y new component value.
      */
-    void setY(int frame, body_part bp, double  y);
+    void setY(long frame, body_part bp, double  y);
 
     /**
-     * 
+     *
      * @return The number of body parts used in the data structure.
      */
     int getBodyPartCount();
 
     /**
-     * 
+     *
      * @return The number of total frames in the videos' data structure.
      */
-    int getFrameCount();
+    long getFrameCount();
 
     /**
-     * 
+     *
      * @return The number of frames per second of the original video.
      */
     float getFps();

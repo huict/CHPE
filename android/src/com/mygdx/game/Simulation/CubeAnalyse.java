@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Analysis.Data;
-import com.mygdx.game.DebugLog;
-import com.mygdx.game.PoseEstimation.nn.MPI;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
 
 public class CubeAnalyse {
     float data_scale = -25;
@@ -26,10 +25,10 @@ public class CubeAnalyse {
         return result;
     }
 
-    public boolean collision(Cube cube, Data data, MPI.body_part bp, int frame){
-        Vector3 joint_data = new Vector3((data.getCoord(frame, bp).x * -data_scale - (data.getCoord(frame, MPI.body_part.values()[MPI.body_part.waist.ordinal()]).x * -data_scale)),
-                (data.getCoord(frame, bp).y * data_scale - (data.getCoord(frame, MPI.body_part.values()[MPI.body_part.waist.ordinal()]).y * data_scale)),
-                (data.getCoord(frame, bp).z * data_scale - (data.getCoord(frame, MPI.body_part.values()[MPI.body_part.waist.ordinal()]).z * data_scale)));
+    public boolean collision(Cube cube, Data data, NNModelMPI.body_part bp, int frame){
+        Vector3 joint_data = new Vector3((data.getCoord(frame, bp).x * -data_scale - (data.getCoord(frame, NNModelMPI.body_part.values()[NNModelMPI.body_part.waist.ordinal()]).x * -data_scale)),
+                (data.getCoord(frame, bp).y * data_scale - (data.getCoord(frame, NNModelMPI.body_part.values()[NNModelMPI.body_part.waist.ordinal()]).y * data_scale)),
+                (data.getCoord(frame, bp).z * data_scale - (data.getCoord(frame, NNModelMPI.body_part.values()[NNModelMPI.body_part.waist.ordinal()]).z * data_scale)));
 
         //todo separate =)
         return(cube.coords_.x < joint_data.x + 1f &&
@@ -42,25 +41,25 @@ public class CubeAnalyse {
 
     public void update(Data data, int frame){
         // left hand head collision
-        if(collision(cube_left_head, data, MPI.body_part.values()[MPI.body_part.l_wrist.ordinal()], frame)){
+        if(collision(cube_left_head, data, NNModelMPI.body_part.values()[NNModelMPI.body_part.l_wrist.ordinal()], frame)){
             cube_left_head.setColor(Color.GREEN);
         } else {
             cube_left_head.setColor(Color.RED);
         }
         // Right hand head collision
-        if(collision(cube_right_head, data, MPI.body_part.values()[MPI.body_part.r_wrist.ordinal()], frame)){
+        if(collision(cube_right_head, data, NNModelMPI.body_part.values()[NNModelMPI.body_part.r_wrist.ordinal()], frame)){
             cube_right_head.setColor(Color.GREEN);
         } else {
             cube_right_head.setColor(Color.RED);
         }
         // Left hand hip collision
-        if(collision(cube_left_hip, data, MPI.body_part.values()[MPI.body_part.l_wrist.ordinal()], frame)){
+        if(collision(cube_left_hip, data, NNModelMPI.body_part.values()[NNModelMPI.body_part.l_wrist.ordinal()], frame)){
             cube_left_hip.setColor(Color.GREEN);
         } else {
             cube_left_hip.setColor(Color.RED);
         }
         // Right hand hip collision
-        if(collision(cube_left_head, data, MPI.body_part.values()[MPI.body_part.r_wrist.ordinal()], frame)){
+        if(collision(cube_left_head, data, NNModelMPI.body_part.values()[NNModelMPI.body_part.r_wrist.ordinal()], frame)){
             cube_right_hip.setColor(Color.GREEN);
         } else {
             cube_right_hip.setColor(Color.RED);

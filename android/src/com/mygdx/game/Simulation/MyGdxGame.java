@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Analysis.Data;
 import com.mygdx.game.Analysis.DatabaseData;
 import com.mygdx.game.HomeScreen;
-import com.mygdx.game.persistance.PersistenceClient;
+import com.mygdx.game.Persistance.PersistenceClient;
 
 /**
  * This is the main application class.

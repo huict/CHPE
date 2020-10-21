@@ -13,7 +13,7 @@ import com.mygdx.game.Analysis.Action;
 import com.mygdx.game.Analysis.Analysis;
 import com.mygdx.game.Analysis.Data;
 import com.mygdx.game.Analysis.DatabaseData;
-import com.mygdx.game.persistance.PersistenceClient;
+import com.mygdx.game.Persistance.PersistenceClient;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**

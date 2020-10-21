@@ -1,8 +1,8 @@
 package com.mygdx.game.Analysis;
 
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI.body_part;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
 
 /**
  * @author Nico van Bentum
@@ -45,7 +45,7 @@ class Detection {
     boolean handsFound(float dt) {
         boolean inAction = false;
         float action_time = 0;
-        for(int i = 0; i < data.getFrameCount(); i++) {
+        for(long i = 0; i < data.getFrameCount(); i++) {
             if(action_time >= dt) {
                 return true;
             }
@@ -87,7 +87,7 @@ class Detection {
         };
 
         // check for delta movement every second
-        for(int i = 1; i < data.getFrameCount(); i += data.getFps()) {
+        for(long i = 1; i < data.getFrameCount(); i += data.getFps()) {
             if(actionTime >= dt) {
                 return true;
             }
@@ -124,7 +124,7 @@ class Detection {
     boolean handsAboveHead(float dt) {
         boolean inAction = false;
         float action_time = 0;
-        for(int i = 0; i < data.getFrameCount(); i++) {
+        for(long i = 0; i < data.getFrameCount(); i++) {
             if(action_time >= dt) {
                 return true;
             }

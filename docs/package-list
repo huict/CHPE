@@ -1,0 +1,11 @@
+com.mygdx.game.Exceptions
+com.mygdx.game.Persistance
+com.mygdx.game.Persistance.Coordinate
+com.mygdx.game.Persistance.Frame
+com.mygdx.game.Persistance.Relations
+com.mygdx.game.Persistance.Video
+com.mygdx.game.PoseEstimation
+com.mygdx.game.PoseEstimation.NN
+com.mygdx.game.PoseEstimation.NN.PoseModels
+com.mygdx.game.PoseEstimation.NN.PoseNet
+com.mygdx.game.VideoHandler

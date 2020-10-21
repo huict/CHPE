@@ -1,4 +1,7 @@
 android {
+    aaptOptions {
+        noCompress "tflite"
+    }
     buildToolsVersion "29.0.2"
     compileSdkVersion 29
     sourceSets {
@@ -26,12 +29,15 @@ android {
     }
 
     buildTypes {
-        def DEBUG_DB = "SERVER_URL"
-        def DB = "SERVER_URL"
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests {
+            includeAndroidResources = true
         }
     }
     useLibrary 'android.test.runner'
@@ -108,9 +114,13 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.1'
 
 
+    implementation "org.tensorflow:tensorflow-lite:+"
     testImplementation 'junit:junit:4.12'
     implementation 'junit:junit:4.12'
 
+    implementation 'org.mockito:mockito-core:2.7.22'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    androidTestImplementation 'org.mockito:mockito-core:2.7.22'
 
     annotationProcessor 'androidx.room:room-compiler:2.2.1'
     // Core library
@@ -138,4 +148,12 @@ dependencies {
     // dependency to appear on your APK's compile classpath or the test APK
     // classpath.
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'org.robolectric:robolectric:4.3'
+
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 }
+

@@ -7,7 +7,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mygdx.game.DebugLog;
-import com.mygdx.game.persistance.AppDatabase;
+import com.mygdx.game.Persistance.AppDatabase;
 
 import org.junit.After;
 import org.junit.Before;
