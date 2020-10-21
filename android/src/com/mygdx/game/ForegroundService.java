@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
@@ -95,26 +96,25 @@ public class ForegroundService extends Service {
          * Cannot use MediaRetriever. Not imported     -Robert
          * TODO: make this code work:
          */
-//        final Uri otherUri = intent.getData();
-//        thread = new Thread(new Runnable() {
-//            public void run() {
-//
-//                MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-//                metadataRetriever.setDataSource(getApplicationContext(), otherUri);
-//                try {
-//                    VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
-//                    Session session = new Session(getApplicationContext(), videoSplicer);
-//                    session.runVideo();
-//                    session.normaliseData();
-//                }catch (InvalidVideoSplicerType splicerType){
-//                    Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
-//                    throw new RuntimeException("InvalidVideoSplicer");
-//                }
-//                work.run();
-//                stopForeground(true);
-//                stopSelf();
-//            }
-//        });
+        final Uri otherUri = intent.getData();
+        thread = new Thread(new Runnable() {
+            public void run() {
+
+                MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+                metadataRetriever.setDataSource(getApplicationContext(), otherUri);
+                try {
+                    VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
+                    Session session = new Session(getApplicationContext(), videoSplicer);
+                    session.runVideo();
+                    session.normaliseData();
+                }catch (InvalidVideoSplicerType splicerType){
+                    Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
+                    throw new RuntimeException("InvalidVideoSplicer");
+                }
+                work.run();                stopForeground(true);
+                stopSelf();
+            }
+        });
         thread.start();
 
         return START_NOT_STICKY;
