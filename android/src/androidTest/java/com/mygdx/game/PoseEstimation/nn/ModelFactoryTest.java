@@ -1,8 +1,6 @@
-package com.mygdx.game.PoseEstimation.NN;
+package com.mygdx.game.PoseEstimation.nn;
 
 import com.mygdx.game.Exceptions.InvalidModelParse;
-import com.mygdx.game.PoseEstimation.nn.ModelFactory;
-import com.mygdx.game.PoseEstimation.nn.PoseModels.PoseModel;
 
 import org.junit.Test;
 

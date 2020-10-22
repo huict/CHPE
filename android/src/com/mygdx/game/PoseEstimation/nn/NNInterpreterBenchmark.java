@@ -1,4 +1,4 @@
-package com.mygdx.game.PoseEstimation.NN;
+package com.mygdx.game.PoseEstimation.nn;
 
 
 /**
