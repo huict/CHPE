@@ -173,9 +173,6 @@ class PoseNetHandler(
      *      bitmap: image bitmap of frame that should be processed
      * returns:
      *      person: a Person object containing data about keypoint locations and confidence scores
-     *
-     * NOT USABLE DUE TO MISSING DEPENDENCIES
-     * outcommented by Robert
      */
 
 
