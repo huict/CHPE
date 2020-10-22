@@ -77,7 +77,7 @@ public class ForegroundService extends Service {
         notificationChannel.setLightColor(Color.RED);
         notificationManager.createNotificationChannel(notificationChannel);
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
-                .setContentTitle("PREPPER")
+                .setContentTitle("Honest Mirror")
                 .setContentText("Processing video in neural network")
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
@@ -92,10 +92,6 @@ public class ForegroundService extends Service {
          Launch thread that performs the actual work
          */
 
-        /**
-         * Cannot use MediaRetriever. Not imported     -Robert
-         * TODO: make this code work:
-         */
         final Uri otherUri = intent.getData();
         thread = new Thread(new Runnable() {
             public void run() {
@@ -104,9 +100,12 @@ public class ForegroundService extends Service {
                 metadataRetriever.setDataSource(getApplicationContext(), otherUri);
                 try {
                     VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
-                    Session session = new Session(getApplicationContext(), videoSplicer);
-                    session.runVideo();
-                    session.normaliseData();
+                    /**
+                     * Database commented for the time being - Anwar
+                     */
+                    //Session session = new Session(getApplicationContext(), videoSplicer);
+                    //session.runVideo();
+                    //session.normaliseData();
                 }catch (InvalidVideoSplicerType splicerType){
                     Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                     throw new RuntimeException("InvalidVideoSplicer");

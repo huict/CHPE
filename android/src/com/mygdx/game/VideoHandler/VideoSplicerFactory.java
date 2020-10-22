@@ -24,12 +24,12 @@ public class VideoSplicerFactory {
      * @throws InvalidVideoSplicerType the invalid video splicer type
      */
     public static VideoSplicer getVideoSplicer(MediaMetadataRetriever m) throws InvalidVideoSplicerType {
-        if (android.os.Build.VERSION.SDK_INT > 28) {
+        if (android.os.Build.VERSION.SDK_INT >= 28) {
             // Function call getFrameAtIndex based on frame count requires
             // only for Pie (28) and newer versions
             return new VideoSplicerUri(m);
         }
-        if (android.os.Build.VERSION.SDK_INT > 24) {
+        if (android.os.Build.VERSION.SDK_INT == 26 || android.os.Build.VERSION.SDK_INT == 27) {
             return new VideoSplicerUriLegacy(m);
         }
         throw new InvalidVideoSplicerType("Factory is running on invalid configuration",
@@ -74,7 +74,7 @@ public class VideoSplicerFactory {
             return new VideoSplicerUri(uri, context);
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= 24) {
+        if (android.os.Build.VERSION.SDK_INT == 26 || android.os.Build.VERSION.SDK_INT == 27) {
             return new VideoSplicerUriLegacy(uri, context);
         }
         throw new InvalidVideoSplicerType("Factory is running on invalid configuration",

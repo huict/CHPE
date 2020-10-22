@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,12 +72,11 @@ public class HomeScreen extends AndroidApplication {
         /**
          * Android Version control for colored status bar
          */
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.rgb(0.902f,0.188f,0.157f));
-        }
-        else {
+            window.setStatusBarColor(Color.rgb(0.902f, 0.188f, 0.157f));
+        } else {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(0);
@@ -89,8 +89,7 @@ public class HomeScreen extends AndroidApplication {
         DebugLog.log(String.valueOf(loader.getFrameCount()));
         AppDatabase appDatabase = PersistenceClient.getInstance(getApplicationContext()).getAppDatabase();
         MockData mockData = new MockData(appDatabase, loader.getArray());
-
-        super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_home_screen);
         /**
          * Initializing Views & Buttons by finding id's
@@ -152,8 +151,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param PreviousresultActivity.class class to go to
+     // @param this current class
+     // @param PreviousresultActivity.class class to go to
      * @return void
      */
     public void openPreviousResultScreen(){
@@ -163,8 +162,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param CurrenresultActivity.class class to go to
+     // @param this current class
+     // @param CurrenresultActivity.class class to go to
      * @return void
      */
     public void openJUMP(){
@@ -174,8 +173,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param GalleryScreen.class class to go to
+     // @param this current class
+     // @param GalleryScreen.class class to go to
      * @return void
      */
     public void openLoadVideoScreen(){

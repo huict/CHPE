@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
@@ -31,6 +34,10 @@ public class VideoSplicerUri implements VideoSplicer {
      * The Media metadata retriever.
      */
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+    /**
+     * The length of the video
+     */
+    long totalTime = 0;
     /**
      * The Frame count.
      */
@@ -123,7 +130,8 @@ public class VideoSplicerUri implements VideoSplicer {
     long getVideoDuration() throws NumberFormatException {
         try {
             String sTotalTime = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_DURATION);
-            return Long.parseLong(sTotalTime);
+            this.totalTime = Long.parseLong(sTotalTime);
+            return totalTime;
         } catch (NumberFormatException nfe) {
             DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
@@ -157,6 +165,7 @@ public class VideoSplicerUri implements VideoSplicer {
      * @param frame the frame
      * @return the next frame
      */
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame(int frame) {
         Bitmap mp = this.mediaMetadataRetriever.getFrameAtIndex(
                 frame);
@@ -170,6 +179,7 @@ public class VideoSplicerUri implements VideoSplicer {
      * @return the next frame
      * @throws InvalidFrameAccess the invalid frame access
      */
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
         // TODO: Replace frameCount validator
