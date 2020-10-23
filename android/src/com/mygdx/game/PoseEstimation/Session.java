@@ -7,7 +7,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
 import com.mygdx.game.Exceptions.InvalidVideoSplicerType;
 import com.mygdx.game.Persistance.AppDatabase;
@@ -22,6 +21,7 @@ import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 /**
  * The type Session.
  */
+@SuppressWarnings({"FieldMayBeFinal"})
 public class Session {
 
     private NNInserts nnInsert;
@@ -106,17 +106,13 @@ public class Session {
     public void runVideo() {
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                this.PersonToFrame(this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter));
+                Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter);
+                this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
             }
             catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
         }
-    }
-
-
-    private void PersonToFrame(Person person) {
-        this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
     }
 
     /**

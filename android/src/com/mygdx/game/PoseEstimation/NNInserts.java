@@ -17,6 +17,7 @@ import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
 /**
  * NNInsert is an example class used for inserting new videos to the database
  */
+@SuppressWarnings("FieldMayBeFinal")
 public class NNInserts {
 
     private AppDatabase appDatabase;
@@ -59,22 +60,18 @@ public class NNInserts {
 
         // Creating new frame for the instance
         NNFrame nnFrame = new NNFrame(frameCount);
-        long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
-
-        linkFrameIdToVideo(frameId, videoId);
+        //long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
+        //linkFrameIdToVideo(frameId, videoId);
 
         for (KeyPoint keyPoint : person.getKeyPoints()) {
-            linkFrameToCoordinate(
-                    frameId,
-                    this.appDatabase
-                            .nnCoordinateDAO()
-                            .insert(
-                                    new NNCoordinate(
+            //linkFrameToCoordinate(
+            //        frameId,
+            this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
                                             keyPoint.getPosition().getX(),
                                             keyPoint.getPosition().getY()
                                     )
-                            )
-            );
+                            );
+            //);
         }
     }
 
