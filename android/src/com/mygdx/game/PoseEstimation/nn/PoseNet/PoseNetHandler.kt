@@ -1,3 +1,5 @@
+@file:Suppress("NON_EXHAUSTIVE_WHEN", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
+
 package com.mygdx.game.PoseEstimation.nn.PoseNet
 
 import android.content.Context
@@ -181,7 +183,7 @@ class PoseNetHandler(
         val croppedBitmap = cropBitmap(bitmapb)
 
         // Created scaled version of bitmap for model input.
-        var bitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
+        val bitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
 
         val inputArray = arrayOf(initInputArray(bitmap))
 
