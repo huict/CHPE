@@ -100,9 +100,6 @@ public class ForegroundService extends Service {
                 metadataRetriever.setDataSource(getApplicationContext(), otherUri);
                 try {
                     VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
-                    /**
-                     * Database commented for the time being - Anwar
-                     */
                     Session session = new Session(getApplicationContext(), videoSplicer);
                     session.runVideo();
                     session.normaliseData();
