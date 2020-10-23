@@ -103,9 +103,9 @@ public class ForegroundService extends Service {
                     /**
                      * Database commented for the time being - Anwar
                      */
-                    //Session session = new Session(getApplicationContext(), videoSplicer);
-                    //session.runVideo();
-                    //session.normaliseData();
+                    Session session = new Session(getApplicationContext(), videoSplicer);
+                    session.runVideo();
+                    session.normaliseData();
                 }catch (InvalidVideoSplicerType splicerType){
                     Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                     throw new RuntimeException("InvalidVideoSplicer");

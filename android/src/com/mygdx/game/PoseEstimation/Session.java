@@ -106,15 +106,9 @@ public class Session {
     public void runVideo() {
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                this.PersonToFrame
-                        (
-                                this.chpe.ProcessFrame(
-                                        this.videoSplicer.getNextFrame(),
-                                        this.nnInterpreter
-                                )
-                        );
-
-            } catch (InvalidFrameAccess invalidFrameAccess) {
+                this.PersonToFrame(this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter));
+            }
+            catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
         }

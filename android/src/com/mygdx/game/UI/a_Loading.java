@@ -159,7 +159,7 @@ public class a_Loading extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
-                .setContentTitle("Prepper")
+                .setContentTitle("Honest Mirror")
                 .setContentText("Neural Network is done.")
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
