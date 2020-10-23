@@ -179,7 +179,7 @@ def main(argv):
 
 	# Listen for command line interface arguments
 	try:
-		options, _ = getopt.getopt(argv,"hp:l:m:b:e:c:ns",["poses=","labels=","model=","max_xy=","batch=","epochs=","classify=","normalize","show_model"])
+		options, _ = getopt.getopt(argv,"hp:l:m:b:e:c:ns",["poses=","labels=","model=","max_xy=","batch=","epochs=","classify=","no_normalize","show_model"])
 	except getopt.GetoptError:
 		print(help_message)
 		sys.exit(2)
@@ -202,7 +202,7 @@ def main(argv):
 			epochs = arg
 		elif option in ("-c", "--classify"):
 			classify_me = arg
-		elif option in ("-n", "--normalize"):
+		elif option in ("-n", "--no_normalize"):
 			normalize_poses = False
 		elif option in ("-s", "--show_model"):
 			show_model = True
@@ -228,14 +228,19 @@ def main(argv):
 	poses_load = load_data_from_JSON(poses_json)
 	labels_load = load_data_from_JSON(labels_json)
 
-	# Prepare lables for training
-	label_names = []
+	# Prepare labels for training
+	posible_labels = []
+	image_labels = []
 	for image in labels_load:
-		label_names.append(labels_load[image]["pose"])
+		new_label = labels_load[image]["pose"]
+		if new_label not in posible_labels:
+			posible_labels.append(new_label)
+		image_labels.append(new_label)
 
-	labels = []	
-	for index in range(len(label_names)):
-		labels.append(index)
+	label_indexes = []	
+	for image in image_labels:
+		index = posible_labels.index(image)
+		label_indexes.append(index)
 
 	# Prepare the training data, normalize if needed
 	training_data = []
@@ -243,14 +248,14 @@ def main(argv):
 		training_data.append(prepare_pose_data(pose, normalize_poses, max_xy[0], max_xy[1]))
 
 	# Create model
-	model = create_model(len(training_data[0]), len(labels))
+	model = create_model(len(training_data[0]), len(label_indexes))
 	# Train the model using the training data, labels and defined batch size and amount of epochs
-	trained_model = train_model(model, training_data, labels, batch_size ,epochs)
+	trained_model = train_model(model, training_data, label_indexes, batch_size ,epochs)
 
 	# Classify a supplied pose from the supplied poses json file
 	if classify_me:
 		test_pose = prepare_pose_data(poses_load[classify_me], normalize_poses, max_xy[0], max_xy[1])
-		print(classify_pose(test_pose, model, label_names))
+		print(classify_pose(test_pose, model, posible_labels))
 	
 	# Export the trained model using the supplied name
 	export_tfl_model( trained_model , model_name)

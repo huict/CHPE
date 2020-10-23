@@ -172,7 +172,7 @@ def estimate_images(image_directory, model_path):
 	update_data = {}
 
 	for chosen_image in images:
-		filepath = image_directory + chosen_image
+		filepath = image_directory + "/" + chosen_image
 
 		# get the picture of which we want the keypoints
 		image_src = cv2.imread(filepath)
@@ -201,20 +201,76 @@ def estimate_images(image_directory, model_path):
 		KeyPointList = get_keypoints(image_heatmaps, image_offset)
 		
 		# add new pose to the updata_data dict using the file name (without extension) as key
-		update_data[chosen_image[:-4]] = createPoseDict(KeyPointList)
+		pose = image_directory
+		index = 0
+		for letter in pose:
+			if letter == '/':
+				pose = pose[index+1:]
+			index += 1
+
+		update_data[pose+"-"+chosen_image[:-4]] = createPoseDict(KeyPointList)
 		
 	return update_data
+
+def create_labels(starting_directory):
+	"""create_labels function, creates dictionary containing als images and corresponding feedback
+
+	Args:
+		starting_directory (string): path to pose folder
+
+	Returns:
+		dictionary: dictionary containging dirctionary with pose and feedback data
+	"""	
+	update_labels = {}
+		
+	f = open(starting_directory+"/feedback.txt", "r")
+	feedback = f.read()
+	pose = starting_directory
+	index = 0
+	for letter in pose:
+		if letter == '/':
+			pose = pose[index+1:]
+		index += 1
+
+	images = []
+	for filename in os.listdir(starting_directory):
+		if filename.endswith(".jpg") or filename.endswith(".png"):
+			images.append(filename)
+
+	for image in images:
+		update_labels[pose+"-"+image[:-4]] = {"feedback": feedback, "pose": pose}
+
+	return update_labels
+
+def create_dataset(starting_directory, model_path):
+	"""create_dataset function, creates the update data and update labels dictionary's
+
+	Args:
+		starting_directory (string): strating dictionary containing the folders with poses
+		model_path (string): path to the PoseNet model
+
+	Returns:
+		dictionary: update_data : dictionary containing the x's and y's of the pose, update_labels, dictionary containig the feedback for each image.
+	"""	
+	update_data = {}
+	update_labels = {}
+	sub_folders = [f.path for f in os.scandir(starting_directory) if f.is_dir()]
+	for folder in sub_folders:
+		update_data.update(estimate_images(folder, model_path))
+		update_labels.update(create_labels(folder))
+	return update_data, update_labels
 
 def main(argv):
 	# Use the same model used in the Java Android environment
 	model_file = "posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite"
-	image_directory = 'images/'
-	json_file = "data_set.json"
-	help_message = 'pose-estimation.py -d <image_directory> -m <model file> -j <json file> -c <clean file>'
+	image_directory = 'Data_set/'
+	poses_json = "poses.json"
+	labels_json = "labels.json"
+	help_message = 'pose-estimation.py -d <image directory> -m <model file> -p <poses file> -l <labels file> -c <clean file>'
 	overwrite_file = False
 
 	try:
-		options, _ = getopt.getopt(argv,"hd:m:j:c",["imgdir=","model=","jsonfile="])
+		options, _ = getopt.getopt(argv,"hd:m:p:l:c",["imgdir=","model=","poses=","labels="])
 	except getopt.GetoptError:
 		print(help_message)
 		sys.exit(2)
@@ -227,8 +283,10 @@ def main(argv):
 			image_directory = arg
 		elif option in ("-m", "--model"):
 			model_file = arg
-		elif option in ("-j", "--jsonfile"):
-			json_file = arg
+		elif option in ("-p", "--poses"):
+			poses_json = arg
+		elif option in ("-l", "--labels"):
+			labels_json = arg
 		elif option in ("-c", "--clean"):
 			overwrite_file = True
 
@@ -236,13 +294,18 @@ def main(argv):
 		print("The image directory does not exist!")
 		sys.exit(2)
 	elif not os.path.exists(model_file):
-		print("The model file does not exist!")
+		print("The ",model_file," file does not exist!")
 		sys.exit(2)
 
-	# get all the poses found in the image_directory using the model_file model
-	update_data = estimate_images(image_directory, model_file)
-	# Update the data_set.json file if it exists otherwise create it.
-	update_json_file(update_data, json_file, overwrite_file)
+	# get all the poses found in the image_directory using the model_file model and generate labels
+	update_data, update_labels = create_dataset(image_directory, model_file)
+	print(update_labels)
+
+	print(overwrite_file)
+
+	# Update the poses.json file if it exists otherwise create it.
+	update_json_file(update_data, poses_json, overwrite_file)
+	update_json_file(update_labels, labels_json, overwrite_file)
 
 # Remove the application's file name itself from the argument list
 if __name__ == "__main__":
