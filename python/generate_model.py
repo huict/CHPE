@@ -135,6 +135,7 @@ def export_tfl_model(model, model_name):
 
 	Args:
 		model (tflite model): model to be exported
+		model_name (string): the name of the model without extension.
 
 	Returns:
 		tflite model: tflite_model
@@ -144,7 +145,7 @@ def export_tfl_model(model, model_name):
 	converter = tf.lite.TFLiteConverter.from_saved_model('dir_'+model_name) # path to the SavedModel directory
 	tflite_model = converter.convert()
 
-	with open(model_name, 'wb') as file:
+	with open(model_name+'.tflite', 'wb') as file:
   		file.write(tflite_model)
 
 	return tflite_model
@@ -153,9 +154,9 @@ def load_tflite(model):
 	"""load_tflite, loads and displays a tflite model. For Debugging purposes
 
 	Args:
-		model (string): name of the file to be loaded. 
+		model (string): name of the file to be loaded without the extension.
 	"""	
-	test_interpreter = tf.lite.Interpreter(model)
+	test_interpreter = tf.lite.Interpreter(model+'.tflite')
 	print(test_interpreter.get_input_details())
 	print(test_interpreter.get_output_details())
 
@@ -165,7 +166,7 @@ def main(argv):
 		# Files 
 	poses_json = 'poses.json'
 	labels_json = 'labels.json'
-	model_name = 'model.tflite'
+	model_name = 'model'
 		# Used for normalization
 	max_xy = (257,257)
 	normalize_poses = True
@@ -175,7 +176,7 @@ def main(argv):
 		# Used for debugging
 	show_model = False
 	classify_me = False
-	help_message = "generate_model.py -p <poses json file> -l <labels json file> -m <model file, has to have .tflite extension> --max_xy <(max_x,max_y)> -b <batch size> -e <number of epochs> -c <classify pose from poses json> -n <do not normalize data> -s <show model>"
+	help_message = "generate_model.py -p <poses json file> -l <labels json file> -m <model file> --max_xy <(max_x,max_y)> -b <batch size> -e <number of epochs> -c <classify pose from poses json> -n <do not normalize data> -s <show model>"
 
 	# Listen for command line interface arguments
 	try:

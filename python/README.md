@@ -86,7 +86,7 @@ The application uses the following arguments to give the user more flexibility a
 
 1. ```-p or --poses```, Specify which ```.json``` file you want to use for the poses that will be used in training the model. default = ```poses.json``` (See: [Requirements - json files](#req_json))
 2. ```-l or --labels```, Specify which ```.json``` file you want to use for the labels that will be used in training the model. default = ```labels.json``` (See: [Requirements - json files](#req_json))
-3. ```-m or --model```, Specify how the model will be named default = ```model.tflite``` (See: [Requirements - model file](#req_model))
+3. ```-m or --model```, Specify how the model will be named default = ```model``` (See: [Requirements - model file](#req_model))
 4. ```--max_xy```, Specify the maximal x and y values used in normalizing poses. default = (257,257) (See: [Requirements - max_xy](#req_max))
 5. ```-b or --batch```, Specify the batch size used in training the model. Must be a integer. default = 1
 6. ```-e or --epochs```, Specify the amount of epochs used in training the mode. Must be a integer. default = 1000
@@ -98,7 +98,7 @@ The application uses the following arguments to give the user more flexibility a
 - <a name="req_json"></a>*```.json``` files*
 The supplied ```.json``` files for the poses and labels must have the same index for each item. This is important since the training of the model depends on the fact that the index of a pose from the pose ```.json``` file corresponds the the index of that pose in the labels ```.json``` file. If the indexes do not match the network will be trained wrong.
 - <a name="req_model"></a>*model file*
-The user can supply a name for the model file but it is imortant to note that the user must use the ```.tflite``` file extension in the name for the model.
+The user can supply a name for the model file but it is imortant to note that the user must **NOT** use a file extension in the name for the model.
 - <a name="req_max"></a>*max_xy*
 A user can specify the maximal x and y values used in normalizing the the pose data. It is important to note that the user must supply a tuple when using this argument (x,y).
 - <a name="req_classify"></a> *classify*
