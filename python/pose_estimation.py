@@ -223,8 +223,10 @@ def create_labels(starting_directory):
 	"""	
 	update_labels = {}
 		
-	f = open(starting_directory+"/feedback.txt", "r")
-	feedback = f.read()
+	f_short = open(starting_directory+"/feedback_kort.txt", "r")
+	feedback_short = f_short.read()
+	f_long = open(starting_directory+"/feedback_lang.txt", "r")
+	feedback_long = f_long.read()
 	pose = starting_directory
 	index = 0
 	for letter in pose:
@@ -238,7 +240,7 @@ def create_labels(starting_directory):
 			images.append(filename)
 
 	for image in images:
-		update_labels[pose+"-"+image[:-4]] = {"feedback": feedback, "pose": pose}
+		update_labels[pose+"-"+image[:-4]] = {"feedback_short": feedback_short, "feedback_long": feedback_long, "pose": pose}
 
 	return update_labels
 
@@ -263,7 +265,7 @@ def create_dataset(starting_directory, model_path):
 def main(argv):
 	# Use the same model used in the Java Android environment
 	model_file = "posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite"
-	image_directory = 'Data_set/'
+	image_directory = 'data_set/'
 	poses_json = "poses.json"
 	labels_json = "labels.json"
 	help_message = 'pose-estimation.py -d <image directory> -m <model file> -p <poses file> -l <labels file> -c <clean file>'

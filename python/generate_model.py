@@ -255,8 +255,12 @@ def main(argv):
 	# Classify a supplied pose from the supplied poses json file
 	if classify_me:
 		test_pose = prepare_pose_data(poses_load[classify_me], normalize_poses, max_xy[0], max_xy[1])
-		print(classify_pose(test_pose, model, posible_labels))
-	
+		print( "______________________________________")
+		print("classified pose: ", classify_pose(test_pose, model, posible_labels))
+		print("Feedback short: ", labels_load[classify_me]["feedback_short"])
+		print("Feedback long: ", labels_load[classify_me]["feedback_long"])
+		print( "______________________________________")
+
 	# Export the trained model using the supplied name
 	export_tfl_model( trained_model , model_name)
 
