@@ -4,6 +4,8 @@ package com.mygdx.game.PoseEstimation.nn.PoseNet
 
 import android.content.Context
 import android.graphics.Bitmap
+import com.mygdx.game.DebugLog
+import com.mygdx.game.DebugLog.DEBUG
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter
 import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
 import com.mygdx.game.PoseEstimation.Resolution
@@ -179,12 +181,12 @@ class PoseNetHandler(
 
 
     fun estimateSinglePose(bitmapb: Bitmap): Person {
-
-        val croppedBitmap = cropBitmap(bitmapb)
+        val startTime = System.nanoTime();
+        //vereiste video 1:1, crop overbodig
+        //val croppedBitmap = cropBitmap(bitmapb)
 
         // Created scaled version of bitmap for model input.
-        val bitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
-
+        val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())

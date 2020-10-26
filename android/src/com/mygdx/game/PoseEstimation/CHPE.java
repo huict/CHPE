@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 
+import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidModelParse;
 import com.mygdx.game.PoseEstimation.nn.ModelFactory;
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
@@ -17,6 +18,7 @@ import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 /**
  * The type Chpe.
  */
+@SuppressWarnings("UnnecessaryLocalVariable")
 public class CHPE {
     private Resolution resolution;
     private Context context;
@@ -74,30 +76,34 @@ public class CHPE {
      * @param nnInterpreter The nnInterpreter type (i.e. CPU/GPU/NNAPI)
      * @return Instance of a Person found on the image
      */
-    Person ProcessFrame(Bitmap image, NNInterpreter nnInterpreter) {
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(
-                image,
-                this.resolution.getModelWidth(),
-                this.resolution.getModelHeight(),
-                BILINEAR_INTERPOLATION // Simple interpolation to fill 'empty' spaces on image
-        );
-
-        PoseNetHandler posenetHandler = new PoseNetHandler(this.context,
-                this.poseModel.getModel(), // Instance of the model used
-                nnInterpreter, // Device on which the execution will take place
-                this.resolution); // Instance of resolution used for scaling
-
-
-        return posenetHandler.estimateSinglePose(scaledBitmap); //
-    }
+//    Person ProcessFrame(Bitmap image, NNInterpreter nnInterpreter) {
+//        long startTime = System.nanoTime();
+//        PoseNetHandler posenetHandler = new PoseNetHandler(this.context,
+//                this.poseModel.getModel(), // Instance of the model used
+//                nnInterpreter, // Device on which the execution will take place
+//                this.resolution); // Instance of resolution used for scaling
+//
+//        Person person = posenetHandler.estimateSinglePose(image);
+//        long endTime = System.nanoTime();
+//        DebugLog.log("Estimate Single pose took :" + ((endTime - startTime) / 1000000) + "ms");
+//        return person; //
+//    }
 
     /**
      * Over loader, uses GPU as default device
      *
-     * @param image The supplied bitmap image
+     * //@param image The supplied bitmap image
      * @return Instance of a Person found on the image
      */
-    Person ProcessFrame(Bitmap image) {
-        return ProcessFrame(image, NNInterpreter.GPU);
+//    Person ProcessFrame(Bitmap image) {
+//        return ProcessFrame(image, NNInterpreter.GPU);
+//    }
+
+    PoseNetHandler givePoseNetHandler(NNInterpreter nnInterpreter) {
+        PoseNetHandler posenetHandler = new PoseNetHandler(this.context,
+                this.poseModel.getModel(), // Instance of the model used
+                nnInterpreter, // Device on which the execution will take place
+                this.resolution); // Instance of resolution used for scaling
+        return posenetHandler;
     }
 }

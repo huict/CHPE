@@ -121,30 +121,30 @@ public class CHPETest {
     /**
      * Process frame a frame with the GPU as NNInterpreter
      */
-    @Test
-    public void ProcessFrameGPU() {
-        CHPE chpe = new CHPE(this.targetContext, new Resolution(this.bitmap), new NNModelPosenet());
-        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.GPU);
-        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
-    }
+//    @Test
+//    public void ProcessFrameGPU() {
+//        CHPE chpe = new CHPE(this.targetContext, new Resolution(this.bitmap), new NNModelPosenet());
+//        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.GPU);
+//        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
+//    }
 
     /**
      * Process frame a frame with the CPU as NNInterpreter
      */
-    @Test
-    public void ProcessFrameCPU() {
-        CHPE chpe = new CHPE(this.context, new Resolution(this.bitmap), new NNModelPosenet());
-        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.CPU);
-        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
-    }
+//    @Test
+//    public void ProcessFrameCPU() {
+//        CHPE chpe = new CHPE(this.context, new Resolution(this.bitmap), new NNModelPosenet());
+//        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.CPU);
+//        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
+//    }
 
     /**
      * Process frame a frame with the neural network API as NNInterpreter
      */
-    @Test
-    public void ProcessFrameNNAPI() {
-        CHPE chpe = new CHPE(this.context, new Resolution(this.bitmap), new NNModelPosenet());
-        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.NNAPI);
-        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
-    }
+//    @Test
+//    public void ProcessFrameNNAPI() {
+//        CHPE chpe = new CHPE(this.context, new Resolution(this.bitmap), new NNModelPosenet());
+//        Person p = chpe.ProcessFrame(this.bitmap, NNInterpreter.NNAPI);
+//        assertEquals(new NNModelPosenet().points, p.getKeyPoints().size());
+//    }
 }

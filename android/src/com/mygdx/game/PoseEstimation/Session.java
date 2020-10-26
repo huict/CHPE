@@ -7,6 +7,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
 import com.mygdx.game.Exceptions.InvalidVideoSplicerType;
 import com.mygdx.game.Persistance.AppDatabase;
@@ -15,6 +16,7 @@ import com.mygdx.game.Persistance.Video.NNVideo;
 import com.mygdx.game.PoseEstimation.nn.ModelFactory;
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
@@ -31,6 +33,7 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
+    private PoseNetHandler poseNetHandler;
 
     /**
      * Instantiates a new Session.
@@ -106,8 +109,24 @@ public class Session {
     public void runVideo() {
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter);
-                this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
+                long totalStartTime = System.nanoTime();
+                //Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter);
+                PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+
+                long startTime = System.nanoTime();
+                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
+
+                long endTime = System.nanoTime();
+                DebugLog.log("estimate single pose took: " + ((endTime - startTime) / 1000000) + "ms");
+                startTime = System.nanoTime();
+
+                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
+
+                endTime = System.nanoTime();
+                DebugLog.log("insert person in database Took: " + ((endTime - startTime) / 1000000) + "ms");
+                long totalEndTime = System.nanoTime();
+                DebugLog.log("Total Function runtime Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
+
             }
             catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
