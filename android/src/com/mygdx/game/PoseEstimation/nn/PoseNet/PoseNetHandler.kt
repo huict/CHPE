@@ -1,5 +1,6 @@
 package com.mygdx.game.PoseEstimation.nn.PoseNet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter
@@ -15,6 +16,7 @@ import kotlin.math.abs
 import kotlin.math.exp
 
 
+@SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
         val filename: String,
@@ -83,7 +85,7 @@ class PoseNetHandler(
     }
 
     /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
-    private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
+    public fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         return inputStream.channel.map(
@@ -238,16 +240,21 @@ class PoseNetHandler(
         val person = Person()
         val keypointList = Array(numKeypoints) { KeyPoint() }
         var totalScore = 0.0f
+
+
         enumValues<NNModelPosenet.bodyPart>().forEachIndexed { idx, it ->
             keypointList[idx].bodyPart = it
-            keypointList[idx].position.setX(xCoords[idx])
-            keypointList[idx].position.setY(yCoords[idx])
+            keypointList[idx].position.setX(xCoords[idx], resolution.screenWidth)
+            keypointList[idx].position.setY(yCoords[idx], resolution.screenHeight)
+
             keypointList[idx].score = confidenceScores[idx]
             totalScore += confidenceScores[idx]
         }
 
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
+
+
 
         return person
     }

@@ -38,7 +38,7 @@ public class NNModelMPI implements PoseModel {
     /**
      * The Body parts.
      */
-    public String[] body_parts = new String[]{
+    public static String[] body_parts = new String[]{
             "head", "neck", "l_shoulder", "l_elbow",
             "l_wrist", "r_shoulder", "r_elbow",
             "r_wrist", "l_hip", "l_knee", "l_foot",

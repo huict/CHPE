@@ -87,7 +87,6 @@ public class CHPE {
                 nnInterpreter, // Device on which the execution will take place
                 this.resolution); // Instance of resolution used for scaling
 
-
         return posenetHandler.estimateSinglePose(scaledBitmap); //
     }
 

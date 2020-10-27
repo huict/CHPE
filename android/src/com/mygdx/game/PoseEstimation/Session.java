@@ -19,6 +19,12 @@ import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 /**
  * The type Session.
  */
@@ -31,6 +37,8 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
+
+    private JsonArray jsonFrames = null;
 
     /**
      * Instantiates a new Session.
@@ -104,19 +112,20 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                this.PersonToFrame(this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(),this.nnInterpreter));
-            }
-            catch (InvalidFrameAccess invalidFrameAccess) {
+                Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(), this.nnInterpreter);
+
+                jsonArray.add(person.toJson());
+                //this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
+
+            } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
         }
-    }
-
-
-    private void PersonToFrame(Person person) {
-        this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
+        jsonFrames =  jsonArray.build();
     }
 
     /**
@@ -125,5 +134,9 @@ public class Session {
      */
     public void normaliseData() {
         this.nnInsert.normalise(this.videoId);
+    }
+
+    public JsonArray getJsonFrames(){
+        return jsonFrames;
     }
 }
