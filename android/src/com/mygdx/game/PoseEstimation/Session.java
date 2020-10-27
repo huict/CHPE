@@ -16,6 +16,7 @@ import com.mygdx.game.Persistance.Video.NNVideo;
 import com.mygdx.game.PoseEstimation.nn.ModelFactory;
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
@@ -28,6 +29,7 @@ import javax.json.JsonObjectBuilder;
 /**
  * The type Session.
  */
+@SuppressWarnings({"FieldMayBeFinal"})
 public class Session {
 
     private NNInserts nnInsert;
@@ -37,6 +39,7 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
+    private PoseNetHandler poseNetHandler;
 
     private JsonArray jsonFrames = null;
 
@@ -116,11 +119,10 @@ public class Session {
 
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(), this.nnInterpreter);
-
-                jsonArray.add(person.toJson());
-                //this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
-
+                PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
+                jsonArray.add(p.toJson());
+                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
             } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
