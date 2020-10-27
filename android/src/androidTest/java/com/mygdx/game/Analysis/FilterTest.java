@@ -10,7 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.DebugLog;
-import com.mygdx.game.PoseEstimation.nn.MPI;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
 
 import org.json.JSONArray;
 import org.junit.After;
@@ -70,7 +70,7 @@ public class FilterTest {
     public void TestZeros() {
         filter.resolveZeros();
         for(int f = 0; f < data.getFrameCount(); f++) {
-            for(MPI.body_part bp : MPI.body_part.values()) {
+            for(NNModelMPI.body_part bp : NNModelMPI.body_part.values()) {
                 Vector3 coord = data.getCoord(f, bp);
                 assertEquals(coord.isZero(), false);
             }
@@ -84,21 +84,21 @@ public class FilterTest {
     @Test
     public void testKernel() {
         // store the unfiltered vector
-        Vector3 before = data.getCoord(data.getFrameCount()-2, MPI.body_part.l_wrist);
+        Vector3 before = data.getCoord(data.getFrameCount()-2, NNModelMPI.body_part.l_wrist);
 
         // simple average filter
         double kernel[] = {1, 1, 1};
 
         // calculate expected
-        Vector3 v1 = data.getCoord(data.getFrameCount()-1, MPI.body_part.l_wrist);
-        Vector3 v2 = data.getCoord(data.getFrameCount()-3, MPI.body_part.l_wrist);
+        Vector3 v1 = data.getCoord(data.getFrameCount()-1, NNModelMPI.body_part.l_wrist);
+        Vector3 v2 = data.getCoord(data.getFrameCount()-3, NNModelMPI.body_part.l_wrist);
         Vector3 expected = new Vector3((v1.x + before.x + v2.x) / 3, (v1.y + before.y + v2.y) / 3, 0);
 
         // apply filter
         filter.kernelFilter(kernel);
 
         // get the filtered vector
-        Vector3 actual = data.getCoord(data.getFrameCount()-2, MPI.body_part.l_wrist);
+        Vector3 actual = data.getCoord(data.getFrameCount()-2, NNModelMPI.body_part.l_wrist);
 
         assertEquals(expected, actual);
     }

@@ -10,8 +10,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet;
+
+import static java.lang.Math.toIntExact;
 
 /**
  * @author Nico van Bentum
@@ -30,14 +33,14 @@ public class JSONData implements Data {
 
     /**
      * Constructor that inits member fields thus loading the data from disk.
+     *
      * @param fp File path to the JSON file on disk.
      */
     JSONData(String fp) {
         filepath = fp;
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader(filepath))
-        {
+        try (FileReader reader = new FileReader(filepath)) {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             frames = (JSONArray) obj;
@@ -52,6 +55,7 @@ public class JSONData implements Data {
 
     /**
      * Constructor that grabs the frame data from a JSONLoader.
+     *
      * @param loader External JSONLoader object.
      */
     JSONData(JSONLoader loader) {
@@ -61,8 +65,12 @@ public class JSONData implements Data {
     /**
      * Implements Data's interface function for getting a single coordinate using Java's JSON library.
      */
-    public Vector3 getCoord(int frame, body_part bp) {
-        JSONObject bodyparts = (JSONObject) frames.get(frame);
+    public Vector3 getCoord(long frame, NNModelMPI.body_part bp) {
+        if (Integer.MAX_VALUE < frame) {
+            throw new java.lang.RuntimeException("JSONData Error: attempting to access frame outside of jsonArray");
+        }
+
+        JSONObject bodyparts = (JSONObject) frames.get(toIntExact(frame));
         JSONArray coords = (JSONArray) bodyparts.get(bp.toString());
 
         Number x = (Number) coords.get(0);
@@ -73,8 +81,13 @@ public class JSONData implements Data {
     /**
      * Implements Data's interface for setting the x component of a coordinate.
      */
-    public void setX(int frame, body_part bp, double x) {
-        JSONObject bodyparts = (JSONObject) frames.get(frame);
+    public void setX(long frame, NNModelMPI.body_part bp, double x) {
+
+        if (Integer.MAX_VALUE < frame) {
+            throw new java.lang.RuntimeException("JSONData Error: attempting to access frame outside of jsonArray");
+        }
+
+        JSONObject bodyparts = (JSONObject) frames.get(toIntExact(frame));
         JSONArray coords = (JSONArray) bodyparts.get(bp.toString());
         coords.set(0, x);
     }
@@ -82,8 +95,12 @@ public class JSONData implements Data {
     /**
      * Implements Data's interface for setting the y component of a coordinate.
      */
-    public void setY(int frame, body_part bp, double y) {
-        JSONObject bodyparts = (JSONObject) frames.get(frame);
+    public void setY(long frame, NNModelMPI.body_part bp, double y) {
+        if (Integer.MAX_VALUE < frame) {
+            throw new java.lang.RuntimeException("JSONData Error: attempting to access frame outside of jsonArray");
+        }
+
+        JSONObject bodyparts = (JSONObject) frames.get(toIntExact(frame));
         JSONArray coords = (JSONArray) bodyparts.get(bp.toString());
         coords.set(1, y);
     }
@@ -93,16 +110,16 @@ public class JSONData implements Data {
      * using a hardcoded enum.
      */
     public int getBodyPartCount() {
-        return body_part.values().length;
+        return NNModelMPI.body_part.values().length;
     }
 
     /**
      * Implements Data's interface function for getting the frame count using the read JSON data.
      */
-    public int getFrameCount() {
+    public long getFrameCount() {
         return frames.size();
     }
-    
+
     /**
      * Implements Data's interface function for getting the number of frames per second used.
      * hardcoded for now.
@@ -115,6 +132,7 @@ public class JSONData implements Data {
      * Implements Data's interface for writing the data back to the data structure.
      * Does nothing for now.
      */
-    public void serialize() {}
+    public void serialize() {
+    }
 
 }

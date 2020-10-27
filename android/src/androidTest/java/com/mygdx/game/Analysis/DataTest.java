@@ -11,11 +11,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.DebugLog;
 import com.mygdx.game.MockData;
-import com.mygdx.game.PoseEstimation.nn.MPI;
-import com.mygdx.game.persistance.AppDatabase;
-import com.mygdx.game.persistance.Coordinate.NNCoordinate;
-import com.mygdx.game.persistance.PersistenceClient;
-import com.mygdx.game.persistance.Video.NNVideoDAO;
+
+import com.mygdx.game.Persistance.AppDatabase;
+import com.mygdx.game.Persistance.Coordinate.NNCoordinate;
+import com.mygdx.game.Persistance.PersistenceClient;
+import com.mygdx.game.Persistance.Video.NNVideoDAO;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
+
 import android.content.Context;
 
 
@@ -99,7 +101,7 @@ public class DataTest {
     }
 
     public void getCoordTest() {
-        Vector3 first_coord = data.getCoord(0, MPI.body_part.head);
+        Vector3 first_coord = data.getCoord(0, NNModelMPI.body_part.head);
         assertEquals(first_coord.x, 5.0f,0.0f);
         assertEquals(first_coord.y, 10.0f, 0.0f);
         assertEquals(first_coord.z, 0.0f, 0.0f);
@@ -108,9 +110,9 @@ public class DataTest {
 
     public void setTest() {
         Vector3 to_set = new Vector3(5,10,0);
-        data.setX(0, MPI.body_part.head, to_set.x);
-        data.setY(0, MPI.body_part.head, to_set.y);
-        Vector3 coord = data.getCoord(0, MPI.body_part.head);
+        data.setX(0, NNModelMPI.body_part.head, to_set.x);
+        data.setY(0, NNModelMPI.body_part.head, to_set.y);
+        Vector3 coord = data.getCoord(0, NNModelMPI.body_part.head);
         assertEquals(to_set, coord);
     }
 

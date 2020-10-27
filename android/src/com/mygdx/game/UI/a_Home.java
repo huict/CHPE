@@ -1,26 +1,40 @@
 package com.mygdx.game.UI;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mygdx.game.R;
 
+/**
+ * Home screen class. This is the first screen you see when you start the app.
+ */
 public class a_Home extends AppCompatActivity {
+    /**
+     * Button to go the presentation archive.
+     */
     Button b_archive;
+    /**
+     * Button to start the video selection process.
+     */
     Button b_start;
 
+    /**
+     * Android function override.
+     * This closes the app.
+     */
     @Override
     public void onBackPressed() {
         finishAffinity();
     }
 
+    /**
+     * Android default constructor.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +61,10 @@ public class a_Home extends AppCompatActivity {
         });
     }
 
+    /**
+     * Helper function for creating and launching an intent.
+     * @param cls
+     */
     public void launchIntent(Class<?> cls) {
         Intent intent = new Intent(this, cls);
         startActivity(intent);

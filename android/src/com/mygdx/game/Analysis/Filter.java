@@ -3,7 +3,7 @@ package com.mygdx.game.Analysis;
 import com.mygdx.game.DebugLog;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
 
 import org.json.JSONObject;
 
@@ -31,7 +31,7 @@ class Filter {
      * Looks for zeros in the entire data set and changes them to previous entry.
      */
     void resolveZeros() {
-        for(body_part bp : body_part.values()) {
+        for(NNModelMPI.body_part bp : NNModelMPI.body_part.values()) {
             for(int f = 1; f < data.getFrameCount(); f++) {
                 Vector3 previous = data.getCoord(f-1, bp);
                 Vector3 current = data.getCoord(f, bp);
@@ -60,7 +60,7 @@ class Filter {
      * @param left first body part
      * @param right second body part
      */
-    void averageOf(body_part toUpdate, body_part left, body_part right) {
+    void averageOf(NNModelMPI.body_part toUpdate, NNModelMPI.body_part left, NNModelMPI.body_part right) {
         for(int f = 0; f < data.getFrameCount(); f++) {
             double x = absAverage(data.getCoord(f, left).x, data.getCoord(f, right).x);
             double y = absAverage(data.getCoord(f, left).x, data.getCoord(f, right).x);
@@ -80,7 +80,7 @@ class Filter {
             sum += weight;
         }
 
-        for(body_part bp : body_part.values()) {
+        for(NNModelMPI.body_part bp : NNModelMPI.body_part.values()) {
             // create a vector for every coordinate of the body part
             ArrayList<Vector2> coords = new ArrayList<Vector2>();
 

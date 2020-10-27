@@ -1,17 +1,17 @@
 package com.mygdx.game;
 
-import com.mygdx.game.PoseEstimation.nn.MPI;
-import com.mygdx.game.persistance.AppDatabase;
-import com.mygdx.game.persistance.Coordinate.NNCoordinate;
-import com.mygdx.game.persistance.Coordinate.NNCoordinateDAO;
-import com.mygdx.game.persistance.Frame.NNFrame;
-import com.mygdx.game.persistance.Frame.NNFrameDAO;
-import com.mygdx.game.persistance.Relations.NNFrameCoordinate;
-import com.mygdx.game.persistance.Relations.NNFrameCoordinateDAO;
-import com.mygdx.game.persistance.Relations.NNVideoFrame;
-import com.mygdx.game.persistance.Relations.NNVideoFrameDAO;
-import com.mygdx.game.persistance.Video.NNVideo;
-import com.mygdx.game.persistance.Video.NNVideoDAO;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
+import com.mygdx.game.Persistance.AppDatabase;
+import com.mygdx.game.Persistance.Coordinate.NNCoordinate;
+import com.mygdx.game.Persistance.Coordinate.NNCoordinateDAO;
+import com.mygdx.game.Persistance.Frame.NNFrame;
+import com.mygdx.game.Persistance.Frame.NNFrameDAO;
+import com.mygdx.game.Persistance.Relations.NNFrameCoordinate;
+import com.mygdx.game.Persistance.Relations.NNFrameCoordinateDAO;
+import com.mygdx.game.Persistance.Relations.NNVideoFrame;
+import com.mygdx.game.Persistance.Relations.NNVideoFrameDAO;
+import com.mygdx.game.Persistance.Video.NNVideo;
+import com.mygdx.game.Persistance.Video.NNVideoDAO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,20 +33,21 @@ public class MockData {
     // TODO: Insert wrapper for inserting frames would be useful
 
     private long insertFrame(int frameCount) {
-        NNFrame nnFrame = new NNFrame();
+        NNFrame nnFrame = new NNFrame(frameCount);
         nnFrame.frame_count = frameCount;
         NNFrameDAO nnFrameDAO = this.appDatabase.nnFrameDAO();
         return nnFrameDAO.insert(nnFrame);
     }
 
-    private long insertSession(int frameCount){
+    private long insertSession(int frameCount) {
         NNVideo nnSession = new NNVideo();
         nnSession.frame_count = frameCount;
         nnSession.frames_per_second = 24;
         NNVideoDAO nnVideoDAO = this.appDatabase.nnVideoDAO();
         return nnVideoDAO.insert(nnSession);
     }
-    private long insertCoordinate(double x, double y){
+
+    private long insertCoordinate(double x, double y) {
 
         NNCoordinateDAO nnCoordinateDAO = appDatabase.nnCoordinateDAO();
         NNCoordinate coordinate = new NNCoordinate();
@@ -54,17 +55,18 @@ public class MockData {
         coordinate.y = y;
         return nnCoordinateDAO.insert(coordinate);
     }
-    private void insertFrameCoordinate(long fid, long cid){
-        NNFrameCoordinate nnFrameCoordinate = new NNFrameCoordinate();
+
+    private void insertFrameCoordinate(long fid, long cid) {
+        NNFrameCoordinate nnFrameCoordinate = new NNFrameCoordinate(fid, cid);
         NNFrameCoordinateDAO nnFrameCoordinateDAO = this.appDatabase.nnFrameCoordinateDAO();
         nnFrameCoordinate.coordinate_id = cid;
         nnFrameCoordinate.frame_id = fid;
         nnFrameCoordinateDAO.insert(nnFrameCoordinate);
     }
 
-    private void insertSessionFrame(long fid, long sid){
-        NNVideoFrame nnSessionFrame = new NNVideoFrame();
-        NNVideoFrameDAO nnSessionFrameDAO = this.appDatabase.nnSessionFrameDAO();
+    private void insertSessionFrame(long fid, long sid) {
+        NNVideoFrame nnSessionFrame = new NNVideoFrame(sid, fid);
+        NNVideoFrameDAO nnSessionFrameDAO = this.appDatabase.nnVideoFrameDAO();
         nnSessionFrame.video_id = sid;
         nnSessionFrame.frame_id = fid;
         nnSessionFrameDAO.insert(nnSessionFrame);
@@ -84,13 +86,13 @@ public class MockData {
     }
 
     public void executeInserts() {
-        DebugLog.log(String.valueOf(entries .size()));
+        DebugLog.log(String.valueOf(entries.size()));
         long sessionId = insertSession(this.entries.size());
         long insertId = 0;
-        MPI poseModel = new MPI();
+        NNModelMPI poseModel = new NNModelMPI();
         for (int i = 0; i < this.entries.size(); i++) {
             try {
-                JSONObject jsonObject =  (JSONObject) this.entries.get(i);
+                JSONObject jsonObject = (JSONObject) this.entries.get(i);
                 long frameId = insertFrame(i);
                 insertSessionFrame(frameId, sessionId);
                 for (String spart : poseModel.body_parts) {
@@ -100,7 +102,7 @@ public class MockData {
                     values = values.substring(1, values.length() - 1);
 
                     String[] nums = values.split(",");
-                    double [] coordinates = StringArrToDoubleArr(nums);
+                    double[] coordinates = StringArrToDoubleArr(nums);
 
                     long recordInsertID = insertCoordinate(coordinates[0], coordinates[1]);
                     insertFrameCoordinate(frameId, recordInsertID);

@@ -9,12 +9,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mygdx.game.R;
 
+/**
+ * Describes a single card holder and its properties.
+ */
 public class c_CardHolder extends RecyclerView.ViewHolder {
 
+    /**
+     * preview image of the presentation.
+     */
     ImageView imageView;
+
+    /**
+     * title and description of the presentation.
+     */
     TextView title, description;
 
-    public c_CardHolder(@NonNull View itemView) {
+    /**
+     * Constructor.
+     * @param itemView External view to use for the card.
+     */
+    c_CardHolder(@NonNull View itemView) {
         super(itemView);
 
         this.imageView = itemView.findViewById(R.id.resultCardImage);

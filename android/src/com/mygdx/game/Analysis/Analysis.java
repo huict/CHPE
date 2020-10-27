@@ -1,7 +1,9 @@
 package com.mygdx.game.Analysis;
 
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
+
 import java.util.HashMap;
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
+
 
 /**
  * @author Nico van Bentum
@@ -34,9 +36,9 @@ public class Analysis {
      * TODO: Implementation
      */
     public HashMap<Action, Boolean> detect() {
-        HashMap<Action, Boolean> results = new HashMap<Action, Boolean>();
+        HashMap<Action, Boolean> results = new HashMap<>();
 
-        Action action = new Action("handAbovehead");
+        Action action = new Action("handAboveHead");
         action.setOccurrence(detection.handsAboveHead(1));
         results.put(action, action.occurred());
 
@@ -57,7 +59,7 @@ public class Analysis {
      */
     public void process() {
         filter.resolveZeros();
-        filter.averageOf(body_part.waist, body_part.l_hip, body_part.r_hip);
+        filter.averageOf(NNModelMPI.body_part.waist, NNModelMPI.body_part.l_hip, NNModelMPI.body_part.r_hip);
 
         // TODO: random filter taken from the Python application for now, pls fix
         for(int i = 0; i < 10; i++) {

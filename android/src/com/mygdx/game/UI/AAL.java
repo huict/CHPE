@@ -15,21 +15,24 @@ import com.mygdx.game.DebugLog;
 
 import java.util.ArrayList;
 
+/**
+ * Helper class that provides static functions for repetitive operations.
+ */
 class AAL {
+    /**
+     * Makes the title bar transparent.
+     * @param window Window of the current activity.
+     */
     static void setTitleBar(Window window) {
-
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-/*        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.rgb(182, 255, 255));
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(0);
-        }*/
     }
 
+    /**
+     * Checks if a permission is granted already.
+     * @param context Context of the activity.
+     * @param permissions permissions to check for.
+     * @return Whether the permission was granted or not.
+     */
     static boolean permissionsGranted(Context context, String[] permissions) {
         for(String permission : permissions) {
             if(ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -39,6 +42,12 @@ class AAL {
         return true;
     }
 
+    /**
+     * Helper functions that requests permissions from the user.
+     * @param context Context of the activity.
+     * @param activity Activity.
+     * @param permissions Permissions to request.
+     */
     static void requestPermissions(Context context, Activity activity, String[] permissions) {
         ArrayList<String> deniedPermissions = new ArrayList<>();
         // collect missing permissions just to be safe

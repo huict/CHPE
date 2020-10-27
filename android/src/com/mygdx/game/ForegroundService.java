@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,15 +12,20 @@ import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.mygdx.game.Exceptions.InvalidVideoSplicerType;
+import com.mygdx.game.PoseEstimation.Session;
 import com.mygdx.game.UI.a_Loading;
-import com.mygdx.game.UI.a_Results;
+import com.mygdx.game.VideoHandler.VideoSplicer;
+import com.mygdx.game.VideoHandler.VideoSplicerFactory;
+import com.mygdx.game.nnanalysis.InterpreterController;
+
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 
 /**
  * Class where the neural network will analyze the video footage
@@ -32,7 +38,12 @@ public class ForegroundService extends Service {
     public String CHANNEL_ID = "ForegroundService";
     static Thread thread;
     static Runnable work;
+    private VideoSplicer videoSplicer;
 
+    /**
+     * This function sets the work that the foreground service will perform on start command.
+     * @param r Android runnable that contains the work.
+     */
     public static void setWork(Runnable r) {
         work = r;
     }
@@ -55,15 +66,14 @@ public class ForegroundService extends Service {
      * @return STICKY_NOT_STICKY The return value indicates what semantics the system should use for the
      * service's current started state.
      */
+    @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
         /**
          * Creating Uri for MediaMetadataRetriever
          */
-        Uri otherUri = intent.getData();
-        /**
-         * Creating NotificationChannel & NotificationManager with necessary Intents
-         */
+
+
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), a_Loading.class), PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -73,7 +83,7 @@ public class ForegroundService extends Service {
         notificationChannel.setLightColor(Color.RED);
         notificationManager.createNotificationChannel(notificationChannel);
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
-                .setContentTitle("PREPPER")
+                .setContentTitle("Honest Mirror")
                 .setContentText("Processing video in neural network")
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
@@ -85,12 +95,37 @@ public class ForegroundService extends Service {
          */
         startForeground(7, notification);
         /**
-            Launch a thread that performs the actual work
+         Launch thread that performs the actual work
          */
+
+        final Uri otherUri = intent.getData();
         thread = new Thread(new Runnable() {
             public void run() {
+
+                MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+                metadataRetriever.setDataSource(getApplicationContext(), otherUri);
+                try {
+                    VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
+                    Session session = new Session(getApplicationContext(), videoSplicer);
+                    session.runVideo();
+                    session.normaliseData();
+                    JsonArray jsonFrames = session.getJsonFrames();
+
+                    InterpreterController interpreterController = new InterpreterController(getApplicationContext());
+                    interpreterController.setInput(jsonFrames);
+                    interpreterController.LoadData();
+
+                    Log.println(Log.INFO, "", interpreterController.writeFeedback());
+                }catch (InvalidVideoSplicerType splicerType){
+                    Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
+                    throw new RuntimeException("InvalidVideoSplicer");
+                }catch (Exception e){
+                    if (e.getClass() == RuntimeException.class)
+                        throw e;
+
+                    Log.e("InterpreterController:", e.getMessage());
+                }
                 work.run();
-                //DebugLog.log("LOGGER: DONE WORKING");
                 stopForeground(true);
                 stopSelf();
             }

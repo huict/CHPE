@@ -7,8 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -26,16 +24,54 @@ import com.mygdx.game.DebugLog;
 import com.mygdx.game.ForegroundService;
 import com.mygdx.game.R;
 
+/**
+ * Loading screen. This screen is visible when the app is performing the video analysis.
+ */
 public class a_Loading extends AppCompatActivity {
+    /**
+     * Current progress of the loading bar. Should not exceed 100.
+     */
     int progress = 0;
-    final int MAX = 25000;
+
+    /**
+     * Max value for the progress bar. Android wants big integers to animate smoothly.
+     */
+    final int progressMax = 10000;
+
+    /**
+     * Layout of the activity.
+     */
     ConstraintLayout constraintLayout;
+
+    /**
+     * Handle for the animated circular progress bar.
+     */
     AnimationDrawable animationDrawable;
+
+    /**
+     * Progress text to display.
+     */
     TextView progressText;
+
+    /**
+     * Progress bar.
+      */
     ProgressBar progressBar;
+
+    /**
+     * Handler thread that updates the progress animation.
+     */
     Handler handler = new Handler();
+
+    /**
+     * Result button that appears when loading is done.
+     */
     Button b_Results;
 
+    /**
+     * Android default constructor.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +96,12 @@ public class a_Loading extends AppCompatActivity {
         // get the progress bar and set its precision
         progressText = findViewById(R.id.progressTextView);
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setMax(MAX);
+        progressBar.setMax(progressMax);
 
         ForegroundService.setWork(new Runnable() {
             @Override
             public void run() {
-                while (progress < MAX) {
+                while (progress < progressMax) {
                     // use a handler to post the progress back to the UI thread as text
                     handler.post(new Runnable() {
                         @Override
@@ -95,12 +131,18 @@ public class a_Loading extends AppCompatActivity {
         startService();
     }
 
+    /**
+     * Android function override, stops the service.
+     */
     @Override
     public void onStop() {
         super.onStop();
         finish();
     }
 
+    /**
+     * Notifies the user when it's done loading.
+     */
     public void notifyUser() {
         int importance = NotificationManager.IMPORTANCE_HIGH;
         final String CHANNEL_ID = "notifyUser";
@@ -117,7 +159,7 @@ public class a_Loading extends AppCompatActivity {
         notificationManager.createNotificationChannel(notificationChannel);
 
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
-                .setContentTitle("Prepper")
+                .setContentTitle("Honest Mirror")
                 .setContentText("Neural Network is done.")
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
@@ -131,6 +173,9 @@ public class a_Loading extends AppCompatActivity {
         notificationManager.notify(12, notification);
     }
 
+    /**
+     * Starts the foreground service. Typically called when this activity starts.
+     */
     public void startService() {
         Toast toast = Toast.makeText(getApplicationContext(), "Started video analysis, this could take a while", Toast.LENGTH_LONG);
         toast.show();

@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Analysis.Data;
 import com.mygdx.game.Analysis.DatabaseData;
 import com.mygdx.game.HomeScreen;
-import com.mygdx.game.persistance.PersistenceClient;
+import com.mygdx.game.Persistance.PersistenceClient;
 
 /**
  * This is the main application class.
@@ -46,6 +46,7 @@ public class MyGdxGame implements ApplicationListener {
 	public Body body;
 	public Context context;
 	public Data data;
+	public CubeAnalyse cube_analyse;
 
 	//todo Make functions to change the clear color and the player model colors from this main class.
 	public Color backgroundColor;
@@ -106,6 +107,9 @@ public class MyGdxGame implements ApplicationListener {
 
 		font = new BitmapFont();
 		font.setColor(Color.RED);
+		// ============================================================================
+		cube_analyse = new CubeAnalyse();
+		// ============================================================================
 	}
 
 	/**
@@ -152,6 +156,8 @@ public class MyGdxGame implements ApplicationListener {
 		modelBatch.begin(gameCam);
 		modelBatch.render(body.getJointArray(), environment);
 		modelBatch.render(body.getLimbArray(), environment);
+		cube_analyse.update(data, frame);
+		modelBatch.render(cube_analyse.renderables(), environment);
 		modelBatch.end();
 
 		batch.begin();

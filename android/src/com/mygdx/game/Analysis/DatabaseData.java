@@ -1,12 +1,13 @@
 package com.mygdx.game.Analysis;
 
-import com.mygdx.game.persistance.*;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.persistance.Coordinate.NNCoordinateDAO;
-import com.mygdx.game.persistance.Video.NNVideo;
-import com.mygdx.game.persistance.Video.NNVideoDAO;
-import com.mygdx.game.PoseEstimation.nn.MPI.body_part;
-import com.mygdx.game.persistance.Coordinate.NNCoordinate;
+import com.mygdx.game.Persistance.AppDatabase;
+import com.mygdx.game.Persistance.Coordinate.NNCoordinateDAO;
+import com.mygdx.game.Persistance.Video.NNVideo;
+import com.mygdx.game.Persistance.Video.NNVideoDAO;
+import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI.body_part;
+import com.mygdx.game.Persistance.Coordinate.NNCoordinate;
+
 
 /**
  * @author Nico van Bentum
@@ -42,8 +43,8 @@ public class DatabaseData implements Data {
     /**
      * Implements Data's interface function for getting a single coordinate using Java's JSON library.
      */
-    public Vector3 getCoord(int frame, body_part bp) {
-        NNCoordinate nnCoordinate = this.nnVideoDAO.get_coordinates(frame,bp.ordinal(),
+    public Vector3 getCoord(long frame, body_part bp) {
+        NNCoordinate nnCoordinate = this.nnVideoDAO.getCoordinates(frame,bp.ordinal(),
                 this.currentSession.id);
         return new Vector3((float) nnCoordinate.x, (float) nnCoordinate.y, 0);
     }
@@ -59,7 +60,7 @@ public class DatabaseData implements Data {
     /**
      * Implements Data's interface function for getting the frame count using the read JSON data.
      */
-    public int getFrameCount() {
+    public long getFrameCount() {
         return this.currentSession.frame_count;
     }
 
@@ -81,8 +82,8 @@ public class DatabaseData implements Data {
     /**
      * Implements Data's interface for setting the x component of a coordinate.
      */
-    public void setX(int frame, body_part bp, double x) {
-        NNCoordinate current = this.nnVideoDAO.get_coordinates(frame,bp.ordinal(),
+    public void setX(long frame, body_part bp, double x) {
+        NNCoordinate current = this.nnVideoDAO.getCoordinates(frame,bp.ordinal(),
                 this.currentSession.id);
         current.x = x;
         NNCoordinateDAO dao = this.appDatabase.nnCoordinateDAO();
@@ -92,8 +93,8 @@ public class DatabaseData implements Data {
     /**
      * Implements Data's interface for setting the y component of a coordinate.
      */
-    public void setY(int frame, body_part bp, double  y) {
-        NNCoordinate current = this.nnVideoDAO.get_coordinates(frame,bp.ordinal(),
+    public void setY(long frame, body_part bp, double  y) {
+        NNCoordinate current = this.nnVideoDAO.getCoordinates(frame,bp.ordinal(),
                 this.currentSession.id);
         current.y = y;
         NNCoordinateDAO dao = this.appDatabase.nnCoordinateDAO();

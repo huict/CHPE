@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,15 @@ import android.widget.Button;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.mygdx.game.Analysis.JSONLoader;
+import com.mygdx.game.Persistance.AppDatabase;
 import com.mygdx.game.Simulation.MyGdxGame;
-import com.mygdx.game.persistance.PersistenceClient;
+import com.mygdx.game.Persistance.PersistenceClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import static com.mygdx.game.Persistance.PersistenceClient.getInstance;
 
 public class HomeScreen extends AndroidApplication {
     /**
@@ -56,7 +60,7 @@ public class HomeScreen extends AndroidApplication {
         /**
          * Temporary code for Database testing purposes, will be removed upon final stages of the app
          */
-        PersistenceClient.getInstance(getApplicationContext());
+        getInstance(getApplicationContext());
         AssetManager am = getApplicationContext().getAssets();
         InputStream is = null;
         try {
@@ -68,12 +72,11 @@ public class HomeScreen extends AndroidApplication {
         /**
          * Android Version control for colored status bar
          */
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.rgb(0.902f,0.188f,0.157f));
-        }
-        else {
+            window.setStatusBarColor(Color.rgb(0.902f, 0.188f, 0.157f));
+        } else {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(0);
@@ -84,9 +87,9 @@ public class HomeScreen extends AndroidApplication {
         loader = new JSONLoader(r);
         DebugLog.log(loader.toString());
         DebugLog.log(String.valueOf(loader.getFrameCount()));
-        MockData mockData = new MockData(PersistenceClient.getInstance(getApplicationContext()).getAppDatabase(), loader.getArray());
-        //mockData.executeInserts();
-        super.onCreate(savedInstanceState);
+        AppDatabase appDatabase = PersistenceClient.getInstance(getApplicationContext()).getAppDatabase();
+        MockData mockData = new MockData(appDatabase, loader.getArray());
+        
         setContentView(R.layout.activity_home_screen);
         /**
          * Initializing Views & Buttons by finding id's
@@ -148,8 +151,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param PreviousresultActivity.class class to go to
+     // @param this current class
+     // @param PreviousresultActivity.class class to go to
      * @return void
      */
     public void openPreviousResultScreen(){
@@ -159,8 +162,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param CurrenresultActivity.class class to go to
+     // @param this current class
+     // @param CurrenresultActivity.class class to go to
      * @return void
      */
     public void openJUMP(){
@@ -170,8 +173,8 @@ public class HomeScreen extends AndroidApplication {
     /**
      * Opens up a new Activity by setting an Intent
      * @author Gianluca Piccardo
-     * @param this current class
-     * @param GalleryScreen.class class to go to
+     // @param this current class
+     // @param GalleryScreen.class class to go to
      * @return void
      */
     public void openLoadVideoScreen(){
