@@ -181,7 +181,6 @@ class PoseNetHandler(
 
 
     fun estimateSinglePose(bitmapb: Bitmap): Person {
-        val startTime = System.nanoTime();
         //vereiste video 1:1, crop overbodig
         //val croppedBitmap = cropBitmap(bitmapb)
 
