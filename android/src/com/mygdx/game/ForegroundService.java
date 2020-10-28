@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -21,6 +22,10 @@ import com.mygdx.game.PoseEstimation.Session;
 import com.mygdx.game.UI.a_Loading;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
+import com.mygdx.game.nnanalysis.InterpreterController;
+
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 
 /**
  * Class where the neural network will analyze the video footage
@@ -61,6 +66,7 @@ public class ForegroundService extends Service {
      * @return STICKY_NOT_STICKY The return value indicates what semantics the system should use for the
      * service's current started state.
      */
+    @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
         /**
@@ -103,9 +109,21 @@ public class ForegroundService extends Service {
                     Session session = new Session(getApplicationContext(), videoSplicer);
                     session.runVideo();
                     session.normaliseData();
+                    JsonArray jsonFrames = session.getJsonFrames();
+
+                    InterpreterController interpreterController = new InterpreterController(getApplicationContext());
+                    interpreterController.setInput(jsonFrames);
+                    interpreterController.LoadData();
+
+                    Log.println(Log.INFO, "", interpreterController.writeFeedback());
                 }catch (InvalidVideoSplicerType splicerType){
                     Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                     throw new RuntimeException("InvalidVideoSplicer");
+                }catch (Exception e){
+                    if (e.getClass() == RuntimeException.class)
+                        throw e;
+
+                    Log.e("InterpreterController:", e.getMessage());
                 }
                 work.run();
                 stopForeground(true);

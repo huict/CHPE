@@ -2,6 +2,7 @@
 
 package com.mygdx.game.PoseEstimation.nn.PoseNet
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import com.mygdx.game.DebugLog
@@ -19,6 +20,7 @@ import kotlin.math.abs
 import kotlin.math.exp
 
 
+@SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
         val filename: String,
@@ -87,7 +89,7 @@ class PoseNetHandler(
     }
 
     /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
-    private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
+    fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         return inputStream.channel.map(
@@ -201,6 +203,7 @@ class PoseNetHandler(
         val numKeypoints = heatmaps[0][0][0].size
 
         // Finds the (row, col) locations of where the keypoints are most likely to be.
+        //0-1 ms
         val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
         for (keypoint in 0 until numKeypoints) {
             var maxVal = heatmaps[0][0][0][keypoint]
@@ -220,6 +223,7 @@ class PoseNetHandler(
         }
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
+        // 0 ms
         val xCoords = IntArray(numKeypoints)
         val yCoords = IntArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
@@ -241,10 +245,13 @@ class PoseNetHandler(
         val person = Person()
         val keypointList = Array(numKeypoints) { KeyPoint() }
         var totalScore = 0.0f
+
+
         enumValues<NNModelPosenet.bodyPart>().forEachIndexed { idx, it ->
             keypointList[idx].bodyPart = it
-            keypointList[idx].position.setX(xCoords[idx])
-            keypointList[idx].position.setY(yCoords[idx])
+            keypointList[idx].position.setX(xCoords[idx], resolution.screenWidth)
+            keypointList[idx].position.setY(yCoords[idx], resolution.screenHeight)
+
             keypointList[idx].score = confidenceScores[idx]
             totalScore += confidenceScores[idx]
         }
