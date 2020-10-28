@@ -5,6 +5,7 @@ package com.mygdx.game.PoseEstimation;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Debug;
 import android.util.Log;
 
 import com.mygdx.game.DebugLog;
@@ -39,7 +40,6 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
-    private PoseNetHandler poseNetHandler;
 
     private JsonArray jsonFrames = null;
 
@@ -117,12 +117,25 @@ public class Session {
     public void runVideo() {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
 
+        //700+ ms
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
+                // 0 ms
                 PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
-                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
+
+                // 500 - 1000 ms
+                long totalstartTime = System.nanoTime();
+                long newStartTime = System.nanoTime();
+                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame(), newStartTime );
+                long totalendTime = System.nanoTime();
+                DebugLog.log("estimate single pose Took: " + ((totalendTime - totalstartTime) / 1000000) + "ms");
+
+                //50 - 60 ms
                 jsonArray.add(p.toJson());
+
+                //160 - 180 ms
                 this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
+
             } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
