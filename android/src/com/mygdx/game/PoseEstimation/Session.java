@@ -126,7 +126,7 @@ public class Session {
                 // 500 - 1000 ms
                 long totalstartTime = System.nanoTime();
                 long newStartTime = System.nanoTime();
-                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame(), newStartTime );
+                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
                 long totalendTime = System.nanoTime();
                 DebugLog.log("estimate single pose Took: " + ((totalendTime - totalstartTime) / 1000000) + "ms");
 
