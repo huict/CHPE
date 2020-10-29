@@ -115,32 +115,13 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
 
+        // 0 ms
+        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
         //700+ ms
-        while (this.videoSplicer.isNextFrameAvailable()) {
-            try {
-                // 0 ms
-                PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+        JsonArrayBuilder newJsonArray = pnh.startTheAnalysis(this.videoSplicer, this.videoId, this.nnInsert);
 
-                // 500 - 1000 ms
-                long totalstartTime = System.nanoTime();
-                long newStartTime = System.nanoTime();
-                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
-                long totalendTime = System.nanoTime();
-                DebugLog.log("estimate single pose Took: " + ((totalendTime - totalstartTime) / 1000000) + "ms");
-
-                //50 - 60 ms
-                jsonArray.add(p.toJson());
-
-                //160 - 180 ms
-                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
-
-            } catch (InvalidFrameAccess invalidFrameAccess) {
-                Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
-            }
-        }
-        jsonFrames =  jsonArray.build();
+        jsonFrames =  newJsonArray.build();
     }
 
     /**

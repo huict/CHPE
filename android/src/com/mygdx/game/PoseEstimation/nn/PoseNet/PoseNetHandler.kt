@@ -5,18 +5,22 @@ package com.mygdx.game.PoseEstimation.nn.PoseNet
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.mygdx.game.DebugLog
-import com.mygdx.game.DebugLog.DEBUG
+import com.mygdx.game.Exceptions.InvalidFrameAccess
+import com.mygdx.game.PoseEstimation.NNInserts
+import com.mygdx.game.PoseEstimation.Resolution
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter
 import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
-import com.mygdx.game.PoseEstimation.Resolution
+import com.mygdx.game.VideoHandler.VideoSplicer
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import kotlin.math.abs
+import javax.json.Json
+import javax.json.JsonArrayBuilder
 import kotlin.math.exp
 
 
@@ -137,41 +141,41 @@ class PoseNetHandler(
     }
 
     /** Crop Bitmap to maintain aspect ratio of model input.   */
-    private fun cropBitmap(bitmap: Bitmap): Bitmap {
-        val bitmapRatio = bitmap.height.toFloat() / bitmap.width
-        val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
-        var croppedBitmap = bitmap
-
-        // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
-        val maxDifference = 1e-5
-
-        // Checks if the bitmap has similar aspect ratio as the required model input.
-        when {
-            abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
-            modelInputRatio < bitmapRatio -> {
-                // New image is taller so we are height constrained.
-                val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
-                croppedBitmap = Bitmap.createBitmap(
-                        bitmap,
-                        0,
-                        (cropHeight / 2).toInt(),
-                        bitmap.width,
-                        (bitmap.height - cropHeight).toInt()
-                )
-            }
-            else -> {
-                val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
-                croppedBitmap = Bitmap.createBitmap(
-                        bitmap,
-                        (cropWidth / 2).toInt(),
-                        0,
-                        (bitmap.width - cropWidth).toInt(),
-                        bitmap.height
-                )
-            }
-        }
-        return croppedBitmap
-    }
+//    private fun cropBitmap(bitmap: Bitmap): Bitmap {
+//        val bitmapRatio = bitmap.height.toFloat() / bitmap.width
+//        val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
+//        var croppedBitmap = bitmap
+//
+//        // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
+//        val maxDifference = 1e-5
+//
+//        // Checks if the bitmap has similar aspect ratio as the required model input.
+//        when {
+//            abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
+//            modelInputRatio < bitmapRatio -> {
+//                // New image is taller so we are height constrained.
+//                val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
+//                croppedBitmap = Bitmap.createBitmap(
+//                        bitmap,
+//                        0,
+//                        (cropHeight / 2).toInt(),
+//                        bitmap.width,
+//                        (bitmap.height - cropHeight).toInt()
+//                )
+//            }
+//            else -> {
+//                val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
+//                croppedBitmap = Bitmap.createBitmap(
+//                        bitmap,
+//                        (cropWidth / 2).toInt(),
+//                        0,
+//                        (bitmap.width - cropWidth).toInt(),
+//                        bitmap.height
+//                )
+//            }
+//        }
+//        return croppedBitmap
+//    }
 
     /**
      * Estimates the pose for a single person.
@@ -181,12 +185,53 @@ class PoseNetHandler(
      *      person: a Person object containing data about keypoint locations and confidence scores
      */
 
+    fun startTheAnalysis(videoSplicer: VideoSplicer, videoId: Long, nnInsert: NNInserts): JsonArrayBuilder {
+        val jsonArray = Json.createArrayBuilder()
+        while (videoSplicer.isNextFrameAvailable) {
+            try {
+                val totalStartTime = System.nanoTime()
 
-    fun estimateSinglePose(bitmapb: Bitmap): Person {
+                // 500 - 1000 ms in java
+                // in kotlin
+                val ideka = System.nanoTime()
+                val startEstimateTime = System.nanoTime()
+                val p = estimateSinglePose(videoSplicer.nextFrame, ideka )
+                val endEstimateTime = System.nanoTime()
+                DebugLog.log("Estimate Pose call in Kotlin startAnalysis took: " + (endEstimateTime - startEstimateTime) / 1000000 + "ms")
+
+                // 50 - 60 ms in java
+                // in kotlin
+                val startJsonTime = System.nanoTime()
+                jsonArray.add(p.toJson())
+                val endJsonTime = System.nanoTime()
+                DebugLog.log("Add Person to Json in Kotlin took: " + (endJsonTime - startJsonTime) / 1000000 + "ms")
+
+                // 160 - 180 ms in java
+                // in kotlin
+                val startInsertTime = System.nanoTime()
+                nnInsert.insertPerson(p, videoId, videoSplicer.framesProcessed)
+                val endInsertTime = System.nanoTime()
+                DebugLog.log("Insert into database in Kotlin took: " + (endInsertTime - startInsertTime) / 1000000 + "ms")
+
+                val totalEndTime = System.nanoTime()
+                DebugLog.log("Total time in Kotlin took: " + (totalEndTime - totalStartTime) / 1000000 + "ms")
+            }
+            catch (invalidFrameAccess: InvalidFrameAccess) {
+                Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess)
+            }
+        }
+        return jsonArray
+    }
+
+    fun estimateSinglePose(bitmapb: Bitmap, ideka: Long): Person {
         //vereiste video 1:1, crop overbodig
         //val croppedBitmap = cropBitmap(bitmapb)
 
+        val idekaEnd = System.nanoTime()
+        DebugLog.log("Call from another function to EstimatePose: " + (idekaEnd - ideka) / 1000000 + "ms")
+
         // Created scaled version of bitmap for model input.
+        val totalStartTime = System.nanoTime()
         val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
@@ -259,6 +304,9 @@ class PoseNetHandler(
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
 
+        val totalEndTime = System.nanoTime()
+        DebugLog.log("Total function estimatePose() in Kotlin took: " + (totalEndTime - totalStartTime) / 1000000 + "ms")
         return person
+
     }
 }
