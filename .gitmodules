@@ -1,0 +1,3 @@
+[submodule "gloves/lib/FreeRTOS"]
+	path = gloves/lib/FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS
