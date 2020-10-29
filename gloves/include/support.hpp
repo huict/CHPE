@@ -19,6 +19,7 @@
 #include "semphr.h"
 #include "event_groups.h"
 #include <stdint-gcc.h>
+#include <Arduino.h>
 
 // namespace RTOS{
 // 	namespace FLAG{
