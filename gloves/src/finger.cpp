@@ -1,0 +1,1 @@
+// Finger class, DIGITS enum

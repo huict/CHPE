@@ -127,3 +127,6 @@ Thumbs.db
 /ios-moe/xcode/native/
 
 android/local.properties
+
+## vscode
+/gloves/.vscode
