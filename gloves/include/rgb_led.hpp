@@ -12,7 +12,7 @@ private:
 public:
     RGB_LED(uint8_t pin[3]);
     void setColor(RGB color);
-    void setColor(uint8_t rgb_colors[3]);
+    void setColor(uint8_t rgb_color[3]);
 };
 
 #endif

@@ -1,11 +1,9 @@
-
-// Flex_sensor class
-
 # ifndef _FLEX_SENSOR_HPP
 # define _FLEX_SENSOR_HPP
 
 # include "support.hpp"
 
+// Flex_sensor class
 class Flex_sensor{
 private:
     uint8_t flex_pin;
