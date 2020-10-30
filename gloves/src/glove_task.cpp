@@ -1,1 +1,0 @@
-// Glove_task class
