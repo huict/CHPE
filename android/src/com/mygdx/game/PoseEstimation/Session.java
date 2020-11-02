@@ -4,8 +4,8 @@ package com.mygdx.game.PoseEstimation;
 // Ensuring that sessions can be cancelled and continued later on.
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Debug;
 import android.util.Log;
 
 import com.mygdx.game.DebugLog;
@@ -24,8 +24,6 @@ import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 
 /**
  * The type Session.
@@ -120,21 +118,35 @@ public class Session {
         //700+ ms
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
+                long totalStartTime = System.nanoTime();
                 // 0 ms
                 PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
                 // 500 - 1000 ms
-                long totalstartTime = System.nanoTime();
+
                 long newStartTime = System.nanoTime();
-                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame());
-                long totalendTime = System.nanoTime();
-                DebugLog.log("estimate single pose Took: " + ((totalendTime - totalstartTime) / 1000000) + "ms");
+                Bitmap bitmap = this.videoSplicer.getNextFrame();
+                long newEndTime = System.nanoTime();
+                DebugLog.log("create next frame Took: " + ((newEndTime - newStartTime) / 1000000) + "ms");
+
+                long totalstartTime = System.nanoTime();
+                Person p = pnh.estimateSinglePose(bitmap);
+                long estimateendTime = System.nanoTime();
+                DebugLog.log("estimate single pose Took: " + ((estimateendTime - totalstartTime) / 1000000) + "ms");
+
 
                 //50 - 60 ms
+                long storageStartTime = System.nanoTime();
                 jsonArray.add(p.toJson());
-
-                //160 - 180 ms
+                long storageEndTime = System.nanoTime();
+                DebugLog.log("json storage Took: " + ((storageEndTime - storageStartTime) / 1000000) + "ms");
+                long insertStartTime = System.nanoTime();
                 this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
+                long insertEndTime = System.nanoTime();
+                DebugLog.log("database storage Took: " + ((insertEndTime - insertStartTime) / 1000000) + "ms");
+
+                long totalEndTime = System.nanoTime();
+                DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
 
             } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
