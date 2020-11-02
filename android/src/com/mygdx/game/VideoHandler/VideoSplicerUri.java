@@ -2,6 +2,7 @@ package com.mygdx.game.VideoHandler;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -45,7 +46,7 @@ public class VideoSplicerUri implements VideoSplicer {
     /**
      * The Frames processed.
      */
-    long framesProcessed = 0;
+    int framesProcessed = 0;
 
     /**
      * Instantiates a new Video splicer.
@@ -182,17 +183,14 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
-        // TODO: Replace frameCount validator
-
-        if (this.frameCount == -1) {
+        if (this.frameCount <= 0) {
             this.getAmountOfFrames();
         }
         if (isNextFrameAvailable()) {
             Bitmap mp;
             try {
-                mp = this.mediaMetadataRetriever.getFrameAtIndex(
-                        Math.toIntExact(this.framesProcessed)); //TODO: Solve type cast juggling
-                this.framesProcessed += 1;
+                mp = this.mediaMetadataRetriever.getFrameAtTime(this.framesProcessed);
+                this.framesProcessed += 24;
 
             } catch (IllegalStateException ise) {
                 mp = Bitmap.createBitmap(200, 200, Bitmap.Config.ALPHA_8);
