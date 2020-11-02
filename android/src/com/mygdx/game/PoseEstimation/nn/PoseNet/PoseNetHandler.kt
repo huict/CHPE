@@ -185,50 +185,9 @@ class PoseNetHandler(
      *      person: a Person object containing data about keypoint locations and confidence scores
      */
 
-    fun startTheAnalysis(videoSplicer: VideoSplicer, videoId: Long, nnInsert: NNInserts): JsonArrayBuilder {
-        val jsonArray = Json.createArrayBuilder()
-        while (videoSplicer.isNextFrameAvailable) {
-            try {
-                val totalStartTime = System.nanoTime()
-
-                // 500 - 1000 ms in java
-                // in kotlin
-                val ideka = System.nanoTime()
-                val startEstimateTime = System.nanoTime()
-                val p = estimateSinglePose(videoSplicer.nextFrame, ideka )
-                val endEstimateTime = System.nanoTime()
-                DebugLog.log("Estimate Pose call in Kotlin startAnalysis took: " + (endEstimateTime - startEstimateTime) / 1000000 + "ms")
-
-                // 50 - 60 ms in java
-                // in kotlin
-                val startJsonTime = System.nanoTime()
-                jsonArray.add(p.toJson())
-                val endJsonTime = System.nanoTime()
-                DebugLog.log("Add Person to Json in Kotlin took: " + (endJsonTime - startJsonTime) / 1000000 + "ms")
-
-                // 160 - 180 ms in java
-                // in kotlin
-                val startInsertTime = System.nanoTime()
-                nnInsert.insertPerson(p, videoId, videoSplicer.framesProcessed)
-                val endInsertTime = System.nanoTime()
-                DebugLog.log("Insert into database in Kotlin took: " + (endInsertTime - startInsertTime) / 1000000 + "ms")
-
-                val totalEndTime = System.nanoTime()
-                DebugLog.log("Total time in Kotlin took: " + (totalEndTime - totalStartTime) / 1000000 + "ms")
-            }
-            catch (invalidFrameAccess: InvalidFrameAccess) {
-                Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess)
-            }
-        }
-        return jsonArray
-    }
-
-    fun estimateSinglePose(bitmapb: Bitmap, ideka: Long): Person {
+    fun estimateSinglePose(bitmapb: Bitmap): Person {
         //vereiste video 1:1, crop overbodig
         //val croppedBitmap = cropBitmap(bitmapb)
-
-        val idekaEnd = System.nanoTime()
-        DebugLog.log("Call from another function to EstimatePose: " + (idekaEnd - ideka) / 1000000 + "ms")
 
         // Created scaled version of bitmap for model input.
         val totalStartTime = System.nanoTime()

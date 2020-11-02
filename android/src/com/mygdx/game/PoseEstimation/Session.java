@@ -113,9 +113,7 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-
-        // 0 ms
-        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
         //700+ ms
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
