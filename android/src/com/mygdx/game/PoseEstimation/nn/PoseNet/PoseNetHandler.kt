@@ -185,13 +185,13 @@ class PoseNetHandler(
      *      person: a Person object containing data about keypoint locations and confidence scores
      */
 
-    fun estimateSinglePose(bitmapb: Bitmap): Person {
+    fun estimateSinglePose(bitmap: Bitmap): Person {
         //vereiste video 1:1, crop overbodig
         //val croppedBitmap = cropBitmap(bitmapb)
 
         // Created scaled version of bitmap for model input.
         val totalStartTime = System.nanoTime()
-        val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
+        //val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())
@@ -263,8 +263,6 @@ class PoseNetHandler(
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
 
-        val totalEndTime = System.nanoTime()
-        DebugLog.log("Total function estimatePose() in Kotlin took: " + (totalEndTime - totalStartTime) / 1000000 + "ms")
         return person
 
     }

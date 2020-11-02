@@ -47,6 +47,7 @@ public class VideoSplicerUri implements VideoSplicer {
      * The Frames processed.
      */
     int framesProcessed = 0;
+    int timeProcessed = 0;
 
     /**
      * Instantiates a new Video splicer.
@@ -160,6 +161,10 @@ public class VideoSplicerUri implements VideoSplicer {
         return this.framesProcessed + 1 <= this.frameCount;
     }
 
+    public boolean isNextTimeAvailable() {
+        return this.timeProcessed + 1 <= (this.totalTime * 1000 );
+    }
+
     /**
      * Gets next frame.
      *
@@ -168,9 +173,8 @@ public class VideoSplicerUri implements VideoSplicer {
      */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame(int frame) {
-        Bitmap mp = this.mediaMetadataRetriever.getFrameAtIndex(
+        return this.mediaMetadataRetriever.getFrameAtIndex(
                 frame);
-        return mp;
     }
 
 
@@ -183,17 +187,17 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
-        if (this.frameCount <= 0) {
-            this.getAmountOfFrames();
-        }
-        if (isNextFrameAvailable()) {
+        //if (this.frameCount <= 0) {this.getAmountOfFrames();}
+
+        if (isNextTimeAvailable()) {
             Bitmap mp;
             try {
-                mp = this.mediaMetadataRetriever.getFrameAtTime(this.framesProcessed);
-                this.framesProcessed += 24;
+                mp = this.mediaMetadataRetriever.getScaledFrameAtTime(this.timeProcessed, 0, 257, 257);
+                //per 24 frames
+                this.timeProcessed += 400000;
 
             } catch (IllegalStateException ise) {
-                mp = Bitmap.createBitmap(200, 200, Bitmap.Config.ALPHA_8);
+                mp = Bitmap.createBitmap(257, 257, Bitmap.Config.ALPHA_8);
             }
             return mp;
         }

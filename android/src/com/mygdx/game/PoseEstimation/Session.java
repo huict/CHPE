@@ -122,7 +122,6 @@ public class Session {
                 PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
                 // 500 - 1000 ms
-
                 long newStartTime = System.nanoTime();
                 Bitmap bitmap = this.videoSplicer.getNextFrame();
                 long newEndTime = System.nanoTime();
@@ -139,10 +138,12 @@ public class Session {
                 jsonArray.add(p.toJson());
                 long storageEndTime = System.nanoTime();
                 DebugLog.log("json storage Took: " + ((storageEndTime - storageStartTime) / 1000000) + "ms");
-                long insertStartTime = System.nanoTime();
-                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
-                long insertEndTime = System.nanoTime();
-                DebugLog.log("database storage Took: " + ((insertEndTime - insertStartTime) / 1000000) + "ms");
+
+                // 130 ms
+//                long insertStartTime = System.nanoTime();
+//                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
+//                long insertEndTime = System.nanoTime();
+//                DebugLog.log("database storage Took: " + ((insertEndTime - insertStartTime) / 1000000) + "ms");
 
                 long totalEndTime = System.nanoTime();
                 DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
