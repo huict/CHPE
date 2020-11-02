@@ -21,6 +21,9 @@ import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -38,7 +41,8 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
-
+    List<Person> persons = new ArrayList<>();
+    JsonArrayBuilder jsonArray = Json.createArrayBuilder();
     private JsonArray jsonFrames = null;
 
     /**
@@ -113,9 +117,9 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        JsonArrayBuilder jsonArray = Json.createArrayBuilder();
+
         //700+ ms
-        while (this.videoSplicer.isNextFrameAvailable()) {
+        while (this.videoSplicer.isNextTimeAvailable()) {
             try {
                 long totalStartTime = System.nanoTime();
                 // 0 ms
@@ -132,12 +136,7 @@ public class Session {
                 long estimateendTime = System.nanoTime();
                 DebugLog.log("estimate single pose Took: " + ((estimateendTime - totalstartTime) / 1000000) + "ms");
 
-
-                //50 - 60 ms
-                long storageStartTime = System.nanoTime();
-                jsonArray.add(p.toJson());
-                long storageEndTime = System.nanoTime();
-                DebugLog.log("json storage Took: " + ((storageEndTime - storageStartTime) / 1000000) + "ms");
+                persons.add(p);
 
                 // 130 ms
 //                long insertStartTime = System.nanoTime();
@@ -151,6 +150,9 @@ public class Session {
             } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
             }
+        }
+        for(Person person: persons){
+            jsonArray.add(person.toJson());
         }
         jsonFrames =  jsonArray.build();
     }

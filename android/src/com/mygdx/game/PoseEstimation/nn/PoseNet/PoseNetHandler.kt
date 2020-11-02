@@ -187,11 +187,6 @@ class PoseNetHandler(
 
     fun estimateSinglePose(bitmap: Bitmap): Person {
         //vereiste video 1:1, crop overbodig
-        //val croppedBitmap = cropBitmap(bitmapb)
-
-        // Created scaled version of bitmap for model input.
-        val totalStartTime = System.nanoTime()
-        //val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())
