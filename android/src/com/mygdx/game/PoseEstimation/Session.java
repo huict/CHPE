@@ -125,12 +125,13 @@ public class Session {
                 // 0 ms
                 PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
-                // 500 - 1000 ms
+                // 150-200 ms
                 long newStartTime = System.nanoTime();
                 Bitmap bitmap = this.videoSplicer.getNextFrame();
                 long newEndTime = System.nanoTime();
                 DebugLog.log("create next frame Took: " + ((newEndTime - newStartTime) / 1000000) + "ms");
 
+                //100 ms
                 long totalstartTime = System.nanoTime();
                 Person p = pnh.estimateSinglePose(bitmap);
                 long estimateendTime = System.nanoTime();
