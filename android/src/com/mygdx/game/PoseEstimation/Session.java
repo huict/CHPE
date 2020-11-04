@@ -5,12 +5,8 @@ package com.mygdx.game.PoseEstimation;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 
 import com.mygdx.game.DebugLog;
-import com.mygdx.game.Exceptions.InvalidFrameAccess;
-import com.mygdx.game.Exceptions.InvalidVideoSplicerType;
 import com.mygdx.game.Persistance.AppDatabase;
 import com.mygdx.game.Persistance.PersistenceClient;
 import com.mygdx.game.Persistance.Video.NNVideo;
@@ -19,11 +15,8 @@ import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
-import com.mygdx.game.VideoHandler.VideoSplicerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -45,46 +38,9 @@ public class Session {
     JsonArrayBuilder jsonArray = Json.createArrayBuilder();
     private JsonArray jsonFrames = null;
 
-    /**
-     * Instantiates a new Session.
-     *
-     * @param uri     the uri
-     * @param context the context
-     */
-// TODO: Run benchmark configuration
-    public Session(String uri, Context context) {
-
-        try {
-            this.videoSplicer = VideoSplicerFactory.getVideoSplicer(uri);
-        } catch (InvalidVideoSplicerType invalidVideoSplicerType) {
-            Log.e("SESSION", invalidVideoSplicerType.toString());
-        }
-        this.appDatabase = PersistenceClient.getInstance(context).getAppDatabase();
-        this.resolution = new Resolution(this.videoSplicer.getNextFrame(1));
-        this.chpe = new CHPE(context, this.resolution, ModelFactory.POSENET_MODEL);
-
-        this.initialiseDatabase(); // Preparing database for person entry
+    public JsonArray getJsonFrames(){
+        return jsonFrames;
     }
-
-    /**
-     * Instantiates a new Session.
-     *
-     * @param uri     the uri
-     * @param context the context
-     */
-    public Session(Uri uri, Context context) {
-        try {
-            this.videoSplicer = VideoSplicerFactory.getVideoSplicer(uri, context);
-        } catch (InvalidVideoSplicerType invalidVideoSplicerType) {
-            Log.e("SESSION", invalidVideoSplicerType.toString());
-        }
-        this.appDatabase = PersistenceClient.getInstance(context).getAppDatabase();
-        this.resolution = new Resolution(this.videoSplicer.getNextFrame(0));
-        this.chpe = new CHPE(context, this.resolution, ModelFactory.POSENET_MODEL);
-
-        this.initialiseDatabase(); // Preparing database for person entry
-    }
-
 
     /**
      * Instantiates a new Session.
@@ -92,6 +48,7 @@ public class Session {
      * @param context      the context
      * @param videoSplicer the video splicer
      */
+
     public Session(Context context, VideoSplicer videoSplicer) {
 
         this.videoSplicer = videoSplicer;
@@ -120,53 +77,38 @@ public class Session {
 
         //700+ ms
         while (this.videoSplicer.isNextTimeAvailable()) {
-            try {
-                long totalStartTime = System.nanoTime();
-                // 0 ms
-                PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+            long totalStartTime = System.nanoTime();
+            // 0 ms
+            PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
-                // 150-200 ms
-                long newStartTime = System.nanoTime();
-                Bitmap bitmap = this.videoSplicer.getNextFrame();
-                long newEndTime = System.nanoTime();
-                DebugLog.log("create next frame Took: " + ((newEndTime - newStartTime) / 1000000) + "ms");
+            Bitmap bitmap = createBitmapThread();
+            //100 ms
+            Person p = estimatePoseThread(pnh, bitmap);
+            persons.add(p);
 
-                //100 ms
-                long totalstartTime = System.nanoTime();
-                Person p = pnh.estimateSinglePose(bitmap);
-                long estimateendTime = System.nanoTime();
-                DebugLog.log("estimate single pose Took: " + ((estimateendTime - totalstartTime) / 1000000) + "ms");
+            long totalEndTime = System.nanoTime();
+            DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
 
-                persons.add(p);
-
-                // 130 ms
-//                long insertStartTime = System.nanoTime();
-//                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
-//                long insertEndTime = System.nanoTime();
-//                DebugLog.log("database storage Took: " + ((insertEndTime - insertStartTime) / 1000000) + "ms");
-
-                long totalEndTime = System.nanoTime();
-                DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
-
-            } catch (InvalidFrameAccess invalidFrameAccess) {
-                Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
-            }
         }
         for(Person person: persons){
             jsonArray.add(person.toJson());
         }
         jsonFrames =  jsonArray.build();
     }
+    public Bitmap createBitmapThread() {
+        CreateBitmapThread object = new CreateBitmapThread();
+        return object.start(this.videoSplicer);
+    }
 
+    public Person estimatePoseThread(PoseNetHandler pnh, Bitmap bitmap) {
+        EstimatePoseThread object = new EstimatePoseThread();
+        return object.start(pnh, bitmap);
+    }
     /**
      * The NormaliseData query.
      * Should run after the run video run to normalise the data.
      */
     public void normaliseData() {
         this.nnInsert.normalise(this.videoId);
-    }
-
-    public JsonArray getJsonFrames(){
-        return jsonFrames;
     }
 }
