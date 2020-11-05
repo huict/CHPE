@@ -56,22 +56,22 @@ public class NNInserts {
      * @param videoId    the video id based on the database insert
      * @param frameCount the nth frame count to ensure it's placed in order.
      */
-    void insertPerson(Person person, long videoId, long frameCount) {
+    public void insertPerson(Person person, long videoId, long frameCount) {
 
         // Creating new frame for the instance
         NNFrame nnFrame = new NNFrame(frameCount);
-        //long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
-        //linkFrameIdToVideo(frameId, videoId);
+        long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
+        linkFrameIdToVideo(frameId, videoId);
 
         for (KeyPoint keyPoint : person.getKeyPoints()) {
-            //linkFrameToCoordinate(
-            //        frameId,
+            linkFrameToCoordinate(
+                    frameId,
             this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
                                             keyPoint.getPosition().getX(),
                                             keyPoint.getPosition().getY()
                                     )
-                            );
-            //);
+                            )
+            );
         }
     }
 

@@ -5,18 +5,22 @@ package com.mygdx.game.PoseEstimation.nn.PoseNet
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.mygdx.game.DebugLog
-import com.mygdx.game.DebugLog.DEBUG
+import com.mygdx.game.Exceptions.InvalidFrameAccess
+import com.mygdx.game.PoseEstimation.NNInserts
+import com.mygdx.game.PoseEstimation.Resolution
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter
 import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
-import com.mygdx.game.PoseEstimation.Resolution
+import com.mygdx.game.VideoHandler.VideoSplicer
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import kotlin.math.abs
+import javax.json.Json
+import javax.json.JsonArrayBuilder
 import kotlin.math.exp
 
 
@@ -137,41 +141,41 @@ class PoseNetHandler(
     }
 
     /** Crop Bitmap to maintain aspect ratio of model input.   */
-    private fun cropBitmap(bitmap: Bitmap): Bitmap {
-        val bitmapRatio = bitmap.height.toFloat() / bitmap.width
-        val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
-        var croppedBitmap = bitmap
-
-        // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
-        val maxDifference = 1e-5
-
-        // Checks if the bitmap has similar aspect ratio as the required model input.
-        when {
-            abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
-            modelInputRatio < bitmapRatio -> {
-                // New image is taller so we are height constrained.
-                val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
-                croppedBitmap = Bitmap.createBitmap(
-                        bitmap,
-                        0,
-                        (cropHeight / 2).toInt(),
-                        bitmap.width,
-                        (bitmap.height - cropHeight).toInt()
-                )
-            }
-            else -> {
-                val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
-                croppedBitmap = Bitmap.createBitmap(
-                        bitmap,
-                        (cropWidth / 2).toInt(),
-                        0,
-                        (bitmap.width - cropWidth).toInt(),
-                        bitmap.height
-                )
-            }
-        }
-        return croppedBitmap
-    }
+//    private fun cropBitmap(bitmap: Bitmap): Bitmap {
+//        val bitmapRatio = bitmap.height.toFloat() / bitmap.width
+//        val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
+//        var croppedBitmap = bitmap
+//
+//        // Acceptable difference between the modelInputRatio and bitmapRatio to skip cropping.
+//        val maxDifference = 1e-5
+//
+//        // Checks if the bitmap has similar aspect ratio as the required model input.
+//        when {
+//            abs(modelInputRatio - bitmapRatio) < maxDifference -> return croppedBitmap
+//            modelInputRatio < bitmapRatio -> {
+//                // New image is taller so we are height constrained.
+//                val cropHeight = bitmap.height - (bitmap.width.toFloat() / modelInputRatio)
+//                croppedBitmap = Bitmap.createBitmap(
+//                        bitmap,
+//                        0,
+//                        (cropHeight / 2).toInt(),
+//                        bitmap.width,
+//                        (bitmap.height - cropHeight).toInt()
+//                )
+//            }
+//            else -> {
+//                val cropWidth = bitmap.width - (bitmap.height.toFloat() * modelInputRatio)
+//                croppedBitmap = Bitmap.createBitmap(
+//                        bitmap,
+//                        (cropWidth / 2).toInt(),
+//                        0,
+//                        (bitmap.width - cropWidth).toInt(),
+//                        bitmap.height
+//                )
+//            }
+//        }
+//        return croppedBitmap
+//    }
 
     /**
      * Estimates the pose for a single person.
@@ -181,13 +185,8 @@ class PoseNetHandler(
      *      person: a Person object containing data about keypoint locations and confidence scores
      */
 
-
-    fun estimateSinglePose(bitmapb: Bitmap): Person {
+    fun estimateSinglePose(bitmap: Bitmap): Person {
         //vereiste video 1:1, crop overbodig
-        //val croppedBitmap = cropBitmap(bitmapb)
-
-        // Created scaled version of bitmap for model input.
-        val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())
@@ -260,5 +259,6 @@ class PoseNetHandler(
         person.score = totalScore / numKeypoints
 
         return person
+
     }
 }

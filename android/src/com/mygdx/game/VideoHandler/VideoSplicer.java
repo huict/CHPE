@@ -17,6 +17,8 @@ public interface VideoSplicer {
      */
     boolean isNextFrameAvailable();
 
+    boolean isNextTimeAvailable();
+
     /**
      * Gets frames processed.
      *

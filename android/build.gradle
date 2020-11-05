@@ -2,8 +2,8 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
-    buildToolsVersion "29.0.2"
-    compileSdkVersion 29
+    buildToolsVersion "30.0.2"
+    compileSdkVersion 30
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "com.mygdx.game"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -113,7 +113,7 @@ repositories { jcenter() }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
     implementation "android.arch.persistence.room:runtime:2.2.0"
 
 //    implementation group: 'org.tensorflow', name: 'tensorflow-lite-support', version: '0.1.0-rc1'
@@ -124,7 +124,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.room:room-runtime:2.2.5'
 
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
+
+    //noinspection GradleDynamicVersion
     implementation "org.tensorflow:tensorflow-lite:+"
     testImplementation 'junit:junit:4.12'
     implementation 'junit:junit:4.12'
@@ -159,6 +163,7 @@ dependencies {
     // dependency to appear on your APK's compile classpath or the test APK
     // classpath.
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
+    //noinspection GradleDynamicVersion
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'org.robolectric:robolectric:4.3'
@@ -166,13 +171,11 @@ dependencies {
 
     //implementation group: 'org.tensorflow', name: 'tensorflow-lite', version: '1.10.0'
 
-
     implementation('org.tensorflow:tensorflow-lite:0.0.0-nightly') { changing = true }
     implementation('org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly') { changing = true }
     implementation('org.tensorflow:tensorflow-lite-support:0.0.0-nightly') { changing = true }
     implementation('org.tensorflow:tensorflow-lite-metadata:0.0.0-nightly') { changing = true }
-
-
+    implementation 'org.tensorflow:tensorflow-lite:2.3.0'
 
 
 apply plugin: 'kotlin-android'
