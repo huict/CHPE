@@ -108,7 +108,7 @@ public class ForegroundService extends Service {
                     VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
                     Session session = new Session(getApplicationContext(), videoSplicer);
                     session.runVideo();
-                    session.normaliseData();
+                    //session.normaliseData();
                     JsonArray jsonFrames = session.getJsonFrames();
 
                     InterpreterController interpreterController = new InterpreterController(getApplicationContext());

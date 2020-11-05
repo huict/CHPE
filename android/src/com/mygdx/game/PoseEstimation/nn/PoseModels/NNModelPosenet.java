@@ -39,7 +39,7 @@ public class NNModelPosenet implements PoseModel {
     /**
      * The Body parts.
      */
-    public String[] bodyParts = new String[]{
+    static public String[] bodyParts = new String[]{
             "nose",
             "left_eye",
             "right_eye",
@@ -63,66 +63,23 @@ public class NNModelPosenet implements PoseModel {
      * The enum Body part.
      */
     public enum bodyPart {
-        /**
-         * Head body part.
-         */
-        head,
-        /**
-         * Neck body part.
-         */
-        neck,
-        /**
-         * L shoulder body part.
-         */
-        l_shoulder,
-        /**
-         * L elbow body part.
-         */
-        l_elbow,
-        /**
-         * L wrist body part.
-         */
-        l_wrist,
-        /**
-         * R shoulder body part.
-         */
-        r_shoulder,
-        /**
-         * R elbow body part.
-         */
-        r_elbow,
-        /**
-         * R wrist body part.
-         */
-        r_wrist,
-        /**
-         * L hip body part.
-         */
-        l_hip,
-        /**
-         * L knee body part.
-         */
-        l_knee,
-        /**
-         * L foot body part.
-         */
-        l_foot,
-        /**
-         * R hip body part.
-         */
-        r_hip,
-        /**
-         * R knee body part.
-         */
-        r_knee,
-        /**
-         * R foot body part.
-         */
-        r_foot,
-        /**
-         * Waist body part.
-         */
-        waist
+        nose,
+        left_eye,
+        right_eye,
+        left_ear,
+        right_ear,
+        left_shoulder,
+        right_shoulder,
+        left_elbow,
+        right_elbow,
+        left_wrist,
+        right_wrist,
+        left_hip,
+        right_hip,
+        left_knee,
+        right_knee,
+        left_ankle,
+        right_ankle
     }
 
     @Override

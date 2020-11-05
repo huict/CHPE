@@ -21,6 +21,7 @@ import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.json.JsonArray;
@@ -44,7 +45,7 @@ public class InterpreterController {
 
     public void LoadData(){
         float[] inputArray;
-        String[]  outputObject = {};
+        float[][] outputObject = new float[1][16];
 
         if (input == null)
             throw new IllegalArgumentException("imput is null!");
@@ -62,7 +63,7 @@ public class InterpreterController {
         JsonObject jsonObject = input.getJsonObject(0);
 
         List<Float> normalisedCoords = new ArrayList<>();
-        String[] bodyParts = NNModelMPI.body_parts;
+        String[] bodyParts = NNModelPosenet.bodyParts;
 
 
         for (String bodyPart : bodyParts){
@@ -72,7 +73,7 @@ public class InterpreterController {
                 continue;
 
             BigDecimal bigDecimalX = coordsArray.getJsonNumber(0).bigDecimalValue();
-            BigDecimal bigDecimalY = coordsArray.getJsonNumber(0).bigDecimalValue();
+            BigDecimal bigDecimalY = coordsArray.getJsonNumber(1).bigDecimalValue();
 
             float coordX = bigDecimalX.floatValue();
             float coordY = bigDecimalY.floatValue();
@@ -89,15 +90,16 @@ public class InterpreterController {
 
         if (interpreter != null){
 
-
             try{
+
                 interpreter.run(inputArray, outputObject);
             }
             catch (Exception e){
-                Log.e("InterpreterController", "Exception occured when running the model:" + e.getMessage());
+                Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
             }
-
         }
+
+
 
         Log.i("InterpreterController", "Output Length" + outputObject.length);
     }

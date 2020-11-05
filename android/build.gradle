@@ -46,6 +46,10 @@ android {
     buildFeatures {
         mlModelBinding true
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 
@@ -111,8 +115,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
     implementation "android.arch.persistence.room:runtime:2.2.0"
-    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0-rc1'
-    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
+
+//    implementation group: 'org.tensorflow', name: 'tensorflow-lite-support', version: '0.1.0-rc1'
+//
+//    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
     annotationProcessor "android.arch.persistence.room:compiler:2.2.0"
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
@@ -162,6 +168,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'org.robolectric:robolectric:4.3'
     implementation 'org.glassfish:javax.json:1.0.4'
+
+    //implementation group: 'org.tensorflow', name: 'tensorflow-lite', version: '1.10.0'
+
+    implementation('org.tensorflow:tensorflow-lite:0.0.0-nightly') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-support:0.0.0-nightly') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-metadata:0.0.0-nightly') { changing = true }
     implementation 'org.tensorflow:tensorflow-lite:2.3.0'
 
 
