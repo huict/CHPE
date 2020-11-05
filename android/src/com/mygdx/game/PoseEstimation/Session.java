@@ -29,7 +29,7 @@ public class Session {
 
     private NNInserts nnInsert;
     private CHPE chpe;
-    private VideoSplicer videoSplicer;
+    public VideoSplicer videoSplicer;
     private AppDatabase appDatabase;
     private long videoId;
     private Resolution resolution;
@@ -74,15 +74,13 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-
-        //700+ ms
         while (this.videoSplicer.isNextTimeAvailable()) {
             long totalStartTime = System.nanoTime();
-            // 0 ms
+
             PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
             Bitmap bitmap = createBitmapThread();
-            //100 ms
+
             Person p = estimatePoseThread(pnh, bitmap);
             persons.add(p);
 
@@ -96,13 +94,15 @@ public class Session {
         jsonFrames =  jsonArray.build();
     }
     public Bitmap createBitmapThread() {
-        CreateBitmapThread object = new CreateBitmapThread();
-        return object.start(this.videoSplicer);
+        CreateBitmapThread object = new CreateBitmapThread(this.videoSplicer);
+        object.start();
+        return object.getBitmap();
     }
 
     public Person estimatePoseThread(PoseNetHandler pnh, Bitmap bitmap) {
-        EstimatePoseThread object = new EstimatePoseThread();
-        return object.start(pnh, bitmap);
+        EstimatePoseThread object = new EstimatePoseThread(pnh, bitmap);
+        object.start();
+        return object.getPerson();
     }
     /**
      * The NormaliseData query.
