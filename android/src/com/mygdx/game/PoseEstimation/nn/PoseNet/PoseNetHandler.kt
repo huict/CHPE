@@ -1,8 +1,12 @@
+@file:Suppress("NON_EXHAUSTIVE_WHEN", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
+
 package com.mygdx.game.PoseEstimation.nn.PoseNet
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import com.mygdx.game.DebugLog
+import com.mygdx.game.DebugLog.DEBUG
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter
 import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
 import com.mygdx.game.PoseEstimation.Resolution
@@ -85,7 +89,7 @@ class PoseNetHandler(
     }
 
     /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
-    public fun loadModelFile(path: String, context: Context): MappedByteBuffer {
+    fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         return inputStream.channel.map(
@@ -179,12 +183,11 @@ class PoseNetHandler(
 
 
     fun estimateSinglePose(bitmapb: Bitmap): Person {
-
-        val croppedBitmap = cropBitmap(bitmapb)
+        //vereiste video 1:1, crop overbodig
+        //val croppedBitmap = cropBitmap(bitmapb)
 
         // Created scaled version of bitmap for model input.
-        var bitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
-
+        val bitmap = Bitmap.createScaledBitmap(bitmapb, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())
@@ -200,6 +203,7 @@ class PoseNetHandler(
         val numKeypoints = heatmaps[0][0][0].size
 
         // Finds the (row, col) locations of where the keypoints are most likely to be.
+        //0-1 ms
         val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
         for (keypoint in 0 until numKeypoints) {
             var maxVal = heatmaps[0][0][0][keypoint]
@@ -219,6 +223,7 @@ class PoseNetHandler(
         }
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
+        // 0 ms
         val xCoords = IntArray(numKeypoints)
         val yCoords = IntArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
@@ -253,8 +258,6 @@ class PoseNetHandler(
 
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
-
-
 
         return person
     }

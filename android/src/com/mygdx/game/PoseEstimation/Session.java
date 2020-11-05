@@ -5,6 +5,7 @@ package com.mygdx.game.PoseEstimation;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Debug;
 import android.util.Log;
 
 import com.mygdx.game.DebugLog;
@@ -16,6 +17,7 @@ import com.mygdx.game.Persistance.Video.NNVideo;
 import com.mygdx.game.PoseEstimation.nn.ModelFactory;
 import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
 
@@ -28,6 +30,7 @@ import javax.json.JsonObjectBuilder;
 /**
  * The type Session.
  */
+@SuppressWarnings({"FieldMayBeFinal"})
 public class Session {
 
     private NNInserts nnInsert;
@@ -114,12 +117,24 @@ public class Session {
     public void runVideo() {
         JsonArrayBuilder jsonArray = Json.createArrayBuilder();
 
+        //700+ ms
         while (this.videoSplicer.isNextFrameAvailable()) {
             try {
-                Person person = this.chpe.ProcessFrame(this.videoSplicer.getNextFrame(), this.nnInterpreter);
+                // 0 ms
+                PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
-                jsonArray.add(person.toJson());
-                //this.nnInsert.insertPerson(person, this.videoId, this.videoSplicer.getFramesProcessed());
+                // 500 - 1000 ms
+                long totalstartTime = System.nanoTime();
+                long newStartTime = System.nanoTime();
+                Person p = pnh.estimateSinglePose(this.videoSplicer.getNextFrame(), newStartTime );
+                long totalendTime = System.nanoTime();
+                DebugLog.log("estimate single pose Took: " + ((totalendTime - totalstartTime) / 1000000) + "ms");
+
+                //50 - 60 ms
+                jsonArray.add(p.toJson());
+
+                //160 - 180 ms
+                this.nnInsert.insertPerson(p, this.videoId, this.videoSplicer.getFramesProcessed());
 
             } catch (InvalidFrameAccess invalidFrameAccess) {
                 Log.e("runVideo -> PoseNet - Iterator", "runVideo: ", invalidFrameAccess);
