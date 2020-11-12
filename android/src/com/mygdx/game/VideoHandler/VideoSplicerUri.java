@@ -2,8 +2,6 @@ package com.mygdx.game.VideoHandler;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +11,13 @@ import androidx.annotation.RequiresApi;
 
 import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The type Video splicer.
@@ -22,14 +27,6 @@ public class VideoSplicerUri implements VideoSplicer {
     private static final int META_VIDEO_FRAME_COUNT = 32;
     private static final int META_VIDEO_FRAME_RATE = 25; // METADATA_KEY_CAPTURE_FRAMERATE
     private static final int META_VIDEO_DURATION = 9;
-    /**
-     * The M uri.
-     */
-    private String mUri;
-    /**
-     * The Uri.
-     */
-    private Uri uri;
 
     /**
      * The Media metadata retriever.
@@ -55,7 +52,6 @@ public class VideoSplicerUri implements VideoSplicer {
      * @param uri the uri
      */
     public VideoSplicerUri(String uri) {
-        this.mUri = uri;
 
         // Accessing the file
         this.mediaMetadataRetriever.setDataSource(uri);
@@ -72,7 +68,6 @@ public class VideoSplicerUri implements VideoSplicer {
      * @param context the context
      */
     public VideoSplicerUri(Uri uri, Context context) {
-        this.uri = uri;
 
         // Accessing the file
         this.mediaMetadataRetriever.setDataSource(context, uri);
@@ -95,15 +90,6 @@ public class VideoSplicerUri implements VideoSplicer {
         this.getAmountOfFrames();
     }
 
-
-    /**
-     * Gets iter time us.
-     *
-     * @return the iter time us
-     */
-    long getIterTimeUs() {
-        return getIterTimeUs();
-    }
 
     /**
      * Gets frame count.
@@ -202,6 +188,42 @@ public class VideoSplicerUri implements VideoSplicer {
             return mp;
         }
         throw new InvalidFrameAccess("InvalidFrameAccess", new Throwable("Next Frame doesn't exist."));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public List<Person> getPersons(PoseNetHandler pnh){
+        ArrayList<Person> personsThread1;
+        ArrayList<Person> personsThread2;
+        ArrayList<Person> personsThread3;
+        ArrayList<Person> personsThread4;
+
+        Thread1 thread1 = new Thread1();
+        thread1.setTotalVideoTime(this.totalTime);
+        thread1.setPnh(pnh);
+        thread1.start();
+        personsThread1 = thread1.getPersons();
+
+        Thread2 thread2 = new Thread2();
+        thread2.setTotalVideoTime(totalTime);
+        thread2.setPnh(pnh);
+        thread2.start();
+        personsThread2 = thread2.getPersons();
+
+        Thread3 thread3 = new Thread3();
+        thread3.setTotalVideoTime(totalTime);
+        thread3.setPnh(pnh);
+        thread3.start();
+        personsThread3 = thread3.getPersons();
+
+        Thread4 thread4 = new Thread4();
+        thread4.setTotalVideoTime(totalTime);
+        thread4.setPnh(pnh);
+        thread4.start();
+        personsThread4 = thread4.getPersons();
+
+        return Stream.of(personsThread1, personsThread2, personsThread3, personsThread4)
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
     }
 
 

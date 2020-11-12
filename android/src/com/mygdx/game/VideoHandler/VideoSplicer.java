@@ -3,6 +3,10 @@ package com.mygdx.game.VideoHandler;
 import android.graphics.Bitmap;
 
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
+
+import java.util.List;
 
 /**
  * The interface Video splicer.
@@ -48,5 +52,7 @@ public interface VideoSplicer {
      * @throws InvalidFrameAccess the invalid frame access
      */
     Bitmap getNextFrame() throws InvalidFrameAccess;
+
+    List<Person> getPersons(PoseNetHandler pnh);
 
 }
