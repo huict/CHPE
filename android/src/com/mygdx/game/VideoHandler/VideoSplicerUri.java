@@ -163,7 +163,6 @@ public class VideoSplicerUri implements VideoSplicer {
                 frame);
     }
 
-
     /**
      * Gets next frame.
      *
@@ -173,7 +172,7 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
-        //if (this.frameCount <= 0) {this.getAmountOfFrames();}
+        if (this.frameCount <= 0) {this.getAmountOfFrames();}
 
         if (isNextTimeAvailable()) {
             Bitmap mp;
@@ -190,36 +189,44 @@ public class VideoSplicerUri implements VideoSplicer {
         throw new InvalidFrameAccess("InvalidFrameAccess", new Throwable("Next Frame doesn't exist."));
     }
 
+    @SuppressWarnings("Convert2MethodRef")
     @RequiresApi(api = Build.VERSION_CODES.P)
     public List<Person> getPersons(PoseNetHandler pnh){
-        ArrayList<Person> personsThread1;
-        ArrayList<Person> personsThread2;
-        ArrayList<Person> personsThread3;
-        ArrayList<Person> personsThread4;
+        List<Person> personsThread1;
+        List<Person> personsThread2;
+        List<Person> personsThread3;
+        List<Person> personsThread4;
 
+        long totalStartTime = System.nanoTime();
+        long startTime = System.nanoTime();
         Thread1 thread1 = new Thread1();
-        thread1.setTotalVideoTime(this.totalTime);
-        thread1.setPnh(pnh);
+        thread1.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread1.start();
         personsThread1 = thread1.getPersons();
+        long endTime = System.nanoTime();
+        DebugLog.log("Thread 1 total took " + (endTime - startTime) / 1000000 + " ms");
+        DebugLog.log("Thread 1 done");
 
         Thread2 thread2 = new Thread2();
-        thread2.setTotalVideoTime(totalTime);
-        thread2.setPnh(pnh);
+        thread2.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread2.start();
         personsThread2 = thread2.getPersons();
+        DebugLog.log("Thread 2 done");
 
         Thread3 thread3 = new Thread3();
-        thread3.setTotalVideoTime(totalTime);
-        thread3.setPnh(pnh);
+        thread3.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread3.start();
         personsThread3 = thread3.getPersons();
+        DebugLog.log("Thread 3 done");
+
 
         Thread4 thread4 = new Thread4();
-        thread4.setTotalVideoTime(totalTime);
-        thread4.setPnh(pnh);
+        thread4.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread4.start();
         personsThread4 = thread4.getPersons();
+        DebugLog.log("Thread 4 done");
+        long totalEndTime = System.nanoTime();
+        DebugLog.log("total getPersons() took " + (totalEndTime - totalStartTime) / 1000000 + " ms");
 
         return Stream.of(personsThread1, personsThread2, personsThread3, personsThread4)
                 .flatMap(x -> x.stream())
