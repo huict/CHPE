@@ -197,36 +197,20 @@ public class VideoSplicerUri implements VideoSplicer {
         List<Person> personsThread3;
         List<Person> personsThread4;
 
-        long totalStartTime = System.nanoTime();
-        long startTime = System.nanoTime();
-        Thread1 thread1 = new Thread1();
-        thread1.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread1 thread1 = new Thread1(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread2 thread2 = new Thread2(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread3 thread3 = new Thread3(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread4 thread4 = new Thread4(this.totalTime, pnh, this.mediaMetadataRetriever);
+
         thread1.start();
-        personsThread1 = thread1.getPersons();
-        long endTime = System.nanoTime();
-        DebugLog.log("Thread 1 total took " + (endTime - startTime) / 1000000 + " ms");
-        DebugLog.log("Thread 1 done");
-
-        Thread2 thread2 = new Thread2();
-        thread2.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread2.start();
-        personsThread2 = thread2.getPersons();
-        DebugLog.log("Thread 2 done");
-
-        Thread3 thread3 = new Thread3();
-        thread3.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread3.start();
-        personsThread3 = thread3.getPersons();
-        DebugLog.log("Thread 3 done");
-
-
-        Thread4 thread4 = new Thread4();
-        thread4.setValues(this.totalTime, pnh, this.mediaMetadataRetriever);
         thread4.start();
+
+        personsThread1 = thread1.getPersons();
+        personsThread2 = thread2.getPersons();
+        personsThread3 = thread3.getPersons();
         personsThread4 = thread4.getPersons();
-        DebugLog.log("Thread 4 done");
-        long totalEndTime = System.nanoTime();
-        DebugLog.log("total getPersons() took " + (totalEndTime - totalStartTime) / 1000000 + " ms");
 
         return Stream.of(personsThread1, personsThread2, personsThread3, personsThread4)
                 .flatMap(x -> x.stream())
