@@ -8,7 +8,10 @@ Flex_sensor::Flex_sensor(
 {}
 
 uint8_t Flex_sensor::getFlexBend(){
-    uint8_t bend = 0; 
-    // To-Do calculate bend / angle
-    return bend
+    int ADCflex = analogRead(flexPin);
+    float Vflex = ADCflex * VCC / 1023.0;
+    float Rflex = R_DIV * (VCC / Vflex - 1.0);
+
+    float angle = map(Rflex, flatResistance, bendResistance, 0, 90.0);
+    return angle;z2
 }
