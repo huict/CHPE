@@ -165,7 +165,7 @@ def estimate_images(image_directory, model_path):
 
 	images = []
 	for filename in os.listdir(image_directory):
-		if filename.endswith(".jpg") or filename.endswith(".png"):
+		if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
 			images.append(filename)
 
 	# Will contain all the poses we want to add to the data_set.json file
@@ -236,7 +236,7 @@ def create_labels(starting_directory):
 
 	images = []
 	for filename in os.listdir(starting_directory):
-		if filename.endswith(".jpg") or filename.endswith(".png"):
+		if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg") :
 			images.append(filename)
 
 	for image in images:
@@ -301,7 +301,7 @@ def main(argv):
 
 	# get all the poses found in the image_directory using the model_file model and generate labels
 	update_data, update_labels = create_dataset(image_directory, model_file)
-	print(update_labels)
+	# print(update_labels)
 
 	print(overwrite_file)
 

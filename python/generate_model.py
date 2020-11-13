@@ -21,6 +21,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 import json
+import random
 
 def load_data_from_JSON( file_name ):
 	"""load_data_from_JSON
@@ -86,7 +87,7 @@ def create_model(nr_inputs, amount_output_neurons):
 	#   Next to group the arms, legs and face (3)
 	#   And finally to group them all together (1)
 
-	layer_list = [5,3,1]
+	layer_list = [4,2]
 	for size in layer_list:
 		model.add(layers.Dense((size*nr_inputs), activation=activation_function))
 	
@@ -113,7 +114,8 @@ def train_model(model, training_data, training_labels, batch_size, epochs, verbo
 	Returns:
 		keras sequential model: trained model
 	"""	
-	model.fit(np.array(training_data),np.array(training_labels), batch_size=batch_size, epochs=epochs, verbose=verbose)
+
+	model.fit(np.array(training_data),np.array(training_labels), batch_size=batch_size, epochs=epochs, verbose=2, validation_split=0.1)
 	return model
 
 def classify_pose(pose, model, label_names):
@@ -128,7 +130,10 @@ def classify_pose(pose, model, label_names):
 	"""	
 	test = np.array(pose).reshape(1,-1)
 	result_index = np.argmax(model.predict(test))
-	return label_names[result_index]
+	for label_name, index in label_names.items():  # for name, age in dictionary.iteritems():  (for Python 2.x)
+		if index == result_index:
+			answer = label_name
+	return answer
 
 def export_tfl_model(model, model_name):
 	"""export_rfl_model, exports the model to tflite format.
@@ -171,8 +176,8 @@ def main(argv):
 	max_xy = (257,257)
 	normalize_poses = True
 		# Used in training network
-	batch_size = 1
-	epochs = 1000
+	batch_size = 2
+	epochs = 100
 		# Used for debugging
 	show_model = False
 	classify_me = False
@@ -230,34 +235,32 @@ def main(argv):
 	labels_load = load_data_from_JSON(labels_json)
 
 	# Prepare labels for training
-	posible_labels = []
-	image_labels = []
-	for image in labels_load:
-		new_label = labels_load[image]["pose"]
-		if new_label not in posible_labels:
-			posible_labels.append(new_label)
-		image_labels.append(new_label)
-
-	label_indexes = []	
-	for image in image_labels:
-		index = posible_labels.index(image)
-		label_indexes.append(index)
-
-	# Prepare the training data, normalize if needed
+	keys = []
+	for key in poses_load.keys():
+		keys.append(key)
 	training_data = []
-	for pose in poses_load.values():
-		training_data.append(prepare_pose_data(pose, normalize_poses, max_xy[0], max_xy[1]))
+	label_per_image = []
+	label_indexes = {}
+	index = 0
+	for key in keys:
+		training_data.append(prepare_pose_data(poses_load[key], normalize_poses, max_xy[0], max_xy[1]))
+		temp_label = labels_load[key]['pose']
+		if temp_label not in label_indexes.keys():
+			label_indexes[temp_label] = index
+			index+=1
+		label_per_image.append(label_indexes[temp_label])
+
 
 	# Create model
 	model = create_model(len(training_data[0]), len(label_indexes))
 	# Train the model using the training data, labels and defined batch size and amount of epochs
-	trained_model = train_model(model, training_data, label_indexes, batch_size ,epochs)
+	trained_model = train_model(model, training_data, label_per_image, batch_size ,epochs)
 
 	# Classify a supplied pose from the supplied poses json file
 	if classify_me:
 		test_pose = prepare_pose_data(poses_load[classify_me], normalize_poses, max_xy[0], max_xy[1])
 		print( "______________________________________")
-		print("classified pose: ", classify_pose(test_pose, model, posible_labels))
+		print("classified pose: ", classify_pose(test_pose, model, label_indexes))
 		print("Feedback short: ", labels_load[classify_me]["feedback_short"])
 		print("Feedback long: ", labels_load[classify_me]["feedback_long"])
 		print( "______________________________________")
