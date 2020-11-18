@@ -1,10 +1,9 @@
-package com.mygdx.game.Simulation;
+package com.mygdx.honestmirror.application.domain.simulation;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

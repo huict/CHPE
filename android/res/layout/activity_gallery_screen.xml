@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00A1E1"
-    tools:context=".HomeScreen">
+    tools:context=".view.HomeScreen">
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"

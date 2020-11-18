@@ -1,4 +1,4 @@
-package com.mygdx.game.PoseEstimation;
+package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Rule;

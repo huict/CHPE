@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mygdx.game">
+    package="com.mygdx.honestmirror">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,9 +22,9 @@
         android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UI.a_Results" />
-        <activity android:name=".UI.a_Archive" />
-        <activity android:name=".UI.a_VideoSelect" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.UI.a_Results" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.UI.a_Archive" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.UI.a_VideoSelect" />
 
         <uses-library
             android:name="android.test.base"
@@ -33,15 +33,15 @@
             android:name="android.test.mock"
             android:required="false" />
 
-        <activity android:name=".ProcessingScreenActivity" />
-        <activity android:name=".CurrentResultActivity" />
-        <activity android:name=".PreviousResultActivity" />
-        <activity android:name=".GalleryScreen" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.ProcessingScreenActivity" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.CurrentResultActivity" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.PreviousResultActivity" />
+        <activity android:name="com.mygdx.nl.hu.honestmirror.GalleryScreen" />
         <activity
-            android:name=".UI.a_Loading"
+            android:name="com.mygdx.nl.hu.honestmirror.UI.a_Loading"
             android:launchMode="singleTask" />
         <activity
-            android:name=".UI.a_Home"
+            android:name="com.mygdx.nl.hu.honestmirror.UI.a_Home"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -52,13 +52,13 @@
         </activity>
 
         <service
-            android:name=".ForegroundService"
+            android:name="com.mygdx.nl.hu.honestmirror.ForegroundService"
             android:enabled="true"
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".NeuralService"
+            android:name="com.mygdx.nl.hu.honestmirror.NeuralService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
