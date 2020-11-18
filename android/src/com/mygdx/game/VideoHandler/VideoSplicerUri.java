@@ -196,24 +196,28 @@ public class VideoSplicerUri implements VideoSplicer {
         List<Person> personsThread2;
         List<Person> personsThread3;
         List<Person> personsThread4;
+        List<Person> personsThread5;
 
         Thread1 thread1 = new Thread1(this.totalTime, pnh, this.mediaMetadataRetriever);
         Thread2 thread2 = new Thread2(this.totalTime, pnh, this.mediaMetadataRetriever);
         Thread3 thread3 = new Thread3(this.totalTime, pnh, this.mediaMetadataRetriever);
         Thread4 thread4 = new Thread4(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread5 thread5 = new Thread5(this.totalTime, pnh, this.mediaMetadataRetriever);
 
         thread1.start();
         thread2.start();
         thread3.start();
         thread4.start();
+        thread5.start();
 
         personsThread1 = thread1.getPersons();
         personsThread2 = thread2.getPersons();
         personsThread3 = thread3.getPersons();
         personsThread4 = thread4.getPersons();
+        personsThread5 = thread5.getPersons();
 
-        return Stream.of(personsThread1, personsThread2, personsThread3, personsThread4)
-                .flatMap(x -> x.stream())
+        return Stream.of(personsThread1, personsThread2, personsThread3,
+                personsThread4, personsThread5).flatMap(x -> x.stream())
                 .collect(Collectors.toList());
     }
 
