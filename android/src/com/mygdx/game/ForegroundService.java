@@ -22,10 +22,10 @@ import com.mygdx.game.PoseEstimation.Session;
 import com.mygdx.game.UI.a_Loading;
 import com.mygdx.game.VideoHandler.VideoSplicer;
 import com.mygdx.game.VideoHandler.VideoSplicerFactory;
+import com.mygdx.game.nnanalysis.FeedbackController;
 import com.mygdx.game.nnanalysis.InterpreterController;
 
 import javax.json.JsonArray;
-import javax.json.JsonObject;
 
 /**
  * Class where the neural network will analyze the video footage
@@ -106,16 +106,15 @@ public class ForegroundService extends Service {
                 metadataRetriever.setDataSource(getApplicationContext(), otherUri);
                 try {
                     VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
-                    Session session = new Session(getApplicationContext(), videoSplicer);
-                    session.runVideo();
-                    //session.normaliseData();
-                    JsonArray jsonFrames = session.getJsonFrames();
-
                     InterpreterController interpreterController = new InterpreterController(getApplicationContext());
-                    interpreterController.setInput(jsonFrames);
-                    interpreterController.LoadData();
+                    FeedbackController feedbackController = new FeedbackController();
 
-                    Log.println(Log.INFO, "", interpreterController.writeFeedback());
+                    Session session = new Session(getApplicationContext(), videoSplicer, interpreterController, feedbackController);
+                    session.runVideo();
+
+                    String feedback = feedbackController.getFeedback();
+
+                    Log.println(Log.INFO, "", feedback);
                 }catch (InvalidVideoSplicerType splicerType){
                     Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                     throw new RuntimeException("InvalidVideoSplicer");

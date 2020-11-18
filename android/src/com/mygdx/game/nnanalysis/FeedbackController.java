@@ -5,9 +5,7 @@ import java.util.List;
 
 public class FeedbackController {
     List<FeedbackElement> feedbackElements;
-
     private int maxFloatIndex;
-
     public FeedbackController() {
         feedbackElements = new ArrayList<>();
     }
@@ -23,11 +21,13 @@ public class FeedbackController {
                 maxFloatIndex = index;
                 maxFloat = probabilityArray[index];
             }
-
         }
 
+        float[] probabilities = data[0];
 
+        for (int index=0; index < probabilities.length; index++){
 
+        }
         switch (maxFloatIndex){
             case 0:
                 feedbackElements.add(new FeedbackElement(Feedback.left_down_right_up));

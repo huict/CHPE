@@ -3,71 +3,58 @@ package com.mygdx.game.nnanalysis;
 import android.content.Context;
 import android.util.Log;
 
-import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelMPI;
 import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet;
-import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.support.common.FileUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.json.JsonArray;
-import javax.json.JsonNumber;
 import javax.json.JsonObject;
 
 public class InterpreterController {
-    private JsonArray input = null;
-    private final String modelFilePath = "model.tflite";
+    private JsonObject jsonInput = null;
+    private final String modelFilePath = "model_2.tflite";
+
+    float[] inputArray;
+    float[][] outputArray;
+    private Interpreter interpreter = null;
+
+
+
 
     private String output = "";
     private Context context;
 
     public InterpreterController(Context context){
         this.context = context;
-    }
-
-    public String writeFeedback(){
-        return output;
-    }
-
-    public void LoadData(){
-        float[] inputArray;
-        float[][] outputObject = new float[1][16];
-
-        if (input == null)
-            throw new IllegalArgumentException("imput is null!");
-
-        Interpreter interpreter = null;
-
         try{
             interpreter = new Interpreter(getModelAsMappedByteBuffer());
         }
         catch (IOException e){
             Log.e("InterpreterController", e.getMessage());
         }
+    }
+
+    public void runNN(){
+        outputArray = new float[1][13];
+
+        if (jsonInput == null)
+            throw new IllegalArgumentException("imput is null!");
 
 
-        JsonObject jsonObject = input.getJsonObject(0);
 
         List<Float> normalisedCoords = new ArrayList<>();
         String[] bodyParts = NNModelPosenet.bodyParts;
 
 
         for (String bodyPart : bodyParts){
-            JsonArray coordsArray = jsonObject.getJsonArray(bodyPart);
+            JsonArray coordsArray = jsonInput.getJsonArray(bodyPart);
 
             if (coordsArray == null)
                 continue;
@@ -91,28 +78,29 @@ public class InterpreterController {
         if (interpreter != null){
 
             try{
-
-                interpreter.run(inputArray, outputObject);
+                interpreter.run(inputArray, outputArray);
             }
             catch (Exception e){
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
             }
         }
 
-
-
-        Log.i("InterpreterController", "Output Length" + outputObject.length);
+        Log.i("InterpreterController", "Output Length" + outputArray.length);
     }
 
-    private Object getInput(){
-        return input.toString();
+    private Object getJsonInput(){
+        return jsonInput.toString();
     }
 
-    public void setInput(JsonArray jsonArray){
-        this.input = jsonArray;
+    public void setJsonInput(JsonObject jsonObject){
+        this.jsonInput = jsonObject;
     }
 
-    public MappedByteBuffer getModelAsMappedByteBuffer() throws IOException {
+    private MappedByteBuffer getModelAsMappedByteBuffer() throws IOException {
         return FileUtil.loadMappedFile(context, modelFilePath);
+    }
+
+    public float[][]getInput(){
+        return outputArray;
     }
 }

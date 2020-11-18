@@ -15,6 +15,8 @@ import com.mygdx.game.PoseEstimation.nn.NNInterpreter;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
 import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
 import com.mygdx.game.VideoHandler.VideoSplicer;
+import com.mygdx.game.nnanalysis.FeedbackController;
+import com.mygdx.game.nnanalysis.InterpreterController;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
@@ -38,9 +40,8 @@ public class Session {
     JsonArrayBuilder jsonArray = Json.createArrayBuilder();
     private JsonArray jsonFrames = null;
 
-    public JsonArray getJsonFrames(){
-        return jsonFrames;
-    }
+    private InterpreterController interpreterController;
+    private FeedbackController feedbackController;
 
     /**
      * Instantiates a new Session.
@@ -48,15 +49,19 @@ public class Session {
      * @param context      the context
      * @param videoSplicer the video splicer
      */
+    public Session(Context context, VideoSplicer videoSplicer){
+        this(context, videoSplicer, null, null);
+    }
 
-    public Session(Context context, VideoSplicer videoSplicer) {
-
+    public Session(Context context, VideoSplicer videoSplicer, InterpreterController interpreterController, FeedbackController feedbackController) {
         this.videoSplicer = videoSplicer;
         this.appDatabase = PersistenceClient.getInstance(context).getAppDatabase();
         this.resolution = new Resolution(1920, 1080, 257);
         this.chpe = new CHPE(context, this.resolution, ModelFactory.POSENET_MODEL);
 
         this.initialiseDatabase(); // Preparing database for person entry
+        this.interpreterController = interpreterController;
+        this.feedbackController = feedbackController;
     }
 
     private void initialiseDatabase() {
@@ -74,24 +79,27 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        while (this.videoSplicer.isNextTimeAvailable()) {
+        while (this.videoSplicer.isNextTimeAvailable() && persons.size() < 1) {
             long totalStartTime = System.nanoTime();
-
             PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
             Bitmap bitmap = createBitmapThread();
 
             Person p = estimatePoseThread(pnh, bitmap);
             persons.add(p);
-
             long totalEndTime = System.nanoTime();
             DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
+        }
+        if (interpreterController != null){
+            for(Person person: persons){
+                if (person == null)
+                    continue;
 
+                interpreterController.setJsonInput(person.toJson());
+                interpreterController.runNN();
+                feedbackController.addData(interpreterController.getInput());
+            }
         }
-        for(Person person: persons){
-            jsonArray.add(person.toJson());
-        }
-        jsonFrames =  jsonArray.build();
     }
     public Bitmap createBitmapThread() {
         CreateBitmapThread object = new CreateBitmapThread(this.videoSplicer);
