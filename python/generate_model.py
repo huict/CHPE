@@ -87,7 +87,20 @@ def create_model(nr_inputs, amount_output_neurons):
 	#   Next to group the arms, legs and face (3)
 	#   And finally to group them all together (1)
 
-	layer_list = [4,2]
+	# 4,3,3,2 0.89
+	# 6,3,1 0.89
+	# 6,3 0.87
+	# 6,2 0.87
+	# 7,2 0.87
+	# 7,4,2
+	# 4,4,3,2 0.86
+	# 4,3,3,1 0.86
+	# 5,3 0.86
+	# 5,3,1 0.84
+	#7,3 0.84
+	# 3,3,3,2 0.83
+
+	layer_list = [6,3]
 	for size in layer_list:
 		model.add(layers.Dense((size*nr_inputs), activation=activation_function))
 	
@@ -176,8 +189,8 @@ def main(argv):
 	max_xy = (257,257)
 	normalize_poses = True
 		# Used in training network
-	batch_size = 2
-	epochs = 100
+	batch_size = 32
+	epochs = 10000
 		# Used for debugging
 	show_model = False
 	classify_me = False
