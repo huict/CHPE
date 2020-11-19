@@ -79,7 +79,7 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        while (this.videoSplicer.isNextTimeAvailable() && persons.size() < 1) {
+        while (this.videoSplicer.isNextTimeAvailable()) {
             long totalStartTime = System.nanoTime();
             PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
 
