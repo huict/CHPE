@@ -5,8 +5,10 @@ package com.mygdx.game.PoseEstimation;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.mygdx.game.DebugLog;
+import com.mygdx.game.Exceptions.InvalidFrameAccess;
 import com.mygdx.game.Persistance.AppDatabase;
 import com.mygdx.game.Persistance.PersistenceClient;
 import com.mygdx.game.Persistance.Video.NNVideo;
@@ -79,17 +81,9 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        while (this.videoSplicer.isNextTimeAvailable()) {
-            long totalStartTime = System.nanoTime();
-            PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+        List<Person> persons = this.videoSplicer.getPersons(pnh);
 
-            Bitmap bitmap = createBitmapThread();
-
-            Person p = estimatePoseThread(pnh, bitmap);
-            persons.add(p);
-            long totalEndTime = System.nanoTime();
-            DebugLog.log("total function Took: " + ((totalEndTime - totalStartTime) / 1000000) + "ms");
-        }
         if (interpreterController != null){
             for(Person person: persons){
                 if (person == null)
@@ -100,17 +94,6 @@ public class Session {
                 feedbackController.addData(interpreterController.getInput());
             }
         }
-    }
-    public Bitmap createBitmapThread() {
-        CreateBitmapThread object = new CreateBitmapThread(this.videoSplicer);
-        object.start();
-        return object.getBitmap();
-    }
-
-    public Person estimatePoseThread(PoseNetHandler pnh, Bitmap bitmap) {
-        EstimatePoseThread object = new EstimatePoseThread(pnh, bitmap);
-        object.start();
-        return object.getPerson();
     }
     /**
      * The NormaliseData query.

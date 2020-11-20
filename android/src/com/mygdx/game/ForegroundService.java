@@ -99,38 +99,36 @@ public class ForegroundService extends Service {
          */
 
         final Uri otherUri = intent.getData();
-        thread = new Thread(new Runnable() {
-            public void run() {
 
-                MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-                metadataRetriever.setDataSource(getApplicationContext(), otherUri);
-                try {
-                    VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
-                    InterpreterController interpreterController = new InterpreterController(getApplicationContext());
-                    FeedbackController feedbackController = new FeedbackController();
+        thread = new Thread(() -> {
 
-                    Session session = new Session(getApplicationContext(), videoSplicer, interpreterController, feedbackController);
-                    session.runVideo();
+            MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+            metadataRetriever.setDataSource(getApplicationContext(), otherUri);
+            try {
+                VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
+                InterpreterController interpreterController = new InterpreterController(getApplicationContext());
+                FeedbackController feedbackController = new FeedbackController();
 
-                    String feedback = feedbackController.getFeedback();
+                Session session = new Session(getApplicationContext(), videoSplicer, interpreterController, feedbackController);
+                session.runVideo();
 
-                    Log.println(Log.INFO, "", feedback);
-                }catch (InvalidVideoSplicerType splicerType){
-                    Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
-                    throw new RuntimeException("InvalidVideoSplicer");
-                }catch (Exception e){
-                    if (e.getClass() == RuntimeException.class)
-                        throw e;
+                String feedback = feedbackController.getFeedback();
 
-                    Log.e("InterpreterController:", e.getMessage());
-                }
-                work.run();
-                stopForeground(true);
-                stopSelf();
+                Log.println(Log.INFO, "", feedback);
+            }catch (InvalidVideoSplicerType splicerType){
+                Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
+                throw new RuntimeException("InvalidVideoSplicer");
+            }catch (Exception e){
+                if (e.getClass() == RuntimeException.class)
+                    throw e;
+
+                Log.e("InterpreterController:", e.getMessage());
             }
+            work.run();
+            stopForeground(true);
+            stopSelf();
         });
         thread.start();
-
         return START_NOT_STICKY;
     }
 

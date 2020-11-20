@@ -2,8 +2,6 @@ package com.mygdx.game.VideoHandler;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +11,13 @@ import androidx.annotation.RequiresApi;
 
 import com.mygdx.game.DebugLog;
 import com.mygdx.game.Exceptions.InvalidFrameAccess;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.Person;
+import com.mygdx.game.PoseEstimation.nn.PoseNet.PoseNetHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The type Video splicer.
@@ -22,14 +27,6 @@ public class VideoSplicerUri implements VideoSplicer {
     private static final int META_VIDEO_FRAME_COUNT = 32;
     private static final int META_VIDEO_FRAME_RATE = 25; // METADATA_KEY_CAPTURE_FRAMERATE
     private static final int META_VIDEO_DURATION = 9;
-    /**
-     * The M uri.
-     */
-    private String mUri;
-    /**
-     * The Uri.
-     */
-    private Uri uri;
 
     /**
      * The Media metadata retriever.
@@ -55,7 +52,6 @@ public class VideoSplicerUri implements VideoSplicer {
      * @param uri the uri
      */
     public VideoSplicerUri(String uri) {
-        this.mUri = uri;
 
         // Accessing the file
         this.mediaMetadataRetriever.setDataSource(uri);
@@ -72,7 +68,6 @@ public class VideoSplicerUri implements VideoSplicer {
      * @param context the context
      */
     public VideoSplicerUri(Uri uri, Context context) {
-        this.uri = uri;
 
         // Accessing the file
         this.mediaMetadataRetriever.setDataSource(context, uri);
@@ -95,15 +90,6 @@ public class VideoSplicerUri implements VideoSplicer {
         this.getAmountOfFrames();
     }
 
-
-    /**
-     * Gets iter time us.
-     *
-     * @return the iter time us
-     */
-    long getIterTimeUs() {
-        return getIterTimeUs();
-    }
 
     /**
      * Gets frame count.
@@ -177,7 +163,6 @@ public class VideoSplicerUri implements VideoSplicer {
                 frame);
     }
 
-
     /**
      * Gets next frame.
      *
@@ -187,7 +172,7 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
-        //if (this.frameCount <= 0) {this.getAmountOfFrames();}
+        if (this.frameCount <= 0) {this.getAmountOfFrames();}
 
         if (isNextTimeAvailable()) {
             Bitmap mp;
@@ -202,6 +187,38 @@ public class VideoSplicerUri implements VideoSplicer {
             return mp;
         }
         throw new InvalidFrameAccess("InvalidFrameAccess", new Throwable("Next Frame doesn't exist."));
+    }
+
+    @SuppressWarnings("Convert2MethodRef")
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public List<Person> getPersons(PoseNetHandler pnh){
+        List<Person> personsThread1;
+        List<Person> personsThread2;
+        List<Person> personsThread3;
+        List<Person> personsThread4;
+        List<Person> personsThread5;
+
+        Thread1 thread1 = new Thread1(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread2 thread2 = new Thread2(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread3 thread3 = new Thread3(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread4 thread4 = new Thread4(this.totalTime, pnh, this.mediaMetadataRetriever);
+        Thread5 thread5 = new Thread5(this.totalTime, pnh, this.mediaMetadataRetriever);
+
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        thread4.start();
+        thread5.start();
+
+        personsThread1 = thread1.getPersons();
+        personsThread2 = thread2.getPersons();
+        personsThread3 = thread3.getPersons();
+        personsThread4 = thread4.getPersons();
+        personsThread5 = thread5.getPersons();
+
+        return Stream.of(personsThread1, personsThread2, personsThread3,
+                personsThread4, personsThread5).flatMap(x -> x.stream())
+                .collect(Collectors.toList());
     }
 
 
