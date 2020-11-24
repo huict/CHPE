@@ -46,9 +46,9 @@ class Thread1 extends Thread {
 
             } catch (IllegalStateException ise) {
                 Bitmap.createBitmap(257, 257, Bitmap.Config.ALPHA_8);
-
             }
         }
+
     }
 }
 
@@ -85,7 +85,6 @@ class Thread2 extends Thread{
                 DebugLog.log("Thread 2 Person created");
                 persons.add(p);
                 DebugLog.log("Thread 2 finished");
-
             } catch (IllegalStateException ise) {
                 Bitmap.createBitmap(257, 257, Bitmap.Config.ALPHA_8);
 
@@ -107,7 +106,6 @@ class Thread3 extends Thread{
         this.pnh = pnh;
         this.mediaMetadataRetriever = mediaMetadataRetriever;
     }
-
     public List<Person> getPersons() {
         return persons;
     }
@@ -191,7 +189,6 @@ class Thread5 extends Thread {
         this.pnh = pnh;
         this.mediaMetadataRetriever = mediaMetadataRetriever;
     }
-
     public List<Person> getPersons() { return persons; }
 
 
