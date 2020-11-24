@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00A1E1"
-    tools:context=".CurrentResultActivity">
+    tools:context=".view.activity.CurrentResultActivity">
 
     <ListView
         android:id="@+id/listView"
