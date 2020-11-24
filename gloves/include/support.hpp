@@ -13,11 +13,11 @@
 #ifndef _SUPPORT_HPP
 #define _SUPPORT_HPP
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
-#include "event_groups.h"
+// #include "Arduino_FreeRTOS.h"
+// #include "task.h"
+// #include "queue.h"
+// #include "semphr.h"
+// #include "event_groups.h"
 #include <stdint-gcc.h>
 #include <Arduino.h>
 
@@ -50,12 +50,5 @@ enum DIGITS{
 	RING_FINGER,
 	PINKY
 };
-
-namespace RGB{
-	uint8_t red = [255,0,0];
-	uint8_t green = [0,255,0];
-	uint8_t blue = [0,0,255];
-	uint8_t orange = [255,94,19];
-}
 
 #endif

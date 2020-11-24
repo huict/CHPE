@@ -10,5 +10,5 @@ Finger::Finger(
 {};
 
 uint8_t Finger::getInformation(){
-    return sensor.getBend();
+    return sensor.getFlexBend();
 };
