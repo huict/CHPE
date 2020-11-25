@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".UI.a_Results">
+    tools:context=".view.ui.a_Results">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/homeButtonGuideline"

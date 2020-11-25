@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package com.mygdx.honestmirror;
 
 import org.junit.Test;
 
