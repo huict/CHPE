@@ -11,6 +11,7 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpr
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
+import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
@@ -182,14 +183,11 @@ class PoseNetHandler(
 
     fun estimateSinglePose(bitmap: Bitmap): Person {
         val person: Person
-        DebugLog.log("estimateSinglePose start")
         person = if(bitmap.height / bitmap.width != 1){
             val croppedBitmap = cropBitmap(bitmap)
-            DebugLog.log("cropBitmap finished")
 
             // Created scaled version of bitmap for model input.
             val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
-            DebugLog.log("createScaledBitmap finished")
             trueEstimation(scaledBitmap)
         }
         else{
@@ -202,19 +200,19 @@ class PoseNetHandler(
         val inputArray = arrayOf(initInputArray(bitmap))
 
         val outputMap = initOutputMap(getInterpreter())
-
-        DebugLog.log("inputAarray and outputmap finished")
-        getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
-        DebugLog.log("getInterpreter for multiple inputsOutputs finished")
+        try{
+            getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+        }
+        catch(e: Exception){
+            DebugLog.log(e.toString())
+        }
         @SuppressWarnings("unchecked")
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
-        DebugLog.log("heatmaps and offsets finished")
 
         val height = heatmaps[0].size
         val width = heatmaps[0][0].size
         val numKeypoints = heatmaps[0][0][0].size
-        DebugLog.log("height, width and numkeypoints finished")
         // Finds the (row, col) locations of where the keypoints are most likely to be.
         val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
         for (keypoint in 0 until numKeypoints) {
@@ -233,13 +231,11 @@ class PoseNetHandler(
             }
             keypointPositions[keypoint] = Pair(maxRow, maxCol)
         }
-        DebugLog.log("forloop finished")
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
         val xCoords = IntArray(numKeypoints)
         val yCoords = IntArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
-        DebugLog.log("coords and confidencescore finished")
         keypointPositions.forEachIndexed { idx, position ->
             val positionY = keypointPositions[idx].first
             val positionX = keypointPositions[idx].second
@@ -254,29 +250,23 @@ class PoseNetHandler(
                     ).toInt()
             confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
         }
-        DebugLog.log("keypoint positions finished")
 
         val person = Person()
         val keypointList = Array(numKeypoints) { KeyPoint() }
         var totalScore = 0.0f
-        DebugLog.log("keypointslist finished")
 
 
         enumValues<NNModelPosenet.bodyPart>().forEachIndexed { idx, it ->
             keypointList[idx].bodyPart = it
             keypointList[idx].position.setX(xCoords[idx], resolution.screenWidth)
             keypointList[idx].position.setY(yCoords[idx], resolution.screenHeight)
-            DebugLog.log("set keypointlist finished")
 
             keypointList[idx].score = confidenceScores[idx]
             totalScore += confidenceScores[idx]
-            DebugLog.log("totalscore en keypointlist finished")
         }
 
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
-        DebugLog.log("setPerson finished")
-
         return person
     }
 }
