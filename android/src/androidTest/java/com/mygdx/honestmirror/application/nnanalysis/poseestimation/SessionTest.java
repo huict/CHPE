@@ -34,7 +34,7 @@ public class SessionTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private MediaMetadataRetriever metadataRetriever;
-    private Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
 
     /**

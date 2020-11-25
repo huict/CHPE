@@ -28,9 +28,9 @@ public class CHPETest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
-    private Context context = InstrumentationRegistry.getInstrumentation().getContext();
-    private Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-    private String examplePhoto = "example-human-pose.jpg";
+    private final Context context = InstrumentationRegistry.getInstrumentation().getContext();
+    private final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private final String examplePhoto = "example-human-pose.jpg";
     private Bitmap bitmap;
 
     /**

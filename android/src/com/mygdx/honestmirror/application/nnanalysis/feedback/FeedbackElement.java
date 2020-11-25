@@ -1,7 +1,7 @@
 package com.mygdx.honestmirror.application.nnanalysis.feedback;
 
 public class FeedbackElement {
-    private Feedback feedback;
+    private final Feedback feedback;
     private String writtenFeedback;
     private String shortFeedback;
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class SessionContainer {
 
     private class FrameContainer {
-        private CoordinateContainer coordinateContainer;
+        private final CoordinateContainer coordinateContainer;
 
         /**
          * Instantiates a new Frame container.
@@ -24,7 +24,7 @@ public class SessionContainer {
     }
 
     private class CoordinateContainer {
-        private List<NNCoordinate> nnCoordinateList;
+        private final List<NNCoordinate> nnCoordinateList;
 
         /**
          * Instantiates a new Coordinate container.

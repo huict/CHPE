@@ -18,17 +18,17 @@ public class DatabaseData implements Data {
     /**
      * Connection to the Android room database.
      */
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
 
     /**
      * Data access object for getting data out of the database.
      */
-    private NNVideoDAO nnVideoDAO;
+    private final NNVideoDAO nnVideoDAO;
 
     /**
      * Identifier that specifies which session's data we want.
      */
-    private NNVideo currentSession;
+    private final NNVideo currentSession;
 
     /**
      * Constructor that inits member fields thus loading the data from disk.

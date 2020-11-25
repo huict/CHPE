@@ -41,7 +41,7 @@ public class CohesionDAOTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private AppDatabase appDatabase;
-    private Context context = ApplicationProvider.getApplicationContext();
+    private final Context context = ApplicationProvider.getApplicationContext();
 
     /**
      * Sets up.
