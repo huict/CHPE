@@ -185,7 +185,6 @@ class PoseNetHandler(
         val person: Person
         person = if(bitmap.height / bitmap.width != 1){
             val croppedBitmap = cropBitmap(bitmap)
-
             // Created scaled version of bitmap for model input.
             val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
             trueEstimation(scaledBitmap)
@@ -198,15 +197,14 @@ class PoseNetHandler(
 
     fun trueEstimation(bitmap: Bitmap): Person{
         val inputArray = arrayOf(initInputArray(bitmap))
-
         val outputMap = initOutputMap(getInterpreter())
         try{
             getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+
         }
         catch(e: Exception){
-            DebugLog.log(e.toString())
+            DebugLog.log("$e")
         }
-        @SuppressWarnings("unchecked")
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
 

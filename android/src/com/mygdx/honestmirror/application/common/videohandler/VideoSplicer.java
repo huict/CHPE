@@ -52,6 +52,5 @@ public interface VideoSplicer {
      */
     Bitmap getNextFrame() throws InvalidFrameAccess;
 
-    List<Person> getPersons(PoseNetHandler pnh);
-
+    List<Person> performAnalyse(PoseNetHandler pnh);
 }
