@@ -265,6 +265,7 @@ class PoseNetHandler(
 
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
+        DebugLog.log("EstimatePose successfull");
         return person
     }
 }
