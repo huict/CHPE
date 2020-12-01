@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 class ThreadWithQueue extends Thread {
-    private int threadAmount;
-    private MediaMetadataRetriever mediaMetadataRetriever;
+    private final int threadAmount;
+    private final MediaMetadataRetriever mediaMetadataRetriever;
     private BlockingQueue frameQueue;
 
     @RequiresApi(api = Build.VERSION_CODES.O_MR1)
@@ -33,6 +33,34 @@ class Thread1 extends Thread {
     BlockingQueue<Bitmap> queue;
 
     public Thread1(BlockingQueue<Bitmap> queue, PoseNetHandler pnh) {
+        this.queue = queue;
+        this.pnh = pnh;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void run(){
+        while(queue.size() != 0) {
+            try {
+                Bitmap bitmap = queue.take();
+                Person p = pnh.estimateSinglePose(bitmap);
+                persons.add(p);
+                DebugLog.log("success");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+class Thread2 extends Thread {
+    List<Person> persons = new ArrayList<>();
+    PoseNetHandler pnh;
+    BlockingQueue<Bitmap> queue;
+
+    public Thread2(BlockingQueue<Bitmap> queue, PoseNetHandler pnh) {
         this.queue = queue;
         this.pnh = pnh;
     }

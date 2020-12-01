@@ -202,7 +202,6 @@ public class VideoSplicerUri implements VideoSplicer {
     public List<Person> performAnalyse(PoseNetHandler pnh) {
         Thread1 thread1 = new Thread1(getQueue(), pnh);
         thread1.start();
-        List<Person> persons = thread1.getPersons();
-        return persons;
+        return thread1.getPersons();
     }
 }
