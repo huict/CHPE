@@ -28,34 +28,34 @@ void setup() {
     peripheral = BLE.available();
     Serial.println("BLE Available");
     if (peripheral) {
-    // Check for correct device discovered
-    if (peripheral.localName() == "GLOVE") {
-      glove_connected = true;
-      Serial.println("Found Glove");
-      BLE.stopScan();
-      if (peripheral.connect()) {
-        Serial.println("Connected");
-      }
-      if(peripheral.discoverAttributes()){
-        fingers[0] = peripheral.characteristic("d2be0238-e8d7-4b2f-9a2a-0063c1f1f456");
-        fingers[1] = peripheral.characteristic("c00552e0-d880-4c7d-8baf-93356a8ba835");
-        fingers[2] = peripheral.characteristic("20ac424f-de57-4c34-b186-920c27b117c9");
-        fingers[3] = peripheral.characteristic("2ed22785-bc51-442a-8f29-2d2ea7a40e9f");
-        fingers[4] = peripheral.characteristic("52155daf-df88-4990-bc5c-125e5cbd759b");
-        for(unsigned int i = 0; i < 5; i++){
-          Serial.println("Finger : "+String(i));
-          if(!fingers[i]){
-            Serial.println("NOT Accessable");
-          }
-          if(fingers[i].canSubscribe()){
-            fingers[i].subscribe();
-          } else {
-            Serial.println("NOT Subscribable");
+      // Check for correct device discovered
+      if (peripheral.localName() == "GLOVE") {
+        glove_connected = true;
+        Serial.println("Found Glove");
+        BLE.stopScan();
+        if (peripheral.connect()) {
+          Serial.println("Connected");
+        }
+        if(peripheral.discoverAttributes()){
+          fingers[0] = peripheral.characteristic("d2be0238-e8d7-4b2f-9a2a-0063c1f1f456");
+          fingers[1] = peripheral.characteristic("c00552e0-d880-4c7d-8baf-93356a8ba835");
+          fingers[2] = peripheral.characteristic("20ac424f-de57-4c34-b186-920c27b117c9");
+          fingers[3] = peripheral.characteristic("2ed22785-bc51-442a-8f29-2d2ea7a40e9f");
+          fingers[4] = peripheral.characteristic("52155daf-df88-4990-bc5c-125e5cbd759b");
+          for(unsigned int i = 0; i < 5; i++){
+            Serial.println("Finger : "+String(i));
+            if(!fingers[i]){
+              Serial.println("NOT Accessable");
+            }
+            if(fingers[i].canSubscribe()){
+              fingers[i].subscribe();
+            } else {
+              Serial.println("NOT Subscribable");
+            }
           }
         }
       }
     }
-  }
   }
   // Check for discovered device
   Serial.println("Begin loop!");

@@ -5,7 +5,7 @@ Flex_Sensor::Flex_Sensor(
     uint8_t flex_pin
 ):
     flex_pin(flex_pin)
-{}
+{};
 
 uint8_t Flex_Sensor::getFlexBend(){
     int ADCflex = analogRead(flex_pin);

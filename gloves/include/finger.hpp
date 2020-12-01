@@ -7,10 +7,10 @@
 // Finger class
 class Finger{
 private:
+    GLOVE::DIGITS finger_index;
     Flex_Sensor sensor;
-    DIGITS finger_index;
 public:
-    Finger(uint8_t flex_pin, DIGITS finger_index);
+    Finger(GLOVE::DIGITS finger_index, uint8_t flex_pin);
     uint8_t getInformation();
 };
 
