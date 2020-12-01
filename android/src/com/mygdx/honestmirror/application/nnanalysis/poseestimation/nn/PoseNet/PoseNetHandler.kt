@@ -1,4 +1,4 @@
-@file:Suppress("NON_EXHAUSTIVE_WHEN", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "PackageName")
+@file:Suppress("SpellCheckingInspection", "PackageName")
 
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
@@ -10,6 +10,7 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
 import java.lang.Exception
 import java.nio.ByteBuffer
@@ -23,9 +24,9 @@ import kotlin.math.exp
 @SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
-        val filename: String,
-        val nnInterpreter: NNInterpreter,
-        val resolution: Resolution
+        private val filename: String,
+        private val nnInterpreter: NNInterpreter,
+        private val resolution: Resolution
 ) : AutoCloseable {
 
     private var interpreter: Interpreter? = null
@@ -39,10 +40,10 @@ class PoseNetHandler(
         when (nnInterpreter) {
             NNInterpreter.CPU -> {
             }
-            //NNInterpreter.GPU -> {
-            //    gpuDelegate = GpuDelegate()
-            //    options.addDelegate(gpuDelegate)
-            //}
+            NNInterpreter.GPU -> {
+                val gpuDelegate = GpuDelegate()
+                options.addDelegate(gpuDelegate)
+            }
             NNInterpreter.NNAPI -> options.setUseNNAPI(true)
         }
         interpreter = Interpreter(loadModelFile(filename, context), options)
@@ -89,7 +90,7 @@ class PoseNetHandler(
     }
 
     /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
-    fun loadModelFile(path: String, context: Context): MappedByteBuffer {
+    private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         return inputStream.channel.map(
@@ -185,9 +186,7 @@ class PoseNetHandler(
         val person: Person
         person = if(bitmap.height / bitmap.width != 1){
             val croppedBitmap = cropBitmap(bitmap)
-            // Created scaled version of bitmap for model input.
-            val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
-            trueEstimation(scaledBitmap)
+            trueEstimation(croppedBitmap)
         }
         else{
             trueEstimation(bitmap)
@@ -195,15 +194,16 @@ class PoseNetHandler(
         return person
     }
 
-    fun trueEstimation(bitmap: Bitmap): Person{
-        val inputArray = arrayOf(initInputArray(bitmap))
+    @Suppress("UNCHECKED_CAST")
+    private fun trueEstimation(bitmap: Bitmap): Person{
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
+        val inputArray = arrayOf(initInputArray(scaledBitmap))
         val outputMap = initOutputMap(getInterpreter())
         try{
             getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
-
         }
         catch(e: Exception){
-            DebugLog.log("$e")
+            DebugLog.log("Exception: $e")
         }
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>

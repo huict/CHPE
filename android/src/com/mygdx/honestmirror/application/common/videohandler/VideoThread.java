@@ -6,6 +6,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 import java.util.ArrayList;
@@ -41,11 +42,12 @@ class Thread1 extends Thread {
     }
 
     public void start(){
-        while(queue != null) {
+        while(queue.size() != 0) {
             try {
                 Bitmap bitmap = queue.take();
                 Person p = pnh.estimateSinglePose(bitmap);
                 persons.add(p);
+                DebugLog.log("success");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
