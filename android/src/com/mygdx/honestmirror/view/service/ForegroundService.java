@@ -123,7 +123,7 @@ public class ForegroundService extends Service {
                 if (e.getClass() == RuntimeException.class)
                     throw e;
 
-                Log.e("InterpreterController:", e.getMessage());
+                Log.e("InterpreterController:", e.toString());
             }
             work.run();
             stopForeground(true);
