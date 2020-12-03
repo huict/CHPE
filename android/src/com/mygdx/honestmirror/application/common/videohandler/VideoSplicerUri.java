@@ -11,13 +11,10 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
-import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * The type Video splicer.
@@ -187,35 +184,29 @@ public class VideoSplicerUri implements VideoSplicer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public List<Bitmap> getBitmaps(){
-        List<Bitmap> bitmaps = new ArrayList<>();
-//        MediaMetadataRetriever.BitmapParams params = new MediaMetadataRetriever.BitmapParams();
-//        params.setPreferredConfig(Bitmap.Config.ARGB_4444);
-
-        while(this.framesProcessed + 1 < frameCount){
-            bitmaps.add(this.mediaMetadataRetriever.getFrameAtIndex(this.framesProcessed));
-            this.framesProcessed += 3;
-        }
-        return bitmaps;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public BlockingQueue<Bitmap> getQueue() {
-        return new LinkedBlockingDeque<>(getBitmaps());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
     public List<Person> performAnalyse(PoseNetHandler pnh) {
-        BlockingQueue<Bitmap> queue = getQueue();
-        Thread1 thread1 = new Thread1(queue, pnh);
-        for(int i = 1; i < 4; i++){
-            DebugLog.log("Thread " + i + " starts now");
-            thread1.start();
+
+        //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
+        BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
+        for(int i = 0; i < frameCount; i+= 3){
+            integerQueue.add(i);
         }
 
-        Thread2 thread2 = new Thread2(getQueue(), pnh);
-        //thread2.start();
-        //List<Person> persons = Stream.of(thread1.getPersons(), thread2.getPersons()).flatMap(Collection::stream).collect(Collectors.toList());
-        return thread1.getPersons();
+        //get all the bitmaps
+        BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
+        bitmapThread.start();
+
+        //create queue with all the bitmaps
+        BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapThread.getBitmaps());
+
+        //perform analysis
+        AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
+        for(int i = 1; i < 4; i++){
+            DebugLog.log("AnalyseThread " + i + " starts now");
+            analyseThread.start();
+        }
+
+        //receive all persons
+        return analyseThread.getPersons();
     }
 }
