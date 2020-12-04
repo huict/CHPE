@@ -13,13 +13,13 @@ import java.util.concurrent.BlockingQueue;
 
 class BitmapThread extends Thread {
 
-    private final BlockingQueue<Integer> blockingQueue;
+    private final BlockingQueue<Integer> integerQueue;
     List<Bitmap> bitmaps = new ArrayList<>();
     private final MediaMetadataRetriever mediaMetadataRetriever;
 
     public BitmapThread(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue) {
         this.mediaMetadataRetriever = mediaMetadataRetriever;
-        this.blockingQueue = blockingQueue;
+        this.integerQueue = blockingQueue;
     }
 
     public List<Bitmap> getBitmaps() {
@@ -28,10 +28,14 @@ class BitmapThread extends Thread {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     public void run(){
-        while(blockingQueue.size() != 0){
+        while(integerQueue.size() != 0){
             try {
-                bitmaps.add(this.mediaMetadataRetriever.getFrameAtIndex(blockingQueue.take()));
-                DebugLog.log("Successful, " + blockingQueue.size() + " remaining");
+                long startTime = System.nanoTime();
+                int i = integerQueue.take();
+                Bitmap bitmap = (this.mediaMetadataRetriever.getScaledFrameAtTime(i,0, 257,257));
+                bitmaps.add(bitmap);
+                long endTime = System.nanoTime();
+                DebugLog.log("Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread() + ", " + integerQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -53,14 +57,14 @@ class AnalyseThread extends Thread {
         return persons;
     }
 
-    public void run(){
+    public void start(){
         while(bitmapQueue.size() != 0) {
             try {
 
                 Bitmap bitmap = bitmapQueue.take();
                 Person p = pnh.estimateSinglePose(bitmap);
-                DebugLog.log("Successful, " + bitmapQueue.size() + " remaining");
                 persons.add(p);
+                DebugLog.log("Successful in Thread" + Thread.currentThread() + ", " + bitmapQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

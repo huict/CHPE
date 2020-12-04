@@ -19,6 +19,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 /**
  * The type Video splicer.
  */
+@SuppressWarnings("CallToThreadRun")
 public class VideoSplicerUri implements VideoSplicer {
     private static final String TAG = VideoSplicerUri.class.getSimpleName();
     private static final int META_VIDEO_FRAME_COUNT = 32;
@@ -31,7 +32,7 @@ public class VideoSplicerUri implements VideoSplicer {
     /**
      * The length of the video
      */
-    long totalTime = 0;
+    long totalTimeInMs = 0;
     /**
      * The Frame count.
      */
@@ -114,8 +115,8 @@ public class VideoSplicerUri implements VideoSplicer {
     long getVideoDuration() throws NumberFormatException {
         try {
             String sTotalTime = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_DURATION);
-            this.totalTime = Long.parseLong(sTotalTime);
-            return totalTime;
+            this.totalTimeInMs = Long.parseLong(sTotalTime);
+            return totalTimeInMs;
         } catch (NumberFormatException nfe) {
             DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
@@ -127,7 +128,6 @@ public class VideoSplicerUri implements VideoSplicer {
             String sFrameCount = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_FRAME_COUNT);
             this.frameCount = Integer.parseInt(sFrameCount);
         } catch (NumberFormatException nfe) {
-            // TODO: Notify user of invalid file.
             Log.e(TAG, "NumberFormatException: " + nfe.getMessage());
         }
     }
@@ -142,7 +142,7 @@ public class VideoSplicerUri implements VideoSplicer {
     }
 
     public boolean isNextTimeAvailable() {
-        return this.timeProcessed + 1 <= (this.totalTime * 1000 );
+        return this.timeProcessed + 1 <= (this.totalTimeInMs * 1000 );
     }
 
     /**
@@ -184,28 +184,55 @@ public class VideoSplicerUri implements VideoSplicer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
+    //40 seconds for 11 seconds video
     public List<Person> performAnalyse(PoseNetHandler pnh) {
 
+        DebugLog.log("currently on: "+ Thread.currentThread());
+        long startTime = System.nanoTime();
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
+        //24 frames per second makes 2.5 seconds per frame
         BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
-        for(int i = 0; i < frameCount; i+= 3){
+        for(int i = 0; i < totalTimeInMs; i+= 67){
             integerQueue.add(i);
         }
 
         //get all the bitmaps
+        //performs on 2 threads as of writing, Thread 7.5 and Thread 9.5. Third thread missing
         BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
-        bitmapThread.start();
+        for(int i = 1; i < 3; i++){
+            DebugLog.log("BitmapThread " + i + " starts now");
+            if(i == 1){
+                bitmapThread.start();
+            }
+            else{
+                bitmapThread.run();
+            }
+        }
 
+        this.mediaMetadataRetriever.close();
+        if (bitmapThread.isAlive()){
+            DebugLog.log("waiting...");
+        }
+        DebugLog.log("BitmapThreads finished, starting analysis!");
         //create queue with all the bitmaps
         BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapThread.getBitmaps());
 
         //perform analysis
+        //analyseThread.run() crashes the application
+        //currently only runs on one thread, being 10.5
         AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
-        for(int i = 1; i < 4; i++){
+        for(int i = 1; i < 2; i++){
             DebugLog.log("AnalyseThread " + i + " starts now");
-            analyseThread.start();
+            try{
+                analyseThread.start();
+            }
+            catch (IllegalThreadStateException e){
+                DebugLog.log("Further Threads have not been made");
+            }
         }
 
+        long endTime = System.nanoTime();
+        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
         //receive all persons
         return analyseThread.getPersons();
     }
