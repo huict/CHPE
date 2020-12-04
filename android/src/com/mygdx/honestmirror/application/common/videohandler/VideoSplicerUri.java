@@ -197,9 +197,12 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         //get all the bitmaps
-        //performs on 2 threads as of writing, Thread 7.5 and Thread 9.5. Third thread missing
+        //performs on 2 threads as of writing, Thread 7.5 and Thread 9.5.
+        //Third thread is only called after the first two threads are done running
+        //Application crashes if attempting to put the bitmap thread initializer in the for loop
+        //error: java.lang.IllegalStateException: No retriever available
         BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
-        for(int i = 1; i < 3; i++){
+        for(int i = 1; i < 4; i++){
             DebugLog.log("BitmapThread " + i + " starts now");
             if(i == 1){
                 bitmapThread.start();
