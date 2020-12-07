@@ -5,7 +5,7 @@
 
 # include "support.hpp"
 # include "input_object.hpp"
-#include <ArduinoBLE.h>
+# include <ArduinoBLE.h>
 
 template<int I>
 class Bluetooth{
@@ -25,6 +25,14 @@ public:
     bool connectToName( String name );
 
 	BLEDevice.characteristics[I] discoverFingers();
+
+	String getCentralDeviceName( BLEDevice &central){
+		return central.deviceName
+	}
+
+	bool advertise(){
+		return BLE.advertise()
+	};
 
 	uint8_t[I] getCharacteristics();
 };

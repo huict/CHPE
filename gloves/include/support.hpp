@@ -3,6 +3,7 @@
 
 #include <stdint-gcc.h>
 #include <Arduino.h>
+#include <ArduinoBLE.h>
 
 struct RGB{
 	uint8_t RED[3] = {255,0,0};
@@ -14,25 +15,25 @@ struct RGB{
 
 namespace GLOVE{
 	namespace STATES{
-		enum DOM{
+		enum class DOM {
 			SETUP = 0x00,
 			INITIALIZE_BLUETOOTH,
 			READ_SENSORS,
 			UPDATE_CHARACTERISTICS
 		};
-		enum SUB{
+		enum class SUB {
 			SETUP = 0x00,
 			READ_SENSORS,
 			UPDATE_CHARACTERISTICS,
 			SCAN_AND_CONNECT_BLUETOOTH
 		};
-		enum CONNECTION{
-			None = 0x00,
+		enum class CONNECTION{
+			NONE = 0x00,
 			RIGHT,
 			BOTH
 		};
 	};
-	enum DIGITS{
+	enum class DIGITS{
 		THUMB = 0x00,
 		INDEX_FINGER,
 		MIDDLE_FINGER,
