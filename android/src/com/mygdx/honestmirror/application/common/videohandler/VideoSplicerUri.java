@@ -12,6 +12,7 @@ import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -195,6 +196,7 @@ public class VideoSplicerUri implements VideoSplicer {
         for(int i = 0; i < totalTimeInMs; i+= 67){
             integerQueue.add(i);
         }
+        BlockingQueue<Bitmap> bitmapBlockingQueue = new LinkedBlockingDeque<>();
 
         //get all the bitmaps
         //performs on 2 threads as of writing, Thread 7.5 and Thread 9.5.
@@ -202,29 +204,23 @@ public class VideoSplicerUri implements VideoSplicer {
         //Application crashes if attempting to put the bitmap thread initializer in the for loop
         //error: java.lang.IllegalStateException: No retriever available
         //remove the if/else statement and only one thread is being used
-        BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
-        for(int i = 1; i < 4; i++){
-            DebugLog.log("BitmapThread " + i + " starts now");
-            if(i == 1){
-                bitmapThread.start();
-            }
-            else{
-                bitmapThread.run();
-            }
-        }
+        List<BitmapThread> threads = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            threads.add(new BitmapThread(this.mediaMetadataRetriever, integerQueue, bitmapBlockingQueue));
 
-        while(bitmapThread.isAlive()){
-            DebugLog.log("waiting...");
+            DebugLog.log("BitmapThread " + i + " starts now");
         }
+        threads.forEach(thread -> {
+            thread.start();
+        });
+
         this.mediaMetadataRetriever.close();
         DebugLog.log("BitmapThreads finished, starting analysis!");
-        //create queue with all the bitmaps
-        BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapThread.getBitmaps());
 
         //perform analysis
         //analyseThread.run() crashes the application
         //currently only runs on one thread, being 10.5
-        AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
+        AnalyseThread analyseThread = new AnalyseThread(bitmapBlockingQueue, pnh);
         for(int i = 1; i < 2; i++){
             DebugLog.log("AnalyseThread " + i + " starts now");
             try{

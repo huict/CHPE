@@ -16,10 +16,12 @@ class BitmapThread extends Thread {
     private final BlockingQueue<Integer> integerQueue;
     List<Bitmap> bitmaps = new ArrayList<>();
     private final MediaMetadataRetriever mediaMetadataRetriever;
+    private final BlockingQueue<Bitmap> bitmapBlockingQueue;
 
-    public BitmapThread(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue) {
+    public BitmapThread(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue, BlockingQueue<Bitmap> bitmapBlockingQueue) {
         this.mediaMetadataRetriever = mediaMetadataRetriever;
         this.integerQueue = blockingQueue;
+        this.bitmapBlockingQueue = bitmapBlockingQueue;
     }
 
     public List<Bitmap> getBitmaps() {
@@ -33,7 +35,7 @@ class BitmapThread extends Thread {
                 long startTime = System.nanoTime();
                 int i = integerQueue.take();
                 Bitmap bitmap = (this.mediaMetadataRetriever.getScaledFrameAtTime(i,0, 257,257));
-                bitmaps.add(bitmap);
+                bitmapBlockingQueue.put(bitmap);
                 long endTime = System.nanoTime();
                 DebugLog.log("Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread() + ", " + integerQueue.size() + " remaining");
             } catch (InterruptedException e) {
