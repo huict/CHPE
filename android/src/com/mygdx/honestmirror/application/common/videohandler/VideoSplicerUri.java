@@ -12,6 +12,7 @@ import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -202,8 +203,9 @@ public class VideoSplicerUri implements VideoSplicer {
         //Application crashes if attempting to put the bitmap thread initializer in the for loop
         //error: java.lang.IllegalStateException: No retriever available
         //remove the if/else statement and only one thread is being used
-        BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
-        BitmapThread2 bitmapThread2 = new BitmapThread2(this.mediaMetadataRetriever, integerQueue);
+        List<Bitmap> bitmapList = new ArrayList<>();
+        BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue, bitmapList);
+        BitmapThread2 bitmapThread2 = new BitmapThread2(this.mediaMetadataRetriever, integerQueue, bitmapList);
         for(int i = 1; i < 4; i++){
             DebugLog.log("BitmapThread " + i + " starts now");
             if(i == 1){
@@ -220,13 +222,14 @@ public class VideoSplicerUri implements VideoSplicer {
             }
         }
 
-        while(bitmapThread.isAlive()){
+        while(bitmapThread.isAlive() && bitmapThread2.isAlive()){
             DebugLog.log("waiting...");
         }
         this.mediaMetadataRetriever.close();
         DebugLog.log("BitmapThreads finished, starting analysis!");
+
         //create queue with all the bitmaps
-        BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapThread.getBitmaps());
+        BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapList);
 
         //perform analysis
         //analyseThread.run() crashes the application

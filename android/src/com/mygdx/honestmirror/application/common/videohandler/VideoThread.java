@@ -14,16 +14,13 @@ import java.util.concurrent.BlockingQueue;
 class BitmapThread extends Thread {
 
     private final BlockingQueue<Integer> integerQueue;
-    List<Bitmap> bitmaps = new ArrayList<>();
+    List<Bitmap> bitmaps;
     private final MediaMetadataRetriever mediaMetadataRetriever;
 
-    public BitmapThread(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue) {
+    public BitmapThread(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue, List<Bitmap> bitmapList) {
         this.mediaMetadataRetriever = mediaMetadataRetriever;
         this.integerQueue = blockingQueue;
-    }
-
-    public List<Bitmap> getBitmaps() {
-        return bitmaps;
+        this.bitmaps = bitmapList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -46,16 +43,13 @@ class BitmapThread extends Thread {
 class BitmapThread2 extends Thread {
 
     private final BlockingQueue<Integer> integerQueue;
-    List<Bitmap> bitmaps = new ArrayList<>();
+    List<Bitmap> bitmaps;
     private final MediaMetadataRetriever mediaMetadataRetriever;
 
-    public BitmapThread2(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue) {
+    public BitmapThread2(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue, List<Bitmap> bitmapList) {
         this.mediaMetadataRetriever = mediaMetadataRetriever;
         this.integerQueue = blockingQueue;
-    }
-
-    public List<Bitmap> getBitmaps() {
-        return bitmaps;
+        this.bitmaps = bitmapList;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
