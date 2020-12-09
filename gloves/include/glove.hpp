@@ -38,14 +38,15 @@ Android : verbind met de DOM en leest characteristics uit
 // Glove class
 class Glove{
 protected:
-	Finger fingers[5];
 	Battery battery;
 	RGB_LED bluetooth_phone_LED;
 	RGB_LED bluetooth_glove_LED;
 	RGB_LED battery_LED;
-	String service_name = "GLOVE";
+	// WARNING Keep in mind how many fingers you can initialize with
+	Finger * fingers;
+	const char service_name[6] = "GLOVE";
 	// First 5 UUID's are for the DOM Glove, second 5 UUID's are for the SUB Glove
-	String fingers_UUID[10] = {
+	const char fingers_UUID[10][37] = {
 		"34452906-33d2-11eb-adc1-0242ac120002",
 		"3b08185c-33d2-11eb-adc1-0242ac120002",
 		"3e1443e0-33d2-11eb-adc1-0242ac120002",
@@ -58,8 +59,8 @@ protected:
 		"6b51a79e-33d2-11eb-adc1-0242ac120002"
 	};
 
-	uint8_t* getFingerPositions();
-	virtual void updateCharacteristics() = 0;
+	void getFingerPositions( uint8_t * finger_pos);
+	void updateCharacteristics(BLECharacteristic* characteristics, uint8_t * finger_positions);
 
 public:
 	Glove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
@@ -68,26 +69,21 @@ public:
 
 // Domglove ==  peripheral == prikbord
 class DomGlove : public Glove{
-	const char service_UUID[37] = "bd3d409d-f8a3-4c80-b8db-daea6ddabec3";
-	BLEService service(const char * service_UUID);
+	// const char service_UUID[37] = "bd3d409d-f8a3-4c80-b8db-daea6ddabec3";
+	BLEService service;
 	BLEDevice new_central, phone, glove;
-
-	// void generateUUID(char* service_UUID);
-	void updateCharacteristics(BLEUnsignedCharCharacteristic* characteristics, uint8_t * finger_positions);
-	void connectHandler(BLEDevice & central);
-	void disconnectHandler(BLEDevice & central);
 	void createBLEService();
 public:
-	DomGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
+	DomGlove(BLEService & service, uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
 	void run();
 };
 
 class SubGlove : public Glove{
 private:
 	BLEDevice dom_glove;
+	BLECharacteristic characteristcs[5];
 
 	void connectToDom();
-	void updateCharacteristics(BLEUnsignedCharCharacteristic* characteristics, uint8_t * finger_positions);
 	void connectHandler(BLEDevice &central, RGB_LED & glove_led);
 	void disconnectHandler(BLEDevice &central, RGB_LED & glove_led);
 public:

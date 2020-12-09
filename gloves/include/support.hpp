@@ -19,7 +19,6 @@ namespace GLOVE{
 			SETUP,
 			INITIALIZE_BLUETOOTH,
 			READ_SENSORS,
-			UPDATE_CHARACTERISTICS
 		};
 		enum class SUB {
 			SETUP,
