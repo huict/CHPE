@@ -16,19 +16,19 @@ struct RGB{
 namespace GLOVE{
 	namespace STATES{
 		enum class DOM {
-			SETUP = 0x00,
+			SETUP,
 			INITIALIZE_BLUETOOTH,
 			READ_SENSORS,
 			UPDATE_CHARACTERISTICS
 		};
 		enum class SUB {
-			SETUP = 0x00,
+			SETUP,
 			READ_SENSORS,
 			UPDATE_CHARACTERISTICS,
 			SCAN_AND_CONNECT_BLUETOOTH
 		};
 		enum class CONNECTION{
-			NONE = 0x00,
+			NONE,
 			RIGHT,
 			BOTH
 		};

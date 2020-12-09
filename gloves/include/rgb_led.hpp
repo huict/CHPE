@@ -11,8 +11,6 @@ private:
     uint8_t current_color[3];
 public:
     RGB_LED(uint8_t pin[3]);
-    // void setColor(RGB color);
-    void setColor(RGB);
     void setColor(uint8_t* color);
 };
 

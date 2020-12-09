@@ -12,13 +12,12 @@ uint8_t fingers[5] = {2, 31, 29, 30, 5};
 void setup() {
 	pinMode(glove_switch, INPUT);
 	if(digitalRead(glove_switch)){
-		SubGlove glove(fingers, battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB);
+		SubGlove glove(battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
 	} else {
-		DomGlove glove(fingers, battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB);
+		DomGlove glove(battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
 	}
 }
 
 void loop() {
 	glove.run();
-	
 }
