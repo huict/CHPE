@@ -43,6 +43,38 @@ class BitmapThread extends Thread {
     }
 }
 
+class BitmapThread2 extends Thread {
+
+    private final BlockingQueue<Integer> integerQueue;
+    List<Bitmap> bitmaps = new ArrayList<>();
+    private final MediaMetadataRetriever mediaMetadataRetriever;
+
+    public BitmapThread2(MediaMetadataRetriever mediaMetadataRetriever, BlockingQueue<Integer> blockingQueue) {
+        this.mediaMetadataRetriever = mediaMetadataRetriever;
+        this.integerQueue = blockingQueue;
+    }
+
+    public List<Bitmap> getBitmaps() {
+        return bitmaps;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public void run(){
+        while(integerQueue.size() != 0){
+            try {
+                long startTime = System.nanoTime();
+                int i = integerQueue.take();
+                Bitmap bitmap = (this.mediaMetadataRetriever.getScaledFrameAtTime(i,0, 257,257));
+                bitmaps.add(bitmap);
+                long endTime = System.nanoTime();
+                DebugLog.log("Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
 class AnalyseThread extends Thread {
     List<Person> persons = new ArrayList<>();
     PoseNetHandler pnh;
@@ -64,7 +96,7 @@ class AnalyseThread extends Thread {
                 Bitmap bitmap = bitmapQueue.take();
                 Person p = pnh.estimateSinglePose(bitmap);
                 persons.add(p);
-                DebugLog.log("Successful in Thread" + Thread.currentThread() + ", " + bitmapQueue.size() + " remaining");
+                DebugLog.log("Successful in Thread" + Thread.currentThread().getName() + ", " + bitmapQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

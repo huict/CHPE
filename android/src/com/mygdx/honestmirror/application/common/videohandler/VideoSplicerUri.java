@@ -187,7 +187,7 @@ public class VideoSplicerUri implements VideoSplicer {
     //40 seconds for 11 seconds video
     public List<Person> performAnalyse(PoseNetHandler pnh) {
 
-        DebugLog.log("currently on: "+ Thread.currentThread());
+        DebugLog.log("currently on: "+ Thread.currentThread().getName());
         long startTime = System.nanoTime();
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
@@ -203,14 +203,20 @@ public class VideoSplicerUri implements VideoSplicer {
         //error: java.lang.IllegalStateException: No retriever available
         //remove the if/else statement and only one thread is being used
         BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue);
-
+        BitmapThread2 bitmapThread2 = new BitmapThread2(this.mediaMetadataRetriever, integerQueue);
         for(int i = 1; i < 4; i++){
             DebugLog.log("BitmapThread " + i + " starts now");
             if(i == 1){
+                DebugLog.log("bitmapthread.start()");
                 bitmapThread.start();
+                DebugLog.log("bitmapthread2.start()");
+                bitmapThread2.start();
             }
             else{
+                DebugLog.log("bitmapthread.run()");
                 bitmapThread.run();
+                DebugLog.log("bitmapthread2.run()");
+                bitmapThread2.run();
             }
         }
 
