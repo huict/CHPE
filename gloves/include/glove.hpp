@@ -5,7 +5,6 @@
 #include <battery.hpp>
 #include <finger.hpp>
 #include <rgb_led.hpp>
-// #include <bluetooth.hpp>
 #include <support.hpp>
 
 
@@ -43,7 +42,13 @@ protected:
 	RGB_LED bluetooth_glove_LED;
 	RGB_LED battery_LED;
 	// WARNING Keep in mind how many fingers you can initialize with
-	Finger * fingers;
+	Finger * fingers[5];
+	// In case of hard coded needed
+	// Finger finger_thumb;
+	// Finger finger_index;
+	// Finger finger_middle;
+	// Finger finger_ring;
+	// Finger finger_pinky;
 	const char service_name[6] = "GLOVE";
 	// First 5 UUID's are for the DOM Glove, second 5 UUID's are for the SUB Glove
 	const char fingers_UUID[10][37] = {

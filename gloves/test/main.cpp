@@ -2,7 +2,6 @@
 
 BLEService testService("bd3d409d-f8a3-4c80-b8db-daea6ddabec3");  // BLE LED Service
 
-
 BLEUnsignedCharCharacteristic switchCharacteristic("d2be0238-e8d7-4b2f-9a2a-0063c1f1f456", BLERead | BLEWrite | BLENotify);
 BLEUnsignedCharCharacteristic switchCharacteristic1("c00552e0-d880-4c7d-8baf-93356a8ba835", BLERead | BLEWrite | BLENotify);
 BLEUnsignedCharCharacteristic switchCharacteristic2("20ac424f-de57-4c34-b186-920c27b117c9", BLERead | BLEWrite | BLENotify);

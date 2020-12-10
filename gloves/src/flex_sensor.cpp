@@ -5,7 +5,9 @@ Flex_Sensor::Flex_Sensor(
     uint8_t flex_pin
 ):
     flex_pin(flex_pin)
-{};
+{
+    Serial.println("Constructed Flex sensor");
+};
 
 uint8_t Flex_Sensor::getFlexBend(){
     int ADCflex = analogRead(flex_pin);

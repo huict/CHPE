@@ -7,7 +7,9 @@ Finger::Finger(
 ):
     finger_index(finger_index),
     sensor(flex_pin)
-{};
+{
+    Serial.println("Contructed finger");
+};
 
 uint8_t Finger::getInformation(){
     return sensor.getFlexBend();
