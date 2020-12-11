@@ -20,7 +20,7 @@ import org.json.simple.JSONObject;
 
 public class MockData {
 
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
     private JSONArray entries;
 
     public static double[] StringArrToDoubleArr(String[] s) {
@@ -96,7 +96,7 @@ public class MockData {
                 JSONObject jsonObject = (JSONObject) this.entries.get(i);
                 long frameId = insertFrame(i);
                 insertSessionFrame(frameId, sessionId);
-                for (String spart : poseModel.body_parts) {
+                for (String spart : NNModelMPI.body_parts) {
 
                     Object part = jsonObject.get(spart);
                     String values = part.toString();

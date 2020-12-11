@@ -37,15 +37,15 @@ public class Position {
         this.rawX = (float)x / (float) horizontalRes;
         setX(x);
 
-        if (this.rawX > 1)
-            DebugLog.log((Float.toString(rawX)));
+//        if (this.rawX > 1)
+//            DebugLog.log((Float.toString(rawX)));
     }
 
     public void setY(int y, int verticalRes){
         this.rawY = (float) y / (float) verticalRes;
         setY(y);
 
-        if (this.rawY > 1)
-            DebugLog.log((Float.toString(rawY)));
+//        if (this.rawY > 1)
+//            DebugLog.log((Float.toString(rawY)));
     }
 }

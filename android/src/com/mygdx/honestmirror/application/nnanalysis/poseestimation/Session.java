@@ -78,7 +78,7 @@ public class Session {
      */
     public void runVideo() {
         PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
-        List<Person> persons = this.videoSplicer.getPersons(pnh);
+        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
 
         if (interpreterController != null){
             for(Person person: persons){

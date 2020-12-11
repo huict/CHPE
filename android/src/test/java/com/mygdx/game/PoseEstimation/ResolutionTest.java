@@ -13,13 +13,13 @@ public class ResolutionTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
-    private int width = 200;
-    private int height = 200;
-    private int modelWidth = 300;
-    private int modelHeight = 400;
+    private final int width = 200;
+    private final int height = 200;
+    private final int modelWidth = 300;
+    private final int modelHeight = 400;
 
-    private int randomInt = 100;
-    private float randomFloat = 13.4f;
+    private final int randomInt = 100;
+    private final float randomFloat = 13.4f;
 
     @Test
     public void fixedConstructorTest() {

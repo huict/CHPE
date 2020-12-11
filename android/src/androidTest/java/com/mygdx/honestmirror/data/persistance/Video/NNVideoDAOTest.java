@@ -21,10 +21,10 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class NNVideoDAOTest {
     private AppDatabase appDatabase;
-    private int frameCount = 24 * 5;
-    private int framesPerSecond = 24;
-    private int width=1920;
-    private int height=1080;
+    private final int frameCount = 24 * 5;
+    private final int framesPerSecond = 24;
+    private final int width=1920;
+    private final int height=1080;
     private NNVideoDAO nnVideoDAO;
 
     /**

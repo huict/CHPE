@@ -79,8 +79,8 @@ class Detection {
         boolean inAction = false;
         float actionTime = 0;
 
-        Vector3 deltas[] = new Vector3[2];
-        Vector3 lastHandPos[] = {
+        Vector3[] deltas = new Vector3[2];
+        Vector3[] lastHandPos = {
                 data.getCoord(0, body_part.l_wrist),
                 data.getCoord(0, body_part.r_wrist)
         };

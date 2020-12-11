@@ -35,7 +35,7 @@ public class VideoSplicerLegacyTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
-    private Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     private VideoSplicerUriLegacy videoSplicerUri;
 
     /**

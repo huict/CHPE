@@ -84,7 +84,7 @@ public class FilterTest {
         Vector3 before = data.getCoord(data.getFrameCount()-2, NNModelMPI.body_part.l_wrist);
 
         // simple average filter
-        double kernel[] = {1, 1, 1};
+        double[] kernel = {1, 1, 1};
 
         // calculate expected
         Vector3 v1 = data.getCoord(data.getFrameCount()-1, NNModelMPI.body_part.l_wrist);

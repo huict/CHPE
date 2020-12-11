@@ -17,8 +17,8 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.P
  */
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class CHPE {
-    private Resolution resolution;
-    private Context context;
+    private final Resolution resolution;
+    private final Context context;
     private PoseModel poseModel;
     private static final boolean BILINEAR_INTERPOLATION = true;
 
