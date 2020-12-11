@@ -11,8 +11,6 @@ RGB_LED glove_led = RGB_LED(glove_LED_RGB);
 RGB tmp_color;
 uint8_t fingers[5] = {A5, A4, A3, A2, A1};
 
-BLEService glove_service("bd3d409d-f8a3-4c80-b8db-daea6ddabec3");
-
 void connectHandler(BLEDevice central){
     Serial.print("Connected event, central: ");
     Serial.println(central.address());
@@ -39,7 +37,7 @@ void loop() {
 		Serial.println("Starting Sub Glove!");
 		glove.run();
 	} else {
-		DomGlove glove(glove_service, battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
+		DomGlove glove(battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
 		Serial.println("Starting Dom Glove!");
 		glove.run();
 	};

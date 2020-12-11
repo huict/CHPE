@@ -44,11 +44,6 @@ protected:
 	// WARNING Keep in mind how many fingers you can initialize with
 	Finger * fingers[5];
 	// In case of hard coded needed
-	// Finger finger_thumb;
-	// Finger finger_index;
-	// Finger finger_middle;
-	// Finger finger_ring;
-	// Finger finger_pinky;
 	const char service_name[6] = "GLOVE";
 	// First 5 UUID's are for the DOM Glove, second 5 UUID's are for the SUB Glove
 	const char fingers_UUID[10][37] = {
@@ -75,17 +70,15 @@ public:
 // Domglove ==  peripheral == prikbord
 class DomGlove : public Glove{
 	// const char service_UUID[37] = "bd3d409d-f8a3-4c80-b8db-daea6ddabec3";
-	BLEService service;
 	BLEDevice new_central, phone, glove;
-	void createBLEService();
+	bool createBLEService();
 public:
-	DomGlove(BLEService & service, uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
+	DomGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
 	void run();
 };
 
 class SubGlove : public Glove{
 private:
-	BLEDevice dom_glove;
 	BLECharacteristic characteristcs[5];
 
 	void connectToDom();
