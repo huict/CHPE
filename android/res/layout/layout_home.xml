@@ -7,22 +7,6 @@
     android:background="@color/hu_light_gray"
     tools:context=".view.ui.a_Home">
 
-    <Button
-        android:id="@+id/b_start2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="232dp"
-        android:background="@color/hu_blue"
-        android:shadowRadius="0"
-        android:text="START2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".06"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontalCenterGuideline"
         android:layout_width="wrap_content"

@@ -45,7 +45,6 @@ public class a_Home extends AppCompatActivity {
 
         b_archive = findViewById(R.id.b_archive);
         b_start = findViewById(R.id.b_start);
-        b_start_2 = findViewById(R.id.b_start2);
 
 
         AAL.setTitleBar(getWindow());
@@ -62,13 +61,6 @@ public class a_Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchIntent(a_VideoSelect.class);
-            }
-        });
-
-        b_start_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchIntent(MainFeedbackActivity.class);
             }
         });
     }
