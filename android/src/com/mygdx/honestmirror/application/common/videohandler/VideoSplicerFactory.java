@@ -41,7 +41,7 @@ public class VideoSplicerFactory {
      *
      * @param m the m
      * @return the video splicer
-     * @throws InvalidVideoSplicerType the invalid video splicer type
+     * @throws InvalidVideoSplicerType the invalid video splice
      */
     public static VideoSplicer getVideoSplicer(String m) throws InvalidVideoSplicerType {
         if (URLUtil.isValidUrl(m)) {
