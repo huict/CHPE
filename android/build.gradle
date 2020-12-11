@@ -113,8 +113,12 @@ repositories { jcenter() }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.3'
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "android.arch.persistence.room:runtime:2.2.0"
+    implementation 'androidx.navigation:navigation-fragment:2.2.2'
+    implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
 //    implementation group: 'org.tensorflow', name: 'tensorflow-lite-support', version: '0.1.0-rc1'
 //

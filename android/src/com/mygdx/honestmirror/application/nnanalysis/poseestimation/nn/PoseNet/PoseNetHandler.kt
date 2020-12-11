@@ -1,14 +1,16 @@
 @file:Suppress("NON_EXHAUSTIVE_WHEN", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "PackageName")
 
-package com.mygdx.game.PoseEstimation.nn.PoseNet
+package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import com.mygdx.game.DebugLog
-import com.mygdx.game.PoseEstimation.Resolution
-import com.mygdx.game.PoseEstimation.nn.NNInterpreter
-import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
+import com.mygdx.honestmirror.application.common.DebugLog
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.KeyPoint
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.ByteBuffer

@@ -4,10 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackController {
+    private static FeedbackController instance;
+
     List<FeedbackElement> feedbackElements;
     private int maxFloatIndex;
-    public FeedbackController() {
+
+    private FeedbackController() {
         feedbackElements = new ArrayList<>();
+    }
+
+    public static FeedbackController getInstance(){
+        if (instance == null)
+            instance = new FeedbackController();
+
+
+        return instance;
     }
 
     public void addData(float[][] data){
@@ -52,5 +63,21 @@ public class FeedbackController {
 
 
         return feedbackElements.get(0).getShortFeedback();
+    }
+
+    public List<FeedbackElement> getFeedbackElements(){
+        //return this.feedbackElements;
+
+        List<FeedbackElement> items = new ArrayList<>();
+
+        items.add(new FeedbackElement(Feedback.hands_down));
+        items.add(new FeedbackElement(Feedback.hands_up));
+        items.add(new FeedbackElement(Feedback.left_down_right_up));
+
+        return items;
+    }
+
+    public String getSummary(){
+        return "Despite you not moving your hands the whole time this presentation was very very good";
     }
 }

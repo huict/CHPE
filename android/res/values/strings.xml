@@ -10,7 +10,16 @@
     <string name="progress_value">0%</string>
     <string name="btn_results">Resultaten</string>
     <string name="btn_archive">Archief</string>
-   <!-- <string name="filepath">Your filepath is: </string>-->
+    <string name="title_activity_main_feeback">MainFeebackActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">This is dummy text to give you an idea what this item would look like if it contained actual meaningful text.</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>
 

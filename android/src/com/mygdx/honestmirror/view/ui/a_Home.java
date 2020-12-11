@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
 
 /**
  * Home screen class. This is the first screen you see when you start the app.
@@ -21,6 +22,8 @@ public class a_Home extends AppCompatActivity {
      * Button to start the video selection process.
      */
     Button b_start;
+
+    Button b_start_2;
 
     /**
      * Android function override.
@@ -42,6 +45,8 @@ public class a_Home extends AppCompatActivity {
 
         b_archive = findViewById(R.id.b_archive);
         b_start = findViewById(R.id.b_start);
+        b_start_2 = findViewById(R.id.b_start2);
+
 
         AAL.setTitleBar(getWindow());
 
@@ -57,6 +62,13 @@ public class a_Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchIntent(a_VideoSelect.class);
+            }
+        });
+
+        b_start_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent(MainFeedbackActivity.class);
             }
         });
     }

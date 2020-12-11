@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,6 +17,7 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.HomeScreen;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.view.service.ForegroundService;
@@ -153,8 +155,7 @@ public class GalleryScreen extends AppCompatActivity implements Serializable {
      * @return void
      */
     public void startService() {
-        if(videoIsSelected) {
-            toast = Toast.makeText(getApplicationContext(), "Started video analysis, this could take a while", Toast.LENGTH_LONG);
+        if(videoIsSelected) {toast = Toast.makeText(getApplicationContext(), "Started video analysis, this could take a while", Toast.LENGTH_LONG);
             toast.show();
             Intent pauseIntent = new Intent(this, ProcessingScreenActivity.class);
             Intent serviceIntent = new Intent(this, ForegroundService.class);

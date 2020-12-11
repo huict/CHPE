@@ -40,6 +40,7 @@ public class ForegroundService extends Service {
     static Thread thread;
     static Runnable work;
     private VideoSplicer videoSplicer;
+    private static FeedbackController feedbackController;
 
     /**
      * This function sets the work that the foreground service will perform on start command.
@@ -48,6 +49,14 @@ public class ForegroundService extends Service {
     public static void setWork(Runnable r) {
         work = r;
     }
+
+    public static String getFeedback(){
+        if (feedbackController == null)
+            return "";
+        return feedbackController.getFeedback();
+    }
+
+
 
     /**
      * Constructor
@@ -108,7 +117,7 @@ public class ForegroundService extends Service {
             try {
                 VideoSplicer videoSplicer = VideoSplicerFactory.getVideoSplicer(metadataRetriever);
                 InterpreterController interpreterController = new InterpreterController(getApplicationContext());
-                FeedbackController feedbackController = new FeedbackController();
+                feedbackController = FeedbackController.getInstance();
 
                 Session session = new Session(getApplicationContext(), videoSplicer, interpreterController, feedbackController);
                 session.runVideo();

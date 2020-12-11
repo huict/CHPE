@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
 import com.mygdx.honestmirror.view.service.ForegroundService;
 import com.mygdx.honestmirror.R;
 
@@ -87,7 +88,7 @@ public class a_Loading extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
-                Intent intent = new Intent(context, a_Results.class);
+                Intent intent = new Intent(context, MainFeedbackActivity.class);
                 startActivity(intent);
             }
         });
@@ -126,9 +127,13 @@ public class a_Loading extends AppCompatActivity {
                         b_Results.setVisibility(View.VISIBLE);
                     }
                 });
+
+
             }
         });
         startService();
+
+
     }
 
     /**
@@ -182,5 +187,10 @@ public class a_Loading extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         serviceIntent.setData(getIntent().getData());
         ContextCompat.startForegroundService(this, serviceIntent);
+    }
+
+
+    public void startFeedbackService(){
+
     }
 }

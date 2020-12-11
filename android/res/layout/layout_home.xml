@@ -4,8 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/hu_light_gray"
     tools:context=".view.ui.a_Home">
+
+    <Button
+        android:id="@+id/b_start2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="232dp"
+        android:background="@color/hu_blue"
+        android:shadowRadius="0"
+        android:text="START2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".06"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontalCenterGuideline"
@@ -27,29 +43,29 @@
         android:id="@+id/b_archive"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="128dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        app:layout_constraintHeight_percent=".06"
-        android:background="@drawable/btn_transparent"
+        android:layout_marginBottom="128dp"
+        android:background="@color/hu_blue"
         android:text="@string/btn_archive"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"/>
+        app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"
+        app:layout_constraintHeight_percent=".06"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/b_start"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="128dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        app:layout_constraintHeight_percent=".06"
-        android:background="@drawable/start_button"
+        android:layout_marginBottom="128dp"
+        android:background="@color/hu_blue"
         android:shadowRadius="0"
         android:text="START"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline"/>
+        app:layout_constraintHeight_percent=".06"
+        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
