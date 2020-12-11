@@ -17,11 +17,11 @@ public class Resolution {
     /**
      * The Screen width.
      */
-    private int screenWidth;
+    private final int screenWidth;
     /**
      * The Screen height.
      */
-    private int screenHeight;
+    private final int screenHeight;
 
     /**
      * Gets model width.

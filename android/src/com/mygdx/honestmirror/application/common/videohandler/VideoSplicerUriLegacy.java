@@ -35,7 +35,7 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
      */
     private long totalTime; // TODO: Update to allow longer video's. The current limit would be the size of an integer.
 
-    private static long microSecondsToMiliseconds = 1000;
+    private static final long microSecondsToMiliseconds = 1000;
 
 
     /**

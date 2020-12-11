@@ -6,9 +6,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
@@ -16,18 +14,16 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.P
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import com.mygdx.honestmirror.application.common.DebugLog;
-import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * The type Video splicer.
  */
+@SuppressWarnings("CallToThreadRun")
 public class VideoSplicerUri implements VideoSplicer {
     private static final String TAG = VideoSplicerUri.class.getSimpleName();
     private static final int META_VIDEO_FRAME_COUNT = 32;
-    private static final int META_VIDEO_FRAME_RATE = 25; // METADATA_KEY_CAPTURE_FRAMERATE
     private static final int META_VIDEO_DURATION = 9;
 
     /**
@@ -37,7 +33,7 @@ public class VideoSplicerUri implements VideoSplicer {
     /**
      * The length of the video
      */
-    long totalTime = 0;
+    long totalTimeInMs = 0;
     /**
      * The Frame count.
      */
@@ -120,13 +116,12 @@ public class VideoSplicerUri implements VideoSplicer {
     long getVideoDuration() throws NumberFormatException {
         try {
             String sTotalTime = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_DURATION);
-            this.totalTime = Long.parseLong(sTotalTime);
-            return totalTime;
+            this.totalTimeInMs = Long.parseLong(sTotalTime);
+            return totalTimeInMs;
         } catch (NumberFormatException nfe) {
             DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
         }
-
     }
 
     private void getAmountOfFrames() {
@@ -134,11 +129,9 @@ public class VideoSplicerUri implements VideoSplicer {
             String sFrameCount = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_FRAME_COUNT);
             this.frameCount = Integer.parseInt(sFrameCount);
         } catch (NumberFormatException nfe) {
-            // TODO: Notify user of invalid file.
             Log.e(TAG, "NumberFormatException: " + nfe.getMessage());
         }
     }
-
 
     /**
      * Is next frame available boolean.
@@ -150,7 +143,7 @@ public class VideoSplicerUri implements VideoSplicer {
     }
 
     public boolean isNextTimeAvailable() {
-        return this.timeProcessed + 1 <= (this.totalTime * 1000 );
+        return this.timeProcessed + 1 <= (this.totalTimeInMs * 1000 );
     }
 
     /**
@@ -191,37 +184,65 @@ public class VideoSplicerUri implements VideoSplicer {
         throw new InvalidFrameAccess("InvalidFrameAccess", new Throwable("Next Frame doesn't exist."));
     }
 
-    @SuppressWarnings("Convert2MethodRef")
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public List<Person> getPersons(PoseNetHandler pnh){
-        List<Person> personsThread1;
-        List<Person> personsThread2;
-        List<Person> personsThread3;
-        List<Person> personsThread4;
-        List<Person> personsThread5;
+    //40 seconds for 11 seconds video
+    public List<Person> performAnalyse(PoseNetHandler pnh) {
 
-        Thread1 thread1 = new Thread1(this.totalTime, pnh, this.mediaMetadataRetriever);
-        Thread2 thread2 = new Thread2(this.totalTime, pnh, this.mediaMetadataRetriever);
-        Thread3 thread3 = new Thread3(this.totalTime, pnh, this.mediaMetadataRetriever);
-        Thread4 thread4 = new Thread4(this.totalTime, pnh, this.mediaMetadataRetriever);
-        Thread5 thread5 = new Thread5(this.totalTime, pnh, this.mediaMetadataRetriever);
+        DebugLog.log("currently on: "+ Thread.currentThread().getName());
+        long startTime = System.nanoTime();
+        //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
+        //24 frames per second makes 2.5 seconds per frame
+        BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
+        for(int i = 0; i < totalTimeInMs; i+= 67){
+            integerQueue.add(i);
+        }
 
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
-        thread5.start();
+        //get all the bitmaps
+        //performs on 3 threads as of writing, Thread 7, 9 and 10.
+        //Application crashes if attempting to put the bitmap thread initializer in the for loop
+        //error: java.lang.IllegalStateException: No retriever available
+        //remove the if/else statement and only one thread is being used
+        List<Bitmap> bitmapList = new ArrayList<>();
+        BitmapThread bitmapThread = new BitmapThread(this.mediaMetadataRetriever, integerQueue, bitmapList);
+        BitmapThread2 bitmapThread2 = new BitmapThread2(this.mediaMetadataRetriever, integerQueue, bitmapList);
 
-        personsThread1 = thread1.getPersons();
-        personsThread2 = thread2.getPersons();
-        personsThread3 = thread3.getPersons();
-        personsThread4 = thread4.getPersons();
-        personsThread5 = thread5.getPersons();
+        for(int i = 1; i < 4; i++){
+            if(i == 1){
+                bitmapThread.start();
+                bitmapThread2.start();
+            }
+            else{
+                bitmapThread.run();
+                bitmapThread2.run();
+            }
+        }
 
-        return Stream.of(personsThread1, personsThread2, personsThread3,
-                personsThread4, personsThread5).flatMap(x -> x.stream())
-                .collect(Collectors.toList());
+        while(bitmapThread.isAlive()){
+            DebugLog.log("waiting...");
+        }
+        this.mediaMetadataRetriever.close();
+        DebugLog.log("BitmapThreads finished, starting analysis!");
+
+        //create queue with all the bitmaps
+        BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapList);
+
+        //perform analysis
+        //analyseThread.run() crashes the application
+        //currently only runs on one thread, being 10.5
+        AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
+        for(int i = 1; i < 2; i++){
+            DebugLog.log("AnalyseThread " + i + " starts now");
+            try{
+                analyseThread.start();
+            }
+            catch (IllegalThreadStateException e){
+                DebugLog.log("Further Threads have not been made");
+            }
+        }
+
+        long endTime = System.nanoTime();
+        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+        //receive all persons
+        return analyseThread.getPersons();
     }
-
-
 }

@@ -28,8 +28,8 @@ public class InterpreterController {
 
 
 
-    private String output = "";
-    private Context context;
+    private final String output = "";
+    private final Context context;
 
     public InterpreterController(Context context){
         this.context = context;

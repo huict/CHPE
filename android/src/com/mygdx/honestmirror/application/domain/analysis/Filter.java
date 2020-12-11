@@ -70,7 +70,7 @@ class Filter {
      * Performs a linear performed weighted average kernel filtering over the data set.
      * @param kernel array of doubles to use as kernel
      */
-    void kernelFilter(double kernel[]) {
+    void kernelFilter(double[] kernel) {
         int offset = kernel.length / 2;
         int sum = 0;
         for(double weight : kernel) {

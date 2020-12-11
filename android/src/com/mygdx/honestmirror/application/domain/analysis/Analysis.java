@@ -63,7 +63,7 @@ public class Analysis {
 
         // TODO: random filter taken from the Python application for now, pls fix
         for(int i = 0; i < 10; i++) {
-            double kernel[] = {3, 6, 9, 50, 9, 6, 3};
+            double[] kernel = {3, 6, 9, 50, 9, 6, 3};
             filter.kernelFilter(kernel);
         }
     }

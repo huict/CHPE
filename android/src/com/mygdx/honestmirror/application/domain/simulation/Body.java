@@ -9,7 +9,7 @@ import com.mygdx.honestmirror.application.domain.analysis.Data;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI;
 
 import java.util.HashMap;
-;
+
 import static com.mygdx.honestmirror.application.domain.simulation.HelperClass.vec3Subtraction;
 
 /**

@@ -32,7 +32,7 @@ import static org.junit.Assert.fail;
 public class VideoSplicerFactoryTest {
     private final int defaultSDK = android.os.Build.VERSION.SDK_INT;
     private MediaMetadataRetriever metadataRetriever;
-    private Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private final Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
     /**
      * Sets up.

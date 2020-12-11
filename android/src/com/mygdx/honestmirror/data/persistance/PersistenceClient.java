@@ -17,10 +17,10 @@ import com.mygdx.honestmirror.data.persistance.AppDatabase;
 public class PersistenceClient {
 
     private static PersistenceClient mInstance;
-    private static String databaseName = "CHPEv3";
-    private Context mCtx;
+    private static final String databaseName = "CHPEv3";
+    private final Context mCtx;
     //our app database object
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
 
     private PersistenceClient(final Context mCtx) {
         this.mCtx = mCtx;

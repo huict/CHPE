@@ -1,16 +1,18 @@
-@file:Suppress("NON_EXHAUSTIVE_WHEN", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "PackageName")
+@file:Suppress("SpellCheckingInspection", "PackageName")
 
-package com.mygdx.game.PoseEstimation.nn.PoseNet
+package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import com.mygdx.game.DebugLog
-import com.mygdx.game.PoseEstimation.Resolution
-import com.mygdx.game.PoseEstimation.nn.NNInterpreter
-import com.mygdx.game.PoseEstimation.nn.PoseModels.NNModelPosenet
+import com.mygdx.honestmirror.application.common.DebugLog
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
+import java.lang.Exception
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
@@ -22,9 +24,9 @@ import kotlin.math.exp
 @SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
-        val filename: String,
-        val nnInterpreter: NNInterpreter,
-        val resolution: Resolution
+        private val filename: String,
+        private val nnInterpreter: NNInterpreter,
+        private val resolution: Resolution
 ) : AutoCloseable {
 
     private var interpreter: Interpreter? = null
@@ -38,10 +40,10 @@ class PoseNetHandler(
         when (nnInterpreter) {
             NNInterpreter.CPU -> {
             }
-            //NNInterpreter.GPU -> {
-            //    gpuDelegate = GpuDelegate()
-            //    options.addDelegate(gpuDelegate)
-            //}
+            NNInterpreter.GPU -> {
+                val gpuDelegate = GpuDelegate()
+                options.addDelegate(gpuDelegate)
+            }
             NNInterpreter.NNAPI -> options.setUseNNAPI(true)
         }
         interpreter = Interpreter(loadModelFile(filename, context), options)
@@ -88,7 +90,7 @@ class PoseNetHandler(
     }
 
     /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
-    fun loadModelFile(path: String, context: Context): MappedByteBuffer {
+    private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
         return inputStream.channel.map(
@@ -182,15 +184,9 @@ class PoseNetHandler(
 
     fun estimateSinglePose(bitmap: Bitmap): Person {
         val person: Person
-        DebugLog.log("estimateSinglePose start")
         person = if(bitmap.height / bitmap.width != 1){
             val croppedBitmap = cropBitmap(bitmap)
-            DebugLog.log("cropBitmap finished")
-
-            // Created scaled version of bitmap for model input.
-            val scaledBitmap = Bitmap.createScaledBitmap(croppedBitmap, resolution.modelWidth, resolution.modelHeight, true)
-            DebugLog.log("createScaledBitmap finished")
-            trueEstimation(scaledBitmap)
+            trueEstimation(croppedBitmap)
         }
         else{
             trueEstimation(bitmap)
@@ -198,23 +194,23 @@ class PoseNetHandler(
         return person
     }
 
-    fun trueEstimation(bitmap: Bitmap): Person{
-        val inputArray = arrayOf(initInputArray(bitmap))
-
+    @Suppress("UNCHECKED_CAST")
+    private fun trueEstimation(bitmap: Bitmap): Person{
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
+        val inputArray = arrayOf(initInputArray(scaledBitmap))
         val outputMap = initOutputMap(getInterpreter())
-
-        DebugLog.log("inputAarray and outputmap finished")
-        getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
-        DebugLog.log("getInterpreter for multiple inputsOutputs finished")
-        @SuppressWarnings("unchecked")
+        try{
+            getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+        }
+        catch(e: Exception){
+            DebugLog.log("Exception: $e")
+        }
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
-        DebugLog.log("heatmaps and offsets finished")
 
         val height = heatmaps[0].size
         val width = heatmaps[0][0].size
         val numKeypoints = heatmaps[0][0][0].size
-        DebugLog.log("height, width and numkeypoints finished")
         // Finds the (row, col) locations of where the keypoints are most likely to be.
         val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
         for (keypoint in 0 until numKeypoints) {
@@ -233,13 +229,11 @@ class PoseNetHandler(
             }
             keypointPositions[keypoint] = Pair(maxRow, maxCol)
         }
-        DebugLog.log("forloop finished")
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
         val xCoords = IntArray(numKeypoints)
         val yCoords = IntArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
-        DebugLog.log("coords and confidencescore finished")
         keypointPositions.forEachIndexed { idx, position ->
             val positionY = keypointPositions[idx].first
             val positionX = keypointPositions[idx].second
@@ -254,29 +248,23 @@ class PoseNetHandler(
                     ).toInt()
             confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
         }
-        DebugLog.log("keypoint positions finished")
 
         val person = Person()
         val keypointList = Array(numKeypoints) { KeyPoint() }
         var totalScore = 0.0f
-        DebugLog.log("keypointslist finished")
 
 
         enumValues<NNModelPosenet.bodyPart>().forEachIndexed { idx, it ->
             keypointList[idx].bodyPart = it
             keypointList[idx].position.setX(xCoords[idx], resolution.screenWidth)
             keypointList[idx].position.setY(yCoords[idx], resolution.screenHeight)
-            DebugLog.log("set keypointlist finished")
 
             keypointList[idx].score = confidenceScores[idx]
             totalScore += confidenceScores[idx]
-            DebugLog.log("totalscore en keypointlist finished")
         }
 
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
-        DebugLog.log("setPerson finished")
-
         return person
     }
 }
