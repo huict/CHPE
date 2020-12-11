@@ -1,12 +1,17 @@
 package com.mygdx.honestmirror.application.nnanalysis.feedback;
 
+import android.util.Log;
+
+import com.mygdx.honestmirror.application.domain.feedback.Feedback;
+import com.mygdx.honestmirror.application.domain.feedback.RawFeedbackElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackController {
     private static FeedbackController instance;
 
-    List<FeedbackElement> feedbackElements;
+    List<RawFeedbackElement> feedbackElements;
     private int maxFloatIndex;
 
     private FeedbackController() {
@@ -39,22 +44,19 @@ public class FeedbackController {
         for (int index=0; index < probabilities.length; index++){
 
         }
-        switch (maxFloatIndex){
-            case 0:
-                feedbackElements.add(new FeedbackElement(Feedback.left_down_right_up));
-                break;
-            case 1:
-                feedbackElements.add(new FeedbackElement(Feedback.left_up_right_down));
-                break;
-            case 2:
-                feedbackElements.add(new FeedbackElement(Feedback.hands_down));
-                break;
-            case 3:
-                feedbackElements.add(new FeedbackElement(Feedback.hands_up));
-                break;
-            default:
-                feedbackElements.add(new FeedbackElement(Feedback.empty));
+
+
+        Feedback feedback = Feedback.empty;
+
+        try{
+            feedback = Feedback.values()[maxFloatIndex];
         }
+        catch (Exception e){
+            Log.e(this.getClass().getCanonicalName(), e.getMessage());
+        }
+
+
+        feedbackElements.add(new RawFeedbackElement(feedback));
     }
 
     public String getFeedback(){
@@ -65,16 +67,8 @@ public class FeedbackController {
         return feedbackElements.get(0).getShortFeedback();
     }
 
-    public List<FeedbackElement> getFeedbackElements(){
-        //return this.feedbackElements;
-
-        List<FeedbackElement> items = new ArrayList<>();
-
-        items.add(new FeedbackElement(Feedback.hands_down));
-        items.add(new FeedbackElement(Feedback.hands_up));
-        items.add(new FeedbackElement(Feedback.left_down_right_up));
-
-        return items;
+    public List<RawFeedbackElement> getFeedbackElements(){
+        return this.feedbackElements;
     }
 
     public String getSummary(){

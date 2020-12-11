@@ -222,6 +222,4 @@ public class VideoSplicerUri implements VideoSplicer {
                 personsThread4, personsThread5).flatMap(x -> x.stream())
                 .collect(Collectors.toList());
     }
-
-
 }

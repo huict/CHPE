@@ -4,10 +4,8 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 // Ensuring that sessions can be cancelled and continued later on.
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
+
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
-import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.PersistenceClient;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
@@ -89,7 +87,7 @@ public class Session {
 
                 interpreterController.setJsonInput(person.toJson());
                 interpreterController.runNN();
-                feedbackController.addData(interpreterController.getInput());
+                feedbackController.addData(interpreterController.getOutput());
             }
         }
     }

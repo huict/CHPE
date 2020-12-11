@@ -100,7 +100,7 @@ public class InterpreterController {
         return FileUtil.loadMappedFile(context, modelFilePath);
     }
 
-    public float[][]getInput(){
+    public float[][] getOutput(){
         return outputArray;
     }
 }
