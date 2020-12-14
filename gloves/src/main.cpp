@@ -7,8 +7,7 @@ uint8_t battery_pin = 3;
 uint8_t battery_LED_RGB[3] = {4, 5, 6};
 uint8_t glove_LED_RGB[3] = {7, 8, 9};
 uint8_t phone_LED_RGB[3] = {10, 11, 12};
-RGB_LED glove_led = RGB_LED(glove_LED_RGB);
-RGB tmp_color;
+
 uint8_t fingers[5] = {A5, A4, A3, A2, A1};
 
 void connectHandler(BLEDevice central){

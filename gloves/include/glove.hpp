@@ -7,7 +7,6 @@
 #include <rgb_led.hpp>
 #include <support.hpp>
 
-
 /*
 central | device = subgloveTASK_
 TASK_
@@ -71,7 +70,7 @@ public:
 class DomGlove : public Glove{
 	// const char service_UUID[37] = "bd3d409d-f8a3-4c80-b8db-daea6ddabec3";
 	BLEDevice new_central, phone, glove;
-	bool createBLEService();
+	bool createBLEService(BLEUnsignedCharCharacteristic * dom_fingers, BLEUnsignedCharCharacteristic * sub_fingers);
 public:
 	DomGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
 	void run();
@@ -82,8 +81,8 @@ private:
 	BLECharacteristic characteristcs[5];
 
 	void connectToDom();
-	void connectHandler(BLEDevice &central, RGB_LED & glove_led);
-	void disconnectHandler(BLEDevice &central, RGB_LED & glove_led);
+	void connectHandler(BLEDevice central, RGB_LED & glove_led);
+	void disconnectHandler(BLEDevice central, RGB_LED & glove_led);
 public:
 	SubGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
 	void run();
