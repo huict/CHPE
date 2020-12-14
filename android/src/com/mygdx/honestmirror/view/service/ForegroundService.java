@@ -41,6 +41,11 @@ public class ForegroundService extends Service {
     static Runnable work;
     private VideoSplicer videoSplicer;
     private static FeedbackController feedbackController;
+    Uri otherUri = null;
+
+    public Uri getOtherUri() {
+        return otherUri;
+    }
 
     /**
      * This function sets the work that the foreground service will perform on start command.
@@ -55,8 +60,6 @@ public class ForegroundService extends Service {
             return "";
         return feedbackController.getFeedback();
     }
-
-
 
     /**
      * Constructor
@@ -108,7 +111,7 @@ public class ForegroundService extends Service {
          Launch thread that performs the actual work
          */
 
-        final Uri otherUri = intent.getData();
+        this.otherUri = intent.getData();
 
         thread = new Thread(() -> {
 
