@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.MainFeedbackActivity">
 
-    <include layout="@layout/content_main_feeback" />
+    <include layout="@layout/content_main_feedback" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
