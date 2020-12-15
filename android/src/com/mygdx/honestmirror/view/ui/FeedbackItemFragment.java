@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
+import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
+import com.mygdx.honestmirror.view.activity.SecondFragment;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 /**
@@ -43,13 +46,19 @@ public class FeedbackItemFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+
+    public void onCreate(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        view.findViewById(R.id.videoView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override
