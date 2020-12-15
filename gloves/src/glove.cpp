@@ -107,36 +107,44 @@ void SubGlove::disconnectHandler(BLEDevice central, RGB_LED & glove_led){
 };
 
 void domConnectHandler(BLEDevice central){
-    // if(central.address() == arduino::String("dd:f4:a3:9e:86:7c")){
-    //     connected_centrals[0] = central;
-    //     glove_connected = true;
-    //     Serial.print("Glove connected event, central: ");
-    // }else{
-    //     if(connected_centrals[1].connected()){
-    //         central.disconnect();
-    //         Serial.print("Denied connection event, central: ");
-    //     } else{
-    //         connected_centrals[1] = central;
-    //         phone_connected = true;
-    //         Serial.print("Connected event, central: ");
-    //     }
-    // };
-    Serial.print("Connect event, central: ");
+    Serial.println();
+    central.discoverAttributes();
+    if(central.deviceName() == arduino::String("SubmissiveGlove") && !glove_connected){
+        connected_centrals[0] = central;
+        glove_connected = true;
+        Serial.println("Glove connected event, central: ");
+    } else if(central.deviceName() == arduino::String("SubmissiveGlove") && glove_connected){
+        central.disconnect();
+        Serial.println("Denied glove connection event, central: ");   
+    } else if(phone_connected){
+        central.disconnect();
+        Serial.println("Denied connection event, central: ");
+    } else {
+        connected_centrals[1] = central;
+        phone_connected = true;
+        Serial.println("Connected event, central: ");
+    };
+
+    Serial.println(central.deviceName());
     Serial.println(central.address());
-    
+    Serial.println();
     BLElocal.advertise();
 };
 
 void domDisconnectHandler(BLEDevice central){
-    // if(central.address() == arduino::String("dd:f4:a3:9e:86:7c")){
-    //     glove_connected = false;
-    //     Serial.print("Glove disconnect event, central: ");
-    // }else{
-    //     phone_connected = false;
-    //     Serial.print("Phone disconnect event, central: ");
-    // };
-    Serial.print("Disconnect event, central: ");
+    Serial.println();
+    central.discoverAttributes();   
+    if(central.address() == connected_centrals[0].address() && glove_connected){
+        glove_connected = false;
+        Serial.println("Glove disconnect event, central: ");
+    } else if(central.address() == connected_centrals[1].address() && phone_connected) {
+        phone_connected = false;
+        Serial.println("Phone disconnect event, central: ");
+    } else {
+        Serial.println("Unkown disconnect: ");
+    };
     Serial.println(central.address());
+    Serial.println();
     BLElocal.advertise();
 };
 
@@ -147,6 +155,7 @@ bool DomGlove::createBLEService(BLEUnsignedCharCharacteristic * dom_fingers, BLE
         while (1);
     };
     
+    BLElocal.setDeviceName("DominantGlove");
     BLElocal.setEventHandler(BLEConnected, domConnectHandler);
     BLElocal.setEventHandler(BLEDisconnected, domDisconnectHandler);
     // set advertised local name and service UUID:
@@ -271,6 +280,7 @@ void SubGlove::run(){
     uint8_t fingers_pos[5];
     RGB rgb;
     unsigned char test_val = 1;
+    
 
     BLECharacteristic sub_finger_0;
 	BLECharacteristic sub_finger_1;
@@ -290,6 +300,8 @@ void SubGlove::run(){
         Serial.println("starting BLE failed!");
         while (1);
     };
+    
+    BLElocal.setDeviceName("SubmissiveGlove");
 
     while(true){
         switch(state){
@@ -310,7 +322,7 @@ void SubGlove::run(){
             }
 
             case GLOVE::STATES::SUB::READ_SENSORS:{
-                Serial.println("READ");
+                // Serial.println("READ");
                 getFingerPositions(fingers_pos);
                 if(BLElocal.connected()){
                     state = GLOVE::STATES::SUB::UPDATE_CHARACTERISTICS;
@@ -321,7 +333,7 @@ void SubGlove::run(){
             }
 
             case GLOVE::STATES::SUB::UPDATE_CHARACTERISTICS: {
-                Serial.println("UPDATE");
+                // Serial.println("UPDATE");
                 // updateCharacteristics(characteristics_list, fingers_pos);
                 characteristics_list[0].writeValue(int32_t(test_val+0));
                 characteristics_list[1].writeValue(int32_t(test_val+1));

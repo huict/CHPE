@@ -69,7 +69,7 @@ public:
 // Domglove ==  peripheral == prikbord
 class DomGlove : public Glove{
 	// const char service_UUID[37] = "bd3d409d-f8a3-4c80-b8db-daea6ddabec3";
-	BLEDevice new_central, phone, glove;
+	// BLEDevice new_central, phone, glove;
 	bool createBLEService(BLEUnsignedCharCharacteristic * dom_fingers, BLEUnsignedCharCharacteristic * sub_fingers);
 public:
 	DomGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
