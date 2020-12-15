@@ -53,7 +53,7 @@ public class FeedbackItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        view.findViewById(R.id.videoView).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
