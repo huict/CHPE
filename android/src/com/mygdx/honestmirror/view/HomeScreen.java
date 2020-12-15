@@ -104,6 +104,7 @@ public class HomeScreen extends AndroidApplication {
         embeddedView = findViewById(R.id.gameView);
         previousResultScreenButton = findViewById(R.id.previousResults);
         galleryScreenButton = findViewById(R.id.galleryScreenButton);
+//        bluetoothScreenButton = findViewById(R.id.bluetoothButton)
         JUMP = findViewById(R.id.JUMP);
         /**
          * @function Binds the click to a function
