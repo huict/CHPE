@@ -1,0 +1,23 @@
+central | device = subgloveTASK_
+TASK_
+peripheral | service = domglove
+
+Gloves : SUB & DOM
+DOM : heeft "bulletin bord" waar alle characteristics in staan
+DOM : Bezit het BLEService object wat een "Glove" service gaat aanbieden
+DOM : Door "BLE.begin()" aan te roepen kunnen we beginnen met handlers, namen etc te setten. bijvoorbeeld : BLE.setLocalName("Glove")
+DOM : Door iedere loop BLE.poll() te callen worden events afgehandeld
+
+SUB : verbind met de DOM en past characteristics aan
+SUB : Bezit een BLEDevice object bijvoorbeeld genaamd "Peripheral" en die word gevuld met een BLE.available waarop we ".localName()" kunnen aanroepen om te kijken
+	of het wel "Glove" is.
+SUB : Als de "Peripheral" de "Glove" is dan kunnen we characteristics gaan discoveren met behulp van UUID's
+SUB : Zolang "Peripheral.connected() == true" is de SUB met de DOM verbonden
+
+Phone: Android
+Android : verbind met de DOM en leest characteristics uit
+
+	BLEService testService
+	BLE.setAdvertisedService(testService) -> verderwerken met testService
+	BLE.addService(testService);
+	BLE.advertise(); -> alle commando's aanroepen op BLE

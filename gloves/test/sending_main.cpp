@@ -3,11 +3,11 @@
 BLEService testService("bd3d409d-f8a3-4c80-b8db-daea6ddabec3");  // BLE LED Service
 
 
-BLEUnsignedCharCharacteristic switchCharacteristic("d2be0238-e8d7-4b2f-9a2a-0063c1f1f456", BLERead | BLEWrite | BLENotify);
-BLEUnsignedCharCharacteristic switchCharacteristic1("c00552e0-d880-4c7d-8baf-93356a8ba835", BLERead | BLEWrite | BLENotify);
-BLEUnsignedCharCharacteristic switchCharacteristic2("20ac424f-de57-4c34-b186-920c27b117c9", BLERead | BLEWrite | BLENotify);
-BLEUnsignedCharCharacteristic switchCharacteristic3("2ed22785-bc51-442a-8f29-2d2ea7a40e9f", BLERead | BLEWrite | BLENotify);
-BLEUnsignedCharCharacteristic switchCharacteristic4("52155daf-df88-4990-bc5c-125e5cbd759b", BLERead | BLEWrite | BLENotify);
+BLEIntCharacteristic switchCharacteristic("d2be0238-e8d7-4b2f-9a2a-0063c1f1f456", BLERead | BLEWrite | BLENotify);
+BLEIntCharacteristic switchCharacteristic1("c00552e0-d880-4c7d-8baf-93356a8ba835", BLERead | BLEWrite | BLENotify);
+BLEIntCharacteristic switchCharacteristic2("20ac424f-de57-4c34-b186-920c27b117c9", BLERead | BLEWrite | BLENotify);
+BLEIntCharacteristic switchCharacteristic3("2ed22785-bc51-442a-8f29-2d2ea7a40e9f", BLERead | BLEWrite | BLENotify);
+BLEIntCharacteristic switchCharacteristic4("52155daf-df88-4990-bc5c-125e5cbd759b", BLERead | BLEWrite | BLENotify);
 
 void ConnectHandler(BLEDevice central) {
   // central connected event handler
