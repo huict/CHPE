@@ -5,14 +5,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.view.service.ForegroundService;
 
-public class MediaControllerActivity extends Activity {
+public class MediaControllerActivity extends AppCompatActivity {
     ForegroundService foregroundService = new ForegroundService();
     Uri uri = foregroundService.getOtherUri();
 
-    //https://www.tutlane.com/tutorial/android/android-video-player-with-examples
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +26,7 @@ public class MediaControllerActivity extends Activity {
         MediaController mediaController= new MediaController(this);
         mediaController.setAnchorView(videoView);
 
-        //Starting VideView By Setting MediaController and URI
+        //Starting VideoView By Setting MediaController and URI
         videoView.setMediaController(mediaController);
         videoView.setVideoURI(uri);
         videoView.requestFocus();
