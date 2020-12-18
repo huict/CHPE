@@ -9,7 +9,7 @@
 # from a PoseNet model. It will also export the model in a tflite format.	#
 # Several CLI arguments for flexibility and testing purposes.				#
 #===========================================================================#
-
+from typing import List
 import os, sys, getopt
 #Prevent tensorflow from printing warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -66,11 +66,11 @@ def prepare_pose_data(pose, do_normalize = False, x_max = 257, y_max = 257):
 		inputs.append(normalize_value(keypoint['position']['y'], y_max) if do_normalize else keypoint['position']['y'])
 	return inputs
 
-def create_model(nr_inputs, amount_output_neurons):
+def create_model(nr_inputs, amount_output_neurons, layer_list):
 	"""create_model function, function that creates a NN to use on posenet output data.
 
 	Args:
-		nr_inputs (int): Amount of input nerurons.
+		nr_inputs (int): Amount of input neurons.
 		amount_output_neurons (int, optional): Amount of possible outputs.
 
 	Returns:
@@ -82,25 +82,6 @@ def create_model(nr_inputs, amount_output_neurons):
 	# First layer is the input layer
 	model.add(tf.keras.layers.Dense(nr_inputs, input_shape=(34,)))
 
-	# Hidden layers Argumentation : 
-	#   First we give the network the oppertunity to group left arm, right arm, left leg, right leg and face (5)
-	#   Next to group the arms, legs and face (3)
-	#   And finally to group them all together (1)
-
-	# 4,3,3,2 0.89
-	# 6,3,1 0.89
-	# 6,3 0.87
-	# 6,2 0.87
-	# 7,2 0.87
-	# 7,4,2
-	# 4,4,3,2 0.86
-	# 4,3,3,1 0.86
-	# 5,3 0.86
-	# 5,3,1 0.84
-	#7,3 0.84
-	# 3,3,3,2 0.83
-
-	layer_list = [6,3]
 	for size in layer_list:
 		model.add(layers.Dense((size*nr_inputs), activation=activation_function))
 	
@@ -189,22 +170,25 @@ def main(argv):
 	max_xy = (257,257)
 	normalize_poses = True
 		# Used in training network
+	layer_list = [6,3]
 	batch_size = 32
 	epochs = 10000
 		# Used for debugging
 	show_model = False
 	classify_me = False
-	help_message = "generate_model.py -p <poses json file> -l <labels json file> -m <model file> --max_xy <(max_x,max_y)> -b <batch size> -e <number of epochs> -c <classify pose from poses json> -n <do not normalize data> -s <show model>"
+	help_message = "generate_model.py  Copyright (C) 2020  Maaike Hovenkamp, Duur Alblas \n" + "This program comes with ABSOLUTELY NO WARRANTY; for details : https://www.gnu.org/licenses/gpl-3.0.nl.html \n" +"This is free software, and you are welcome to redistribute it \n" + "under certain conditions; https://www.gnu.org/licenses/gpl-3.0.nl.html \n"
+	help_message += "\n"
+	help_message +=	" -h or --help | This help message\n -p or --poses <poses.json> | A .json with poses.\n -l or --labels <labels.json> | A .json with labels.\n -m or --model <model> | A name for model .tflite file.\n -M or --max_xy <257,257> | A maximum X and Y value.\n -b or --batch <32> | Size of a batch.\n -e or --epochs <10000> | Number of epochs.\n -c or --classify <> | Classify a pose from the poses .json.\n -n or --no_normalize | Do not normalize data.\n -s or --show_model | Show the model statistics.\n -S or --shape <6,2> | Shape of the neural network layers.\n"
 
 	# Listen for command line interface arguments
 	try:
-		options, _ = getopt.getopt(argv,"hp:l:m:b:e:c:ns",["poses=","labels=","model=","max_xy=","batch=","epochs=","classify=","no_normalize","show_model"])
+		options, _ = getopt.getopt(argv,"hp:l:m:M:b:e:c:nsS:",["help","poses=","labels=","model=","max_xy=","batch=","epochs=","classify=","no_normalize","show_model","shape="])
 	except getopt.GetoptError:
 		print(help_message)
 		sys.exit(2)
 
 	for option, arg in options:
-		if option == '-h':
+		if option in ("-h", "--help"):
 			print(help_message)
 			sys.exit()
 		elif option in ("-p", "--poses"):
@@ -213,8 +197,12 @@ def main(argv):
 			labels_json = arg
 		elif option in ("-m", "--model"):
 			model_name = arg
-		elif option in ("--max_xy"):
-			max_xy = arg
+		elif option in ("-M", "--max_xy"):
+			try:
+				max_xy = tuple(map(int, arg.split(',')))
+			except ValueError:
+				print("The max_xy argument must be a of type integer 257,257")
+				sys.exit(2)
 		elif option in ("-b", "--batch"):
 			batch_size = arg
 		elif option in ("-e", "--epochs"):
@@ -225,6 +213,12 @@ def main(argv):
 			normalize_poses = False
 		elif option in ("-s", "--show_model"):
 			show_model = True
+		elif option in ("-S", "--shape"):
+			try:
+				layer_list = list(map(int, arg.split(',')))
+			except ValueError:
+				print("The shape argument must be of type integer 2,6")
+				sys.exit(2)
 
 	# Check if the variables contain expected values and whether files exist
 	if not os.path.exists(poses_json):
@@ -232,9 +226,6 @@ def main(argv):
 		sys.exit(2)
 	elif not os.path.exists(labels_json):
 		print("The ",labels_json," file does not exist!")
-		sys.exit(2)
-	elif type(max_xy) is not tuple:
-		print("The max_xy argument must be a of type tuple (x,y)")
 		sys.exit(2)
 	elif type(batch_size) is not int:
 		print("The batch argument must be of type integer")
@@ -265,7 +256,7 @@ def main(argv):
 
 
 	# Create model
-	model = create_model(len(training_data[0]), len(label_indexes))
+	model = create_model(len(training_data[0]), len(label_indexes), layer_list)
 	# Train the model using the training data, labels and defined batch size and amount of epochs
 	trained_model = train_model(model, training_data, label_per_image, batch_size ,epochs)
 

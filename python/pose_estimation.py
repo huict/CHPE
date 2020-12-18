@@ -268,7 +268,9 @@ def main(argv):
 	image_directory = 'data_set/'
 	poses_json = "poses.json"
 	labels_json = "labels.json"
-	help_message = 'pose-estimation.py -d <image directory> -m <model file> -p <poses file> -l <labels file> -c <clean file>'
+	help_message = "generate_model.py  Copyright (C) 2020  Maaike Hovenkamp, Duur Alblas \n" + "This program comes with ABSOLUTELY NO WARRANTY; for details : https://www.gnu.org/licenses/gpl-3.0.nl.html \n" +"This is free software, and you are welcome to redistribute it \n" + "under certain conditions; https://www.gnu.org/licenses/gpl-3.0.nl.html \n"
+	help_message += "\n"
+	help_message += 'pose-estimation.py -d <image directory> -m <model file> -p <poses file> -l <labels file> -c <clean file>'
 	overwrite_file = False
 
 	try:

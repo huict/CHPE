@@ -8,6 +8,9 @@ hs_err_pid*
 ## Robovm
 /ios/robovm-build/
 
+## /pio
+/gloves/.pio
+
 ## GWT
 /html/war/
 /html/gwt-unitCache/
