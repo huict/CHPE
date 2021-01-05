@@ -2,6 +2,8 @@ package com.mygdx.honestmirror.view.ui.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,9 @@ import android.widget.TextView;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.domain.feedback.RawFeedbackElement;
+import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -18,11 +23,11 @@ import java.util.List;
 public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListItemAdapter.ViewHolder> {
 
     private final List<RawFeedbackElement> mValues;
-
     public FeedbackListItemAdapter(List<RawFeedbackElement> items) {
         mValues = items;
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -38,12 +43,11 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
 
         holder.mContentView.setText(mValues.get(position).getShortFeedback());
 
-        holder.mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DebugLog.log("aahfhjftjfji");
-                
-            }
+        holder.mButton.setOnClickListener(v -> {
+            //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick
+            DebugLog.log("aahfhjftjfji");
+            Intent intent = new Intent(holder.context, MediaControllerActivity.class);
+            holder.context.startActivity(intent);
         });
     }
 
@@ -58,15 +62,18 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
         public final TextView mContentView;
         public RawFeedbackElement mItem;
         Button mButton;
+        Context context;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.description_textView);
-            mButton = (Button) view.findViewById(R.id.button3);
+            mIdView = view.findViewById(R.id.item_number);
+            mContentView = view.findViewById(R.id.description_textView);
+            mButton = view.findViewById(R.id.button3);
+            this.context = view.getContext();
         }
 
+        @NotNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

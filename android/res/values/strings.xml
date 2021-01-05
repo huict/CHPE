@@ -19,6 +19,7 @@
 
     <string name="hello_first_fragment">This is dummy text to give you an idea what this item would look like if it contained actual meaningful text.</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="mediaplayer">Mediaplayer!</string>
     <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>

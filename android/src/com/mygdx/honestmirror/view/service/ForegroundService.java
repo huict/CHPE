@@ -41,9 +41,9 @@ public class ForegroundService extends Service {
     static Runnable work;
     private VideoSplicer videoSplicer;
     private static FeedbackController feedbackController;
-    Uri otherUri = null;
+    private static Uri otherUri;
 
-    public Uri getOtherUri() {
+    public static Uri getOtherUri() {
         return otherUri;
     }
 

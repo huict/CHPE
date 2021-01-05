@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
     <application
         android:allowBackup="false"
         android:alwaysRetainTaskState="true"
@@ -25,7 +24,7 @@
         <activity
             android:name=".view.activity.MainFeedbackActivity"
             android:label="@string/title_activity_main_feeback"
-            android:theme="@style/AltTheme"/>
+            android:theme="@style/AltTheme" />
         <activity android:name=".view.ui.a_Results" />
         <activity android:name=".view.ui.a_Archive" />
         <activity android:name=".view.ui.a_VideoSelect" />
