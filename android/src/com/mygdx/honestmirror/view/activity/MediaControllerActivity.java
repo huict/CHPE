@@ -28,4 +28,9 @@ public class MediaControllerActivity extends AppCompatActivity {
         videoView.seekTo(5000);
         videoView.start();
     }
+
+    //TODO: seekto() with the appropiate timestamp
+    //TODO: show bigger feedback
+    //TODO: add title
+
 }
