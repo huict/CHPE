@@ -33,10 +33,10 @@
  * 
  */
 struct RGB{
-	uint8_t RED[3] = {255,0,0};
-	uint8_t GREEN[3] = {0,255,0};
-	uint8_t BLUE[3] = {0,0,255};
-	uint8_t OFF[3] = {0,0,0};
+	const uint8_t RED[3] = {255,0,0};
+	const uint8_t GREEN[3] = {0,255,0};
+	const uint8_t BLUE[3] = {0,0,255};
+	const uint8_t OFF[3] = {0,0,0};
 };
 
 /**

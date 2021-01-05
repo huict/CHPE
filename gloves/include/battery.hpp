@@ -39,7 +39,7 @@ public:
      * 
      * @param analog_read_pin uint8_t
      */
-    Battery( uint8_t analog_read_pin);
+    Battery(const uint8_t analog_read_pin);
 
     /**
      * @brief Get the Battery Percentage object

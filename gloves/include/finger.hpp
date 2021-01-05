@@ -41,7 +41,7 @@ public:
      * @param finger_index GLOVE.DIGITS
      * @param flex_pin uint8_t
      */
-    Finger(GLOVE::DIGITS finger_index, uint8_t flex_pin);
+    Finger(GLOVE::DIGITS finger_index,const uint8_t flex_pin);
 
     /**
      * @brief Get information about Finger

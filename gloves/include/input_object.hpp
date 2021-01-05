@@ -32,14 +32,14 @@
  */
 class Input_object{
 private:
-    uint8_t input_pin;
+    const uint8_t input_pin;
 public:
     /**
      * @brief Construct a new Input_object object
      * 
      * @param input_pin uint8_t
      */
-    Input_object(uint8_t input_pin);
+    Input_object(const uint8_t input_pin);
     
     /**
      * @brief Read the pin status of the input object

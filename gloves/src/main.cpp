@@ -23,14 +23,14 @@
 #include "../include/glove.hpp"
 
 // Single pin inputs
-uint8_t glove_switch = 2;
-uint8_t battery_pin = 3;
-uint8_t fingers[5] = {A5, A4, A3, A2, A1};
+const uint8_t glove_switch = 2;
+const uint8_t battery_pin = 3;
+const uint8_t fingers[5] = {A5, A4, A3, A2, A1};
 
 // LED pins
-uint8_t battery_LED_RGB[3] = {4, 5, 6};
-uint8_t glove_LED_RGB[3] = {7, 8, 9};
-uint8_t phone_LED_RGB[3] = {10, 11, 12};
+const uint8_t battery_LED_RGB[3] = {4, 5, 6};
+const uint8_t glove_LED_RGB[3] = {7, 8, 9};
+const uint8_t phone_LED_RGB[3] = {10, 11, 12};
 
 void setup() {
 	Serial.begin(9600);

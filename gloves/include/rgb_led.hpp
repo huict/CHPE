@@ -41,14 +41,14 @@ public:
      * 
      * @param pin uint8_t[3]
      */
-    RGB_LED(uint8_t pin[3]);
+    RGB_LED(const uint8_t pin[3]);
 
     /**
      * @brief Set the color of an RGB_LED
      * 
      * @param color uint8_t[3]
      */
-    void setColor(uint8_t* color);
+    void setColor(const uint8_t* color);
 };
 
 #endif

@@ -25,7 +25,7 @@
 // Finger class
 Finger::Finger(
     GLOVE::DIGITS finger_index,
-    uint8_t flex_pin
+    const uint8_t flex_pin
 ):
     finger_index(finger_index),
     sensor(flex_pin)
@@ -34,5 +34,11 @@ Finger::Finger(
 };
 
 int Finger::getInformation(){
-    return sensor.getFlexBend();
+    const unsigned int amount_of_measures = 11;
+    std::array<int, amount_of_measures> measured_values;
+    for( unsigned int i = 0; i < amount_of_measures; i++){
+        measured_values[i] = sensor.getFlexBend();
+    }
+    std::sort(measured_values.begin(), measured_values.end());
+    return measured_values[amount_of_measures/2];
 };

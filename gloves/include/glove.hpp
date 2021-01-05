@@ -86,7 +86,7 @@ public:
 	 * @param battery_led_pin uint8_t[3]
 	 * @param finger_pins uint8_t[5]
 	 */
-	Glove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
+	Glove(const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins);
 	
 	/**
 	 * @brief run function, virtual void
@@ -108,7 +108,7 @@ class DomGlove : public Glove{
 	 * @param sub_fingers BLEIntCharacteristic[5]
 	 * @return bool
 	 */
-	bool createBLEService(BLEIntCharacteristic * dom_fingers, BLEIntCharacteristic * sub_fingers);
+	bool createBLEService(BLEUnsignedIntCharacteristic * dom_fingers, BLEUnsignedIntCharacteristic * sub_fingers);
 public:
 
 	/**
@@ -120,7 +120,7 @@ public:
 	 * @param battery_led_pin uint8_t[3]
 	 * @param finger_pins uint8_t[5]
 	 */
-	DomGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
+	DomGlove(const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins);
 	
 	/**
 	 * @brief Main run function of the DomGlove.
@@ -154,7 +154,7 @@ public:
 	 * @param battery_led_pin uint8_t[3]
 	 * @param finger_pins uint8_t[5]
 	 */
-	SubGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins);
+	SubGlove(const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins);
 	
 	/**
 	 * @brief Main run function of the SubGlove

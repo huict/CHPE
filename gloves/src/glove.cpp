@@ -35,7 +35,7 @@ bool last_phone_status = phone_connected;
 
 // ===================================== Constructors =============================
 
-Glove::Glove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins):
+Glove::Glove(const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins):
     battery(battery_pin),
     bluetooth_phone_LED(phone_led_pins),
     bluetooth_glove_LED(glove_led_pins),
@@ -48,11 +48,11 @@ Glove::Glove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pi
     fingers[4] = new Finger(GLOVE::DIGITS::PINKY, finger_pins[4]);
 };
 
-DomGlove::DomGlove( uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins):
+DomGlove::DomGlove( const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins):
     Glove(battery_pin, glove_led_pins, phone_led_pins, battery_led_pin, finger_pins)
 {};
 
-SubGlove::SubGlove(uint8_t battery_pin, uint8_t* glove_led_pins, uint8_t* phone_led_pins, uint8_t* battery_led_pin, uint8_t* finger_pins):
+SubGlove::SubGlove(const uint8_t battery_pin, const uint8_t* glove_led_pins, const uint8_t* phone_led_pins, const uint8_t* battery_led_pin, const uint8_t* finger_pins):
     Glove(battery_pin, glove_led_pins, phone_led_pins, battery_led_pin, finger_pins)
 {};
 
@@ -166,7 +166,7 @@ void domDisconnectHandler(BLEDevice central){
     BLElocal.advertise();
 };
 
-bool DomGlove::createBLEService(BLEIntCharacteristic * dom_fingers, BLEIntCharacteristic * sub_fingers){
+bool DomGlove::createBLEService(BLEUnsignedIntCharacteristic * dom_fingers, BLEUnsignedIntCharacteristic * sub_fingers){
     // begin initialization
     if (!BLElocal.begin()) {
         Serial.println("starting BLE failed!");
@@ -208,19 +208,19 @@ void DomGlove::run(){
     RGB rgb;
     // while(!BLE.begin());
 
-    BLEIntCharacteristic dom_finger_0(fingers_UUID[0], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic dom_finger_1(fingers_UUID[1], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic dom_finger_2(fingers_UUID[2], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic dom_finger_3(fingers_UUID[3], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic dom_finger_4(fingers_UUID[4], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic dom_finger_0(fingers_UUID[0], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic dom_finger_1(fingers_UUID[1], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic dom_finger_2(fingers_UUID[2], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic dom_finger_3(fingers_UUID[3], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic dom_finger_4(fingers_UUID[4], BLERead | BLEWrite | BLENotify);
     
-    BLEIntCharacteristic sub_finger_0(fingers_UUID[5], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic sub_finger_1(fingers_UUID[6], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic sub_finger_2(fingers_UUID[7], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic sub_finger_3(fingers_UUID[8], BLERead | BLEWrite | BLENotify);
-    BLEIntCharacteristic sub_finger_4(fingers_UUID[9], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic sub_finger_0(fingers_UUID[5], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic sub_finger_1(fingers_UUID[6], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic sub_finger_2(fingers_UUID[7], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic sub_finger_3(fingers_UUID[8], BLERead | BLEWrite | BLENotify);
+    BLEUnsignedIntCharacteristic sub_finger_4(fingers_UUID[9], BLERead | BLEWrite | BLENotify);
 
-    BLEIntCharacteristic characteristics_list[5]=
+    BLEUnsignedIntCharacteristic characteristics_list[5]=
     {
         dom_finger_0,
         dom_finger_1,
@@ -229,7 +229,7 @@ void DomGlove::run(){
         dom_finger_4
     };
 
-    BLEIntCharacteristic sub_characteristics_list[5]=
+    BLEUnsignedIntCharacteristic sub_characteristics_list[5]=
     {
         sub_finger_0,
         sub_finger_1,

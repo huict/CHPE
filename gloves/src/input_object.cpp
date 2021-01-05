@@ -25,7 +25,7 @@
 // Input_object class
 
 Input_object::Input_object(
-    uint8_t input_pin
+    const uint8_t input_pin
 ):
     input_pin(input_pin)
 {

@@ -26,7 +26,7 @@
 
 // Battery class
 Battery::Battery(
-    uint8_t analog_read_pin
+    const uint8_t analog_read_pin
 ):
     analog_read_pin(analog_read_pin)
 {
