@@ -33,27 +33,37 @@
 
         <TextView
             android:id="@+id/textview_second"
-            android:layout_width="92dp"
-            android:layout_height="20dp"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="150dp"
-            android:layout_marginTop="135dp"
-            android:layout_marginEnd="100dp"
-            android:text="Press the video for pausing and the video" />
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="148dp"
+            android:layout_marginEnd="26dp"
+            android:text="@string/press_the_video_for_pausing_and_the_video" />
 
-<!--        <Button-->
-<!--            android:id="@+id/button_second"-->
-<!--            android:layout_width="273dp"-->
-<!--            android:layout_height="68dp"-->
-<!--            android:layout_alignParentStart="true"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_marginStart="73dp"-->
-<!--            android:layout_marginEnd="74dp"-->
-<!--            android:layout_marginBottom="25dp"-->
-<!--            android:text="@string/previous" />-->
+        <Button
+            android:id="@+id/button_second"
+            android:layout_width="273dp"
+            android:layout_height="68dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="73dp"
+            android:layout_marginEnd="74dp"
+            android:layout_marginBottom="25dp"
+            android:text="@string/previous" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="97dp"
+            android:layout_marginTop="41dp"
+            android:text="@string/this_is_where_the_title_should_go" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

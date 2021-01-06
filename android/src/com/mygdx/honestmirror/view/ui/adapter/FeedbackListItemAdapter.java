@@ -9,18 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.domain.feedback.RawFeedbackElement;
 import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
-
 public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListItemAdapter.ViewHolder> {
+    View view;
 
     private final List<RawFeedbackElement> mValues;
     public FeedbackListItemAdapter(List<RawFeedbackElement> items) {
@@ -30,7 +27,7 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
+        view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_feedback_list_item, parent, false);
         return new ViewHolder(view);
     }
@@ -45,7 +42,9 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
 
         holder.mButton.setOnClickListener(v -> {
             //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick
-            DebugLog.log("aahfhjftjfji");
+            MediaControllerActivity mediaControllerActivity = new MediaControllerActivity();
+            TextView textView = view.findViewById(R.id.title);
+            mediaControllerActivity.setTitle(holder.mContentView, textView);
             Intent intent = new Intent(holder.context, MediaControllerActivity.class);
             holder.context.startActivity(intent);
         });
@@ -76,7 +75,7 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
         @NotNull
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " contentView: '" + mContentView.getText() + "'";
         }
     }
 }
