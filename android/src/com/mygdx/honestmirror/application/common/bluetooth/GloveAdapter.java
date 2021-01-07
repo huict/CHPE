@@ -35,4 +35,8 @@ public class GloveAdapter {
     public void setBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
         this.bluetoothAdapter = bluetoothAdapter;
     }
+
+    public void connect() {
+        BluetoothAdapter.connect();
+    }
 }
