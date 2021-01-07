@@ -42,8 +42,8 @@ public class MediaControllerActivity extends AppCompatActivity {
         videoView.start();
     }
 
-    public void storeDescription(TextView mContentView) {
-        this.text = mContentView.getText().toString();
+    public void storeDescription(String mContentView) {
+        this.text = mContentView;
     }
 
     //TODO: seekto() with the appropiate timestamp
