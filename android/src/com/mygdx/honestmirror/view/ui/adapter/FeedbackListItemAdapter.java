@@ -42,10 +42,9 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
 
         holder.mButton.setOnClickListener(v -> {
             //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick
-            MediaControllerActivity mediaControllerActivity = new MediaControllerActivity();
-            TextView textView = view.findViewById(R.id.title);
-            mediaControllerActivity.setTitle(holder.mContentView, textView);
             Intent intent = new Intent(holder.context, MediaControllerActivity.class);
+            MediaControllerActivity mediaControllerActivity = new MediaControllerActivity();
+            mediaControllerActivity.storeDescription(holder.mContentView);
             holder.context.startActivity(intent);
         });
     }
@@ -70,6 +69,7 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
             mContentView = view.findViewById(R.id.description_textView);
             mButton = view.findViewById(R.id.button3);
             this.context = view.getContext();
+            DebugLog.log("mContentView= " + mContentView.getText());
         }
 
         @NotNull
