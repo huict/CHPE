@@ -64,17 +64,17 @@ protected:
 	/**
 	 * @brief Get the Finger Positions of all the Finger objects connected to a Glove
 	 * 
-	 * @param finger_pos uint8_t[5]
+	 * @param finger_pos uint16_t[5]
 	 */
-	void getFingerPositions( uint8_t * finger_pos);
+	void getFingerPositions( uint16_t * finger_pos);
 
 	/**
 	 * @brief Update the characteristcs of the Glove
 	 * 
 	 * @param characteristics BLECharacterisic[]
-	 * @param finger_positions uint8_t[]
+	 * @param finger_positions uint16_t[]
 	 */
-	void updateCharacteristics(BLECharacteristic* characteristics, uint8_t * finger_positions);
+	void updateCharacteristics(BLECharacteristic* characteristics, uint16_t * finger_positions);
 
 public:
 	/**
@@ -137,7 +137,7 @@ public:
  */
 class SubGlove : public Glove{
 private:
-	BLECharacteristic characteristcs[5];
+	BLECharacteristic characteristics[5];
 	
 	/**
 	 * @brief Connect to a DomGlove.

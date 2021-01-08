@@ -43,6 +43,10 @@ void RGB_LED::setOutput(){
     digitalWrite(rgb_pins[2], current_color[2]);
 }
 
+uint8_t * RGB_LED::getColor(){
+    return current_color;
+}
+
 void RGB_LED::setColor(const uint8_t rgb_color[3]){
     current_color[0] = rgb_color[0]; // Red
     current_color[1] = rgb_color[1]; // Green

@@ -27,11 +27,10 @@ BLEService service("bd3d409d-f8a3-4c80-b8db-daea6ddabec3");
 BLELocalDevice BLElocal;
 BLEDevice connected_centrals[2];
 
-// TODO: Find out if these can be declared elsewhere using static
-bool glove_connected = false;
-bool last_glove_status = glove_connected;
-bool phone_connected = false;
-bool last_phone_status = phone_connected;
+bool g_glove_connected = false;
+bool g_last_glove_status = g_glove_connected;
+bool g_phone_connected = false;
+bool g_last_phone_status = g_phone_connected;
 
 // ===================================== Constructors =============================
 
@@ -58,13 +57,13 @@ SubGlove::SubGlove(const uint8_t battery_pin, const uint8_t* glove_led_pins, con
 
 // ===================================== Functions =============================
 
-void Glove::getFingerPositions( uint8_t * finger_pos){
+void Glove::getFingerPositions( uint16_t * finger_pos){
     for(unsigned int i = 0; i < 5; i++){
         finger_pos[i] = fingers[i]->getInformation();
     };
 };
 
-void Glove::updateCharacteristics( BLECharacteristic * characteristics, uint8_t * finger_positions){
+void Glove::updateCharacteristics( BLECharacteristic * characteristics, uint16_t * finger_positions){
     characteristics[0].writeValue(finger_positions[0]);
     characteristics[1].writeValue(finger_positions[1]);
     characteristics[2].writeValue(finger_positions[2]);
@@ -77,32 +76,36 @@ void SubGlove::connectToDom(){
     if (BLElocal.scanForName(service_name)){
         Serial.println("Start Scanning");
         // check if a peripheral has been discovered
-        bool glove_connected = false;
-        while(!glove_connected){
+        g_glove_connected = false;
+        while(!g_glove_connected){
             BLEDevice dom_glove_device = BLElocal.available();
             if (dom_glove_device){
                 // Check for correct device discovered
                 if (dom_glove_device.localName() == service_name) {
-                    glove_connected = true;
+                    g_glove_connected = true;
                     Serial.println("Found Dominant Glove");
                     BLElocal.stopScan();
                     if (dom_glove_device.connect()) {
                         Serial.println("Connected");
                     };
                     if(dom_glove_device.discoverAttributes()){
-                        characteristcs[0] = dom_glove_device.characteristic(fingers_UUID[5]);
-                        characteristcs[1] = dom_glove_device.characteristic(fingers_UUID[6]);
-                        characteristcs[2] = dom_glove_device.characteristic(fingers_UUID[7]);
-                        characteristcs[3] = dom_glove_device.characteristic(fingers_UUID[8]);
-                        characteristcs[4] = dom_glove_device.characteristic(fingers_UUID[9]);
+                        characteristics[0] = dom_glove_device.characteristic(fingers_UUID[5]);
+                        characteristics[1] = dom_glove_device.characteristic(fingers_UUID[6]);
+                        characteristics[2] = dom_glove_device.characteristic(fingers_UUID[7]);
+                        characteristics[3] = dom_glove_device.characteristic(fingers_UUID[8]);
+                        characteristics[4] = dom_glove_device.characteristic(fingers_UUID[9]);
                         for(unsigned int i = 0; i < 5; i++){
-                            if(characteristcs[i] == false){
+                            if(characteristics[i] == false){
                                 Serial.println("Finger "+String(i)+" NOT Accessable");
+                                g_glove_connected = false;
+                                continue;
                             };
-                            if(characteristcs[i].canSubscribe()){
-                                characteristcs[i].subscribe();
+                            if(characteristics[i].canSubscribe()){
+                                characteristics[i].subscribe();
                             } else {
                                 Serial.println("Finger "+String(i)+" NOT Subscribable");
+                                g_glove_connected = false;
+                                continue;
                             };
                         };
                     };
@@ -119,27 +122,27 @@ void SubGlove::connectToDom(){
  * @param central 
  */
 void domConnectHandler(BLEDevice central){
-    Serial.println();
+    Serial.println("---ConHand---");
     central.discoverAttributes();
-    if(central.deviceName() == arduino::String("SubmissiveGlove") && !glove_connected){
+    if(central.deviceName() == arduino::String("SubmissiveGlove") && !g_glove_connected){
         connected_centrals[0] = central;
-        glove_connected = true;
+        g_glove_connected = true;
         Serial.println("Glove connected event, central: ");
-    } else if(central.deviceName() == arduino::String("SubmissiveGlove") && glove_connected){
+    } else if(central.deviceName() == arduino::String("SubmissiveGlove") && g_glove_connected){
         central.disconnect();
         Serial.println("Denied glove connection event, central: ");   
-    } else if(phone_connected){
+    } else if(g_phone_connected){
         central.disconnect();
         Serial.println("Denied connection event, central: ");
     } else {
         connected_centrals[1] = central;
-        phone_connected = true;
+        g_phone_connected = true;
         Serial.println("Connected event, central: ");
     };
 
     Serial.println(central.deviceName());
     Serial.println(central.address());
-    Serial.println();
+    Serial.println("-------------");
     BLElocal.advertise();
 };
 
@@ -150,19 +153,18 @@ void domConnectHandler(BLEDevice central){
  * @param central 
  */
 void domDisconnectHandler(BLEDevice central){
-    Serial.println();
-    central.discoverAttributes();   
-    if(central.address() == connected_centrals[0].address() && glove_connected){
-        glove_connected = false;
+    Serial.println("---DisHand---");
+    if(central.address() == connected_centrals[0].address() && g_glove_connected){
+        g_glove_connected = false;
         Serial.println("Glove disconnect event, central: ");
-    } else if(central.address() == connected_centrals[1].address() && phone_connected) {
-        phone_connected = false;
+    } else if(central.address() == connected_centrals[1].address() && g_phone_connected) {
+        g_phone_connected = false;
         Serial.println("Phone disconnect event, central: ");
     } else {
         Serial.println("Unkown disconnect: ");
     };
     Serial.println(central.address());
-    Serial.println();
+    Serial.println("-------------");
     BLElocal.advertise();
 };
 
@@ -204,7 +206,7 @@ bool DomGlove::createBLEService(BLEUnsignedIntCharacteristic * dom_fingers, BLEU
 
 void DomGlove::run(){
     GLOVE::STATES::DOM state = GLOVE::STATES::DOM::SETUP;
-    uint8_t fingers_pos[5];
+    uint16_t fingers_pos[5];
     RGB rgb;
     // while(!BLE.begin());
 
@@ -244,7 +246,7 @@ void DomGlove::run(){
                 // generateUUID(service_UUID);
                 bluetooth_phone_LED.setColor(rgb.RED);
                 bluetooth_glove_LED.setColor(rgb.RED);
-                battery_LED.setColor(rgb.RED);
+                battery_LED.setColor(rgb.OFF);
                 state = GLOVE::STATES::DOM::INITIALIZE_BLUETOOTH;
                 break;
             }
@@ -267,17 +269,20 @@ void DomGlove::run(){
             }
 
             default:{
-                if(glove_connected != last_glove_status){
-                    last_glove_status = glove_connected;    
-                    if(glove_connected){
+                if(g_glove_connected && bluetooth_glove_LED.getColor() != rgb.GREEN){
+                    bluetooth_glove_LED.setColor(rgb.GREEN);
+                }
+                if(g_glove_connected != g_last_glove_status){
+                    g_last_glove_status = g_glove_connected;    
+                    if(g_glove_connected){
                         bluetooth_glove_LED.setColor(rgb.GREEN);
                     }else{
                         bluetooth_glove_LED.setColor(rgb.RED);
                     };
                 };
-                if(phone_connected != last_phone_status){  
-                    last_phone_status = phone_connected;          
-                    if (phone_connected){
+                if(g_phone_connected != g_last_phone_status){  
+                    g_last_phone_status = g_phone_connected;          
+                    if (g_phone_connected){
                         bluetooth_phone_LED.setColor(rgb.GREEN);
                     }else{
                         bluetooth_phone_LED.setColor(rgb.RED);
@@ -292,24 +297,23 @@ void DomGlove::run(){
 
 void SubGlove::run(){
     GLOVE::STATES::SUB state = GLOVE::STATES::SUB::SETUP;
-    uint8_t fingers_pos[5];
+    uint16_t fingers_pos[5];
     RGB rgb;
-    unsigned char test_val = 1;
+    // unsigned char test_val = 1;
     
+    // BLECharacteristic sub_finger_0;
+	// BLECharacteristic sub_finger_1;
+	// BLECharacteristic sub_finger_2;
+	// BLECharacteristic sub_finger_3;
+	// BLECharacteristic sub_finger_4;
 
-    BLECharacteristic sub_finger_0;
-	BLECharacteristic sub_finger_1;
-	BLECharacteristic sub_finger_2;
-	BLECharacteristic sub_finger_3;
-	BLECharacteristic sub_finger_4;
-
-    BLECharacteristic characteristics_list[5] = {
-        sub_finger_0,
-        sub_finger_1,
-        sub_finger_2,
-        sub_finger_3,
-        sub_finger_4
-    };
+    // BLECharacteristic characteristics_list[5] = {
+    //     sub_finger_0,
+    //     sub_finger_1,
+    //     sub_finger_2,
+    //     sub_finger_3,
+    //     sub_finger_4
+    // };
 
     if (!BLElocal.begin()) {
         Serial.println("starting BLE failed!");
@@ -321,15 +325,18 @@ void SubGlove::run(){
     while(true){
         switch(state){
             case GLOVE::STATES::SUB::SETUP:{
-                bluetooth_phone_LED.setColor(rgb.GREEN);
+                bluetooth_phone_LED.setColor(rgb.OFF);
                 bluetooth_glove_LED.setColor(rgb.RED);
-                battery_LED.setColor(rgb.BLUE);
+                battery_LED.setColor(rgb.OFF);
                 state = GLOVE::STATES::SUB::SCAN_AND_CONNECT_BLUETOOTH;
                 break;
             }
 
             case GLOVE::STATES::SUB::SCAN_AND_CONNECT_BLUETOOTH:{
                 connectToDom();
+                if(g_glove_connected){
+                    bluetooth_glove_LED.setColor(rgb.GREEN);
+                };
                 state = GLOVE::STATES::SUB::READ_SENSORS;
                 break;
             }
@@ -340,19 +347,24 @@ void SubGlove::run(){
                     state = GLOVE::STATES::SUB::UPDATE_CHARACTERISTICS;
                 } else {
                     state = GLOVE::STATES::SUB::SCAN_AND_CONNECT_BLUETOOTH;
+                    g_glove_connected = false;
+                    bluetooth_glove_LED.setColor(rgb.RED);
                 }
                 break;
             }
 
             // TODO: Adjust so it actually updates using the sensor data.
             case GLOVE::STATES::SUB::UPDATE_CHARACTERISTICS: {
-                // updateCharacteristics(characteristics_list, fingers_pos);
-                characteristics_list[0].writeValue(int32_t(test_val+0));
-                characteristics_list[1].writeValue(int32_t(test_val+1));
-                characteristics_list[2].writeValue(int32_t(test_val+2));
-                characteristics_list[3].writeValue(int32_t(test_val+3));
-                characteristics_list[4].writeValue(int32_t(test_val+4));
-                test_val += 10;
+                updateCharacteristics(characteristics, fingers_pos);
+
+                // test data
+                // characteristics_list[0].writeValue(int32_t(test_val+0));
+                // characteristics_list[1].writeValue(int32_t(test_val+1));
+                // characteristics_list[2].writeValue(int32_t(test_val+2));
+                // characteristics_list[3].writeValue(int32_t(test_val+3));
+                // characteristics_list[4].writeValue(int32_t(test_val+4));
+
+                // test_val += 10;
                 state = GLOVE::STATES::SUB::READ_SENSORS;
                 break;
             }

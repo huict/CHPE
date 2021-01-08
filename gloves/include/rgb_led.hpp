@@ -44,6 +44,13 @@ public:
     RGB_LED(const uint8_t pin[3]);
 
     /**
+     * @brief Get the Color object
+     * 
+     * @return RGB 
+     */
+    uint8_t * getColor();
+
+    /**
      * @brief Set the color of an RGB_LED
      * 
      * @param color uint8_t[3]

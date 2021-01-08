@@ -34,8 +34,7 @@ const uint8_t phone_LED_RGB[3] = {10, 11, 12};
 
 void setup() {
 	Serial.begin(9600);
-	// WARNING : Wait until a Serial Monitor is found before progressing further.
-    while(!Serial){};
+	// WARNING : Dont check if Serial is working otherwise glov wont start headless.
 	delay(1000);
 	Serial.println("Serial works.");
 	delay(1000);
