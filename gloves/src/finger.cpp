@@ -34,10 +34,12 @@ Finger::Finger(
 };
 
 int Finger::getInformation(){
+    // The amount of measures is a arbritary number used to filter noise by returning median, can be changed to increase accuracy. 
+    // WARNING: Must be uneven!
     const unsigned int amount_of_measures = 11;
     std::array<int, amount_of_measures> measured_values;
     for( unsigned int i = 0; i < amount_of_measures; i++){
-        measured_values[i] = sensor.getFlexBend();
+        measured_values[i] = sensor.getFlexRaw();
     }
     std::sort(measured_values.begin(), measured_values.end());
     return measured_values[amount_of_measures/2];

@@ -23,31 +23,30 @@
 #include "../include/glove.hpp"
 
 // Single pin inputs
-const uint8_t glove_switch = 2;
-const uint8_t battery_pin = 3;
-const uint8_t fingers[5] = {A5, A4, A3, A2, A1};
+const uint8_t g_glove_switch = 2;
+const uint8_t g_battery_pin = 3;
+const uint8_t g_fingers[5] = {A5, A4, A3, A2, A1};
 
 // LED pins
-const uint8_t battery_LED_RGB[3] = {4, 5, 6};
-const uint8_t glove_LED_RGB[3] = {7, 8, 9};
-const uint8_t phone_LED_RGB[3] = {10, 11, 12};
+const uint8_t g_battery_LED_RGB[3] = {4, 5, 6};
+const uint8_t g_glove_LED_RGB[3] = {7, 8, 9};
+const uint8_t g_phone_LED_RGB[3] = {10, 11, 12};
 
 void setup() {
 	Serial.begin(9600);
-	// WARNING : Dont check if Serial is working otherwise glov wont start headless.
-	delay(1000);
-	Serial.println("Serial works.");
-	delay(1000);
-	pinMode(glove_switch, INPUT);
+	// WARNING : If the Serial check is uncommented the gloves won't start until a monitor has connected to the glove.
+	// while(!Serial);
+	// Serial.println("Serial works.");
+	pinMode(g_glove_switch, INPUT);
 };
 
 void loop() {
-	if(digitalRead(glove_switch)){
-		SubGlove glove(battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
+	if(digitalRead(g_glove_switch)){
+		SubGlove glove(g_battery_pin, g_glove_LED_RGB, g_phone_LED_RGB, g_battery_LED_RGB, g_fingers);
 		Serial.println("Starting Sub Glove!");
 		glove.run();
 	} else {
-		DomGlove glove(battery_pin, glove_LED_RGB, phone_LED_RGB, battery_LED_RGB, fingers);
+		DomGlove glove(g_battery_pin, g_glove_LED_RGB, g_phone_LED_RGB, g_battery_LED_RGB, g_fingers);
 		Serial.println("Starting Dom Glove!");
 		glove.run();
 	};

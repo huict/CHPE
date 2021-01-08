@@ -32,11 +32,11 @@
 class Flex_Sensor{
 private:
     const uint8_t flex_pin;
-    // uint8_t VCC = 3.3;
-    // uint16_t R_DIV = 47000;
-    // double Max_Voltage_Reading = 1023.0;
-    // uint16_t flatResistance = 25000;
-    // uint32_t bendResistance = 100000;
+    const float VCC = 3.3;
+    const uint16_t R_DIV = 47000;
+    const double Max_Voltage_Reading = 1023.0;
+    const uint16_t flatResistance = 25000;
+    const uint32_t bendResistance = 100000;
 public:
     /**
      * @brief Construct a new Flex_Sensor object
@@ -50,7 +50,13 @@ public:
      * @details Currently the minimum angle returned is 0 degrees and the maximum angle is 180 degrees.
      * @return int 
      */
-    uint16_t getFlexBend();
+    int getFlexBend();
+    
+    /**
+     * @brief Get the Raw data from the flex sensor pin.
+     * @return uint16_t
+     */
+    uint16_t getFlexRaw();
 };
 
 # endif

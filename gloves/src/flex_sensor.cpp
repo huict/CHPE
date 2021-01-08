@@ -32,22 +32,21 @@ Flex_Sensor::Flex_Sensor(
     Serial.println("Constructed Flex sensor");
 };
 
-uint16_t Flex_Sensor::getFlexBend(){
-    return analogRead(flex_pin);
+int Flex_Sensor::getFlexBend(){
+    int ADCflex = analogRead(flex_pin);
+    float Vflex = ADCflex * VCC / Max_Voltage_Reading;
+    float Rflex = R_DIV * (VCC / Vflex - 1.0);
+
+    int angle = map(Rflex, flatResistance, bendResistance, 0, 180);
+    if( angle < 0){
+        angle = 0;
+    } else if (angle > 180){
+        angle = 180;
+    }
+    // angle = map(ADCflex, 750, 350, 0, 180);
+    return angle;
 }
 
-// DEPRICATED No longer calculate angle just take raw value, NN will work better.
-// int Flex_Sensor::getFlexBend(){
-//     int ADCflex = analogRead(flex_pin);
-//     float Vflex = ADCflex * VCC / Max_Voltage_Reading;
-//     float Rflex = R_DIV * (VCC / Vflex - 1.0);
-
-//     int angle = map(Rflex, flatResistance, bendResistance, 0, 180);
-//     if( angle < 0){
-//         angle = 0;
-//     } else if (angle > 180){
-//         angle = 180;
-//     }
-//     int angle = map(ADCflex, 750, 350, 0, 180);
-//     return angle;
-// }
+uint16_t Flex_Sensor::getFlexRaw(){
+    return analogRead(flex_pin);
+}

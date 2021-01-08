@@ -28,7 +28,7 @@
 /**
  * @class Battery
  * @brief Battery Class, Class used to read the battery percentage of the battery that's connected to the arduino
- * @details TODO: Implement class since it is not ready yet and hasn't been tested yet.
+ * @details TODO: Implement class since it is currently not being used because the battery shield has its own LED support.
  */
 class Battery{
 private:
