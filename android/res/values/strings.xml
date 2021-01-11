@@ -23,6 +23,11 @@
     <string name="to_play">to play</string>
     <string name="press_the_video_for_pausing_and_the_video">Press the video for pausing and the video</string>
     <string name="this_is_where_the_title_should_go">this is where the title should go</string>
+    <string name="help_page">HELP PAGE</string>
+    <string name="intro">Intro:</string>
+    <string name="step_3">step 3</string>
+    <string name="step_2">step 2</string>
+    <string name="step_1">step 1</string>
     <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>

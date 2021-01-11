@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.view.activity.HelpActivity;
 import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
 
 /**
@@ -23,7 +24,8 @@ public class a_Home extends AppCompatActivity {
      */
     Button b_start;
 
-    Button b_start_2;
+    Button b_help;
+
 
     /**
      * Android function override.
@@ -45,6 +47,7 @@ public class a_Home extends AppCompatActivity {
 
         b_archive = findViewById(R.id.b_archive);
         b_start = findViewById(R.id.b_start);
+        b_help = findViewById(R.id.b_help);
 
 
         AAL.setTitleBar(getWindow());
@@ -61,6 +64,13 @@ public class a_Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchIntent(a_VideoSelect.class);
+            }
+        });
+
+        b_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent(HelpActivity.class);
             }
         });
     }

@@ -121,6 +121,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
 //    implementation group: 'org.tensorflow', name: 'tensorflow-lite-support', version: '0.1.0-rc1'
 //
