@@ -2,12 +2,13 @@
 # 							generate_model.py								#
 #---------------------------------------------------------------------------#
 #	Authors	:	Duur Alblas & Maaike Hovenkamp								#
-#	Version	:	V1.0														#
-#	Date	:	23-10-2020													#
+#	Version	:	V1.1														#
+#	Date	:	11-1-2021													#
 #---------------------------------------------------------------------------#
 # A application that will train a neural network in classifying the outputs #
 # from a PoseNet model. It will also export the model in a tflite format.	#
 # Several CLI arguments for flexibility and testing purposes.				#
+# WARNING! : Added theoretical implementation for hand values.				#
 #===========================================================================#
 from typing import List
 import os, sys, getopt
@@ -48,7 +49,7 @@ def normalize_value(value, upper_range):
 	"""	
 	return value / upper_range
 
-def prepare_pose_data(pose, do_normalize = False, x_max = 257, y_max = 257):
+def prepare_pose_data(pose, do_normalize = False, x_max = 257, y_max = 257, finger_max = 2014):
 	"""prepare_pose_data, takes a pose dictionary and returns it as a list.
 
 	Args:
@@ -64,6 +65,13 @@ def prepare_pose_data(pose, do_normalize = False, x_max = 257, y_max = 257):
 	for keypoint in keypoints:
 		inputs.append(normalize_value(keypoint['position']['x'], x_max) if do_normalize else keypoint['position']['x'])
 		inputs.append(normalize_value(keypoint['position']['y'], y_max) if do_normalize else keypoint['position']['y'])
+	
+	try:
+		fingers = pose['hand']
+		for finger in fingers:
+			inputs.append(normalize_value(finger['value'], finger_max) if do_normalize else fingers['value'])
+	except:
+		print("No hand data found.")		
 	return inputs
 
 def create_model(nr_inputs, amount_output_neurons, layer_list):
@@ -80,7 +88,7 @@ def create_model(nr_inputs, amount_output_neurons, layer_list):
 	# Creating the base of the model
 	model = Sequential()
 	# First layer is the input layer
-	model.add(tf.keras.layers.Dense(nr_inputs, input_shape=(34,)))
+	model.add(tf.keras.layers.Dense(nr_inputs, input_shape=(nr_inputs,)))
 
 	for size in layer_list:
 		model.add(layers.Dense((size*nr_inputs), activation=activation_function))
@@ -168,6 +176,7 @@ def main(argv):
 	model_name = 'model'
 		# Used for normalization
 	max_xy = (257,257)
+	max_finger_value = 1024
 	normalize_poses = True
 		# Used in training network
 	layer_list = [6,3]
@@ -247,7 +256,7 @@ def main(argv):
 	label_indexes = {}
 	index = 0
 	for key in keys:
-		training_data.append(prepare_pose_data(poses_load[key], normalize_poses, max_xy[0], max_xy[1]))
+		training_data.append(prepare_pose_data(poses_load[key], normalize_poses, max_xy[0], max_xy[1], max_finger_value))
 		temp_label = labels_load[key]['pose']
 		if temp_label not in label_indexes.keys():
 			label_indexes[temp_label] = index

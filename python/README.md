@@ -1,5 +1,7 @@
 # Python training of feedback neural network
 
+# THE IMPLEMENTATION OF THE HANDS IS PURELY THEORETICAL AND HAS NOT BEEN TESTED. v1.1 11-1-2021
+
 ## pose_estimation.py
 
 __pose_estimation.py__ is a Python application that creates a useable dataset of PoseNet results out of a directory of images. It creates ```.json``` files that can be loaded into __generate_model.py__ and are used to train and test the model.  The application offers several command line interface (CLI) arguments to use for flexibility and testing purposes. Use the ```-h``` argument for a help message ([CLI Arguments](#cli_arguments)).
@@ -18,7 +20,8 @@ The directory to be used with this application should look like this:
 ```
 #### JSON files
 
-```poses.json``` is a ```.json``` file containing the results of the PoseNet neural network on a directory of images. This wil be the data that the neural network from __generate_model.py__ wil train and test on. 
+
+```poses.json``` is a ```.json``` file containing the results of the PoseNet neural network on a directory of images. This wil be the data that the neural network from __generate_model.py__ wil train and test on. The hand data will be ordered: the first 5 values are dominant hand data the last 5 values are sub hand data. Hand data is optional.
 
 the created ```poses.json``` file will contain the following data:
 ```
@@ -29,6 +32,10 @@ the created ```poses.json``` file will contain the following data:
                 - Y
             - part
             - score
+        - Hand
+            - Value_1
+            - ...
+            - Value_10
         - Score
     - Name of the image
         - Keypoints
@@ -37,6 +44,10 @@ the created ```poses.json``` file will contain the following data:
                 - Y
             - part
             - score
+        - Hand
+            - Value_1
+            - ...
+            - Value_10          
         - Score
     - etc.
 ```
