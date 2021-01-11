@@ -8,11 +8,14 @@ import android.widget.TextView;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.service.ForegroundService;
+import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 public class MediaControllerActivity extends AppCompatActivity {
     Uri uri = ForegroundService.getOtherUri();
-    String text;
+    String feedback = FeedbackListItemAdapter.getFeedback();
+    String shortFeedback = FeedbackListItemAdapter.getShortFeed();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -25,12 +28,20 @@ public class MediaControllerActivity extends AppCompatActivity {
         MediaController mediaController= new MediaController(this);
         mediaController.setAnchorView(videoView);
 
-        TextView textView = findViewById(R.id.title);
-        if(text == null){
-            textView.setText("no title retrieved");
+        DebugLog.log("------------------------feedback in activity: " + feedback + " --------------------------------");
+        DebugLog.log("------------------------short feedback in activity: " + shortFeedback + " --------------------------------");
+
+        TextView feedbackView = findViewById(R.id.title);
+        TextView shortFeedbackView = findViewById(R.id.shortFeedbackView);
+        if(feedback == null){
+            feedbackView.setText("no feedback retrieved");
+        }
+        if(shortFeedback == null){
+            shortFeedbackView.setText("no short feedback retrieved");
         }
         else{
-            textView.setText(text);
+            feedbackView.setText(feedback);
+            shortFeedbackView.setText(shortFeedback);
         }
 
 
@@ -38,12 +49,8 @@ public class MediaControllerActivity extends AppCompatActivity {
         videoView.setMediaController(mediaController);
         videoView.setVideoURI(uri);
         videoView.requestFocus();
-        videoView.seekTo(5000);
+        //videoView.seekTo(5000);
         videoView.start();
-    }
-
-    public void storeDescription(String mContentView) {
-        this.text = mContentView;
     }
 
     //TODO: seekto() with the appropiate timestamp

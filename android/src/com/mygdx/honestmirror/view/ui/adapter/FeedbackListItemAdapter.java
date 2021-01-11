@@ -18,6 +18,16 @@ import java.util.List;
 
 public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListItemAdapter.ViewHolder> {
     View view;
+    static String feedback;
+    static String shortFeed;
+
+    public static String getFeedback() {
+        return feedback;
+    }
+
+    public static String getShortFeed() {
+        return shortFeed;
+    }
 
     private final List<RawFeedbackElement> mValues;
     public FeedbackListItemAdapter(List<RawFeedbackElement> items) {
@@ -36,16 +46,16 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
 
-        holder.mIdView.setText(mValues.get(position).getFeedback().toString());
+        feedback = mValues.get(position).getFeedback().toString();
+        DebugLog.log("------------------------feedback: " + feedback + " --------------------------------");
+        holder.mIdView.setText(feedback);
 
-        String string = mValues.get(position).getShortFeedback();
-        holder.mContentView.setText(string);
+        shortFeed = mValues.get(position).getShortFeedback();
+        holder.mContentView.setText(shortFeed);
 
         holder.mButton.setOnClickListener(v -> {
             //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick
             Intent intent = new Intent(holder.context, MediaControllerActivity.class);
-            MediaControllerActivity mediaControllerActivity = new MediaControllerActivity();
-            mediaControllerActivity.storeDescription(string);
             holder.context.startActivity(intent);
         });
     }
@@ -70,7 +80,6 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
             mContentView = view.findViewById(R.id.description_textView);
             mButton = view.findViewById(R.id.button3);
             this.context = view.getContext();
-            DebugLog.log("mContentView= " + mContentView.getText());
         }
 
 //        @NotNull
