@@ -28,6 +28,8 @@
     <string name="step_3">step 3</string>
     <string name="step_2">step 2</string>
     <string name="step_1">step 1</string>
+    <string name="help">HELP</string>
+    <string name="start">START</string>
     <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>

@@ -8,7 +8,7 @@
     tools:context=".view.activity.HelpActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
