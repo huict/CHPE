@@ -21,7 +21,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.HelpActivity"></activity>
+        <activity android:name=".view.activity.HelpAppActivity"></activity>
         <activity
             android:name=".view.activity.MainFeedbackActivity"
             android:label="@string/title_activity_main_feeback"

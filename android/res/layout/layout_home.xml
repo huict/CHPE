@@ -55,16 +55,28 @@
         app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
 
     <Button
-        android:id="@+id/b_help"
+        android:id="@+id/b_help_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginStart="252dp"
+        android:layout_marginBottom="52dp"
         android:background="@color/hu_red"
+        android:text="@string/help_app"
         android:textSize="20sp"
-        android:text="@string/help"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/b_help_gloves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:background="@color/hu_red"
+        android:text="@string/help_gloves"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mygdx.honestmirror.R;
-import com.mygdx.honestmirror.view.activity.HelpActivity;
-import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
+import com.mygdx.honestmirror.view.activity.HelpAppActivity;
 
 /**
  * Home screen class. This is the first screen you see when you start the app.
@@ -24,7 +23,9 @@ public class a_Home extends AppCompatActivity {
      */
     Button b_start;
 
-    Button b_help;
+    Button b_help_app;
+
+    Button b_help_gloves;
 
 
     /**
@@ -47,7 +48,8 @@ public class a_Home extends AppCompatActivity {
 
         b_archive = findViewById(R.id.b_archive);
         b_start = findViewById(R.id.b_start);
-        b_help = findViewById(R.id.b_help);
+        b_help_app = findViewById(R.id.b_help_app);
+        b_help_gloves = findViewById(R.id.b_help_gloves);
 
 
         AAL.setTitleBar(getWindow());
@@ -67,10 +69,17 @@ public class a_Home extends AppCompatActivity {
             }
         });
 
-        b_help.setOnClickListener(new View.OnClickListener() {
+        b_help_app.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchIntent(HelpActivity.class);
+                launchIntent(HelpAppActivity.class);
+            }
+        });
+
+        b_help_gloves.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchIntent(HelpAppActivity.class);
             }
         });
     }
