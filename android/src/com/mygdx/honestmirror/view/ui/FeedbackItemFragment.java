@@ -68,7 +68,7 @@ public class FeedbackItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new FeedbackListItemAdapter(feedbackController.getFeedbackElements()));
+            recyclerView.setAdapter(new FeedbackListItemAdapter(feedbackController.getFeedbackItems()));
         }
         return view;
     }

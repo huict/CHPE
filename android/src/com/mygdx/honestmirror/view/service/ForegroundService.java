@@ -50,12 +50,6 @@ public class ForegroundService extends Service {
         work = r;
     }
 
-    public static String getFeedback(){
-        if (feedbackController == null)
-            return "";
-        return feedbackController.getFeedback();
-    }
-
 
 
     /**
@@ -121,10 +115,6 @@ public class ForegroundService extends Service {
 
                 Session session = new Session(getApplicationContext(), videoSplicer, interpreterController, feedbackController);
                 session.runVideo();
-
-                String feedback = feedbackController.getFeedback();
-
-                Log.println(Log.INFO, "", feedback);
             }catch (InvalidVideoSplicerType splicerType){
                 Log.e(splicerType.getClass().toGenericString(), splicerType.toString());
                 throw new RuntimeException("InvalidVideoSplicer");

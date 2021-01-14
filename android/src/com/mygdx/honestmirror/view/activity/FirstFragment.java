@@ -49,7 +49,7 @@ public class FirstFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.feedback_item_recyclerview);
 
-        FeedbackListItemAdapter adapter = new FeedbackListItemAdapter(feedbackController.getFeedbackElements());
+        FeedbackListItemAdapter adapter = new FeedbackListItemAdapter(feedbackController.getFeedbackItems());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));

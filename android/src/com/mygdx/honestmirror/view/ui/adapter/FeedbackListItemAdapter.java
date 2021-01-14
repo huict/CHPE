@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mygdx.honestmirror.R;
-import com.mygdx.honestmirror.application.domain.feedback.RawFeedbackElement;
+import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
 
 import java.util.List;
 
 
 public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListItemAdapter.ViewHolder> {
 
-    private final List<RawFeedbackElement> mValues;
+    private final List<FeedbackItem> mValues;
 
-    public FeedbackListItemAdapter(List<RawFeedbackElement> items) {
+    public FeedbackListItemAdapter(List<FeedbackItem> items) {
         mValues = items;
     }
 
@@ -32,9 +32,9 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
 
-        holder.mIdView.setText(mValues.get(position).getFeedback().toString());
+        holder.mIdView.setText(mValues.get(position).getName());
 
-        holder.mContentView.setText(mValues.get(position).getShortFeedback());
+        holder.mContentView.setText(mValues.get(position).getDescription());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public RawFeedbackElement mItem;
+        public FeedbackItem mItem;
 
         public ViewHolder(View view) {
             super(view);
