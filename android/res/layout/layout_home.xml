@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hu_light_gray"
+    android:background="@color/hu_blue"
     tools:context=".view.ui.a_Home">
 
     <androidx.constraintlayout.widget.Guideline
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_begin="208dp"
         app:layout_constraintGuide_percent=".50" />
 
     <Button
@@ -29,12 +29,14 @@
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="128dp"
-        android:background="@color/hu_blue"
+        android:layout_marginBottom="160dp"
+        android:background="@color/hu_red"
         android:text="@string/btn_archive"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"
         app:layout_constraintHeight_percent=".06"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -43,13 +45,62 @@
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="128dp"
-        android:background="@color/hu_blue"
+        android:layout_marginBottom="160dp"
+        android:background="@color/hu_red"
         android:shadowRadius="0"
-        android:text="START"
+        android:text="@string/start"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".06"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
+
+    <Button
+        android:id="@+id/b_help_app"
+        android:layout_width="367dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="100dp"
+        android:background="@color/hu_red"
+        android:text="@string/help_app"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/b_start"
+        app:layout_constraintStart_toStartOf="@+id/b_archive" />
+
+    <Button
+        android:id="@+id/b_help_gloves"
+        android:layout_width="364dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="36dp"
+        android:background="@color/hu_red"
+        android:text="@string/help_gloves"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/b_start"
+        app:layout_constraintStart_toStartOf="@+id/b_archive" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="253dp"
+        android:layout_height="303dp"
+        android:layout_marginTop="192dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hu_logo" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="@string/honest_mirror"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

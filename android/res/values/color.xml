@@ -8,5 +8,8 @@
     <color name="hu_light_gray">#EFEFEF</color>
     <color name="hu_red">#e72e2a</color>
     <color name="hu_blue">#00a1e2</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="black">#000000</color>
+    <color name="light_blue">#add8e6</color>
 
 </resources>
