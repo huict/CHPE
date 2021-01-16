@@ -77,19 +77,21 @@ public class Session {
      * Loops through a video and stores it continuously
      */
     public void runVideo() {
-        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
-        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
+//        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+//        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
+//
+//        if (interpreterController != null){
+//            for(Person person: persons){
+//                if (person == null)
+//                    continue;
+//
+//                interpreterController.setJsonInput(person.toJson());
+//                interpreterController.runNN();
+//                feedbackController.addData(interpreterController.getOutput());
+//            }
+//        }
 
-        if (interpreterController != null){
-            for(Person person: persons){
-                if (person == null)
-                    continue;
-
-                interpreterController.setJsonInput(person.toJson());
-                interpreterController.runNN();
-                feedbackController.addData(interpreterController.getOutput());
-            }
-        }
+        feedbackController.generateMockData();
     }
     /**
      * The NormaliseData query.

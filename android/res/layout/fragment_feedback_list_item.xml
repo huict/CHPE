@@ -15,8 +15,8 @@
 
         <TextView
             android:id="@+id/item_number"
-            android:layout_width="199dp"
-            android:layout_height="48dp"
+            android:layout_width="324dp"
+            android:layout_height="59dp"
             android:layout_margin="@dimen/text_margin"
             android:text="0:12 - 0:30"
             android:textAppearance="?attr/textAppearanceListItem"

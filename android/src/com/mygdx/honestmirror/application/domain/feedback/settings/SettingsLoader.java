@@ -13,6 +13,8 @@ public class SettingsLoader {
         for (EstimatedPose pose : EstimatedPose.values()){
             OccurrenceOverTime occurrenceOverTime = new OccurrenceOverTime(1, 1, frameRate);
             FeedbackSetting newSetting = new FeedbackSetting(pose, 3,  occurrenceOverTime);
+
+            feedbackSettings.add(newSetting);
         }
 
         return feedbackSettings;

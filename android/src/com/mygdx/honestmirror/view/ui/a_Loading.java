@@ -114,7 +114,7 @@ public class a_Loading extends AppCompatActivity {
                     // update the progress and sleep for 200 ns
                     progressBar.setProgress(progress);
                     try {
-                        Thread.sleep(0, 4000);
+                        Thread.sleep(0, 100);
                     } catch (Exception e) {
                         DebugLog.log(e.getMessage());
                     }

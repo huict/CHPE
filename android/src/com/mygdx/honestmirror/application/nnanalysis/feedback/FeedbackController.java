@@ -2,10 +2,7 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 
 import android.util.Log;
 
-import com.mygdx.honestmirror.application.domain.feedback.DesignTimeFeedbackDataContainer;
 import com.mygdx.honestmirror.application.domain.feedback.EstimatedPose;
-import com.mygdx.honestmirror.application.domain.feedback.FeedbackDataContainer;
-import com.mygdx.honestmirror.application.domain.feedback.FeedbackFactory;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItemBuilder;
 import com.mygdx.honestmirror.application.domain.feedback.PoseData;
@@ -113,28 +110,36 @@ public class FeedbackController implements FeedbackProcessor {
         int poseOccurrenceCount = 0;
         int firstOccurrenceIndex = 0;
         double firstOccurrenceTimeMs = 0;
+        double lastOccurrenceTimeMs = 0;
 
         for (int currentPoseOccurrenceIndex = 0; currentPoseOccurrenceIndex < poseData.size(); currentPoseOccurrenceIndex++){
             PoseData poseDataItem = poseData.get(currentPoseOccurrenceIndex);
 
             if (lastPose == null){
+                firstOccurrenceIndex = currentPoseOccurrenceIndex;
+                firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
+
                 lastPose = poseDataItem.getPose();
                 poseOccurrenceCount = 1;
                 continue;
             }
 
-            if (lastPose.equals(poseDataItem.getPose()))
+            if (lastPose.equals(poseDataItem.getPose()) && (currentPoseOccurrenceIndex + 1) != poseData.size()){
                 poseOccurrenceCount++;
+                lastOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
+            }
+
             else{
                 if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)){
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
-                    double lastOccurrenceTimeSeconds = (double) poseDataItem.getTimeMilliseconds() / 1000;
+                    double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
-                }
 
-                //firstOccurrenceIndex = currentPoseOccurrenceIndex;
-                firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
+                    firstOccurrenceIndex = currentPoseOccurrenceIndex;
+                    firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
+                }
             }
+            lastPose = poseDataItem.getPose();
         }
 
 
@@ -156,7 +161,26 @@ public class FeedbackController implements FeedbackProcessor {
     public String getSummary(){
         generateFeedback();
 
-        return "Despite you not moving your hands the whole time this presentation was very very good";
+        return "Despite delivering gestures for 13 consecutive seconds this presentation was very very good";
+    }
+
+
+    public void generateMockData(){
+        //this.resetData();
+        settings = new FeedbackSettings(5);
+        settings.loadDefaults();
+
+        this.framerate = 5;
+
+        for (int index = 0; index < 50; index++ ){
+            int counter = (index + 1) * 200;
+            this.poseData.add(new PoseData(EstimatedPose.feet_between_shoulders_and_waist_width_firmly_on_the_ground, counter));
+        }
+
+        for (int index = 50; index < 120; index++ ){
+            int counter = (index + 1) * 200;
+            this.poseData.add(new PoseData(EstimatedPose.delivered_gestures, counter));
+        }
     }
 
 
