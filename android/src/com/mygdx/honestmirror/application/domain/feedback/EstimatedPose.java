@@ -2,7 +2,7 @@ package com.mygdx.honestmirror.application.domain.feedback;
 
 
 
-public enum Feedback {
+public enum EstimatedPose {
     giving_the_back_to_the_audience,
     standing_with_the_bodyweight_on_one_leg,
     hands_touching_face,
