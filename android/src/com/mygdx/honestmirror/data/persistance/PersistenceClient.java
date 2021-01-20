@@ -2,14 +2,12 @@ package com.mygdx.honestmirror.data.persistance;
 
 import android.content.Context;
 
-import java.util.concurrent.Executors;
-
 import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.mygdx.honestmirror.data.persistance.AppDatabase;
+import java.util.concurrent.Executors;
 
 /**
  * The type Persistence client.

@@ -16,7 +16,11 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class BodyLimb {
     Vector2 coords1_ , coords2_;
-    float limbDiameter_, length_, rotation_, z_, scale_, data_scale_;
+    float limbDiameter_;
+    float length_;
+    float rotation_;
+    float z_;
+    float scale_;
     Color color_;
     ModelInstance cylinder_;
     ModelBuilder modelBuilder_ = new ModelBuilder();
@@ -44,15 +48,6 @@ public class BodyLimb {
         cylinder_ = new ModelInstance(model_);
         cylinder_.transform.setToTranslation(coords1_.x - (0.5f * (coords1_.x - coords2_.x)), coords1_.y - (0.5f * (coords1_.y - coords2_.y)), z_);
         cylinder_.transform.rotate(Vector3.Z, rotation_);
-        cylinder_.materials.get(0).set(ColorAttribute.createDiffuse(color_));
-    }
-
-    /**
-     * This function can be used to change the BodyLimb object color.
-     * @param color
-     */
-    public void change_color(Color color){
-        color_ = color;
         cylinder_.materials.get(0).set(ColorAttribute.createDiffuse(color_));
     }
 

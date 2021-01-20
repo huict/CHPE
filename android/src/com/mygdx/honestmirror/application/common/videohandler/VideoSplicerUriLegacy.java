@@ -1,6 +1,5 @@
 package com.mygdx.honestmirror.application.common.videohandler;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -9,15 +8,11 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 /**
  * The type Video splicer.
  */
 public class VideoSplicerUriLegacy extends VideoSplicerUri {
-    private static final String TAG = VideoSplicerUriLegacy.class.getSimpleName();
     /**
      * The M uri.
      */
@@ -39,45 +34,12 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
 
 
     /**
-     * Instantiates a new Video splicer.
-     *
-     * @param uri the uri
-     */
-    VideoSplicerUriLegacy(String uri) {
-        super(uri);
-    }
-
-    /**
      * Instantiates a new Video splicer uri legacy.
      *
      * @param metadataRetriever the metadata retriever
      */
     public VideoSplicerUriLegacy(MediaMetadataRetriever metadataRetriever){
         super(metadataRetriever);
-        initialiseVideoSplicerLegacy();
-    }
-
-    /**
-     * Instantiates a new Video splicer uri legacy.
-     *
-     * @param uri     the uri
-     * @param context the context
-     */
-    public VideoSplicerUriLegacy(Uri uri, Context context) {
-        super(uri, context);
-        this.uri = uri;
-
-        initialiseVideoSplicerLegacy();
-    }
-
-    /**
-     * Instantiates a new Video splicer uri legacy.
-     *
-     * @param uri the uri
-     * @param map the map
-     */
-    public VideoSplicerUriLegacy(String uri, HashMap<String, String> map) {
-        super(Uri.parse(uri), getApplicationContext());
         initialiseVideoSplicerLegacy();
     }
 

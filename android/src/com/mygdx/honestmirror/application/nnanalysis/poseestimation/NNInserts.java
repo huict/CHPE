@@ -1,14 +1,13 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 
-
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.KeyPoint;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 import com.mygdx.honestmirror.data.persistance.Relations.NNFrameCoordinate;
 import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrame;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.KeyPoint;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 
 // TODO: Convert sessionId to videoId
 

@@ -1,5 +1,8 @@
 package com.mygdx.honestmirror.data.persistance;
 
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinateDAO;
 import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
@@ -10,9 +13,6 @@ import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrame;
 import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrameDAO;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideoDAO;
-
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
 
 
 /**

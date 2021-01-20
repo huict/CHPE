@@ -54,34 +54,16 @@ public class a_Home extends AppCompatActivity {
 
         AAL.setTitleBar(getWindow());
 
-        b_archive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchIntent(a_Results.class);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
+        b_archive.setOnClickListener(v -> {
+            launchIntent(a_Results.class);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
         });
 
-        b_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchIntent(a_VideoSelect.class);
-            }
-        });
+        b_start.setOnClickListener(v -> launchIntent(a_VideoSelect.class));
 
-        b_help_app.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchIntent(HelpAppActivity.class);
-            }
-        });
+        b_help_app.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
 
-        b_help_gloves.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchIntent(HelpAppActivity.class);
-            }
-        });
+        b_help_gloves.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
     }
 
     /**

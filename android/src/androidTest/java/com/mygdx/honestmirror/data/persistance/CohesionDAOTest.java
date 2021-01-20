@@ -3,8 +3,12 @@ package com.mygdx.honestmirror.data.persistance;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import com.mygdx.honestmirror.application.domain.analysis.JSONLoader;
+import androidx.room.Room;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.application.domain.analysis.JSONLoader;
 import com.mygdx.honestmirror.data.MockData;
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
@@ -21,12 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import static org.junit.Assert.assertEquals;
 
 
 /**

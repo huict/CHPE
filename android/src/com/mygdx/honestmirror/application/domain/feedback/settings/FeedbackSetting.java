@@ -3,9 +3,9 @@ package com.mygdx.honestmirror.application.domain.feedback.settings;
 import com.mygdx.honestmirror.application.domain.feedback.EstimatedPose;
 
 public class FeedbackSetting {
-    private EstimatedPose pose;
-    private int maxPersistSeconds;
-    private OccurrenceOverTime maxOccurrence;
+    private final EstimatedPose pose;
+    private final int maxPersistSeconds;
+    private final OccurrenceOverTime maxOccurrence;
 
     public FeedbackSetting(EstimatedPose pose, int maxPersistSeconds, OccurrenceOverTime maxOccurrence) {
         this.pose = pose;

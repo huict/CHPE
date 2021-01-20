@@ -6,18 +6,16 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+
 import androidx.annotation.RequiresApi;
+
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import com.mygdx.honestmirror.application.common.DebugLog;
-import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -100,15 +98,6 @@ public class VideoSplicerUri implements VideoSplicer {
      */
     public long getFrameCount() {
         return this.frameCount;
-    }
-
-    /**
-     * Gets frames processed.
-     *
-     * @return the frames processed
-     */
-    public long getFramesProcessed() {
-        return framesProcessed;
     }
 
     /**

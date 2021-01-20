@@ -74,12 +74,6 @@ public class DatabaseData implements Data {
 
 
     /**
-     * Implements Data's interface for writing the data back to the data structure.
-     * Does nothing for now.
-     */
-    public void serialize() {}
-
-    /**
      * Implements Data's interface for setting the x component of a coordinate.
      */
     public void setX(long frame, body_part bp, double x) {

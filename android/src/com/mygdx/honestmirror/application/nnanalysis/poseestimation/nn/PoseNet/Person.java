@@ -1,8 +1,9 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.StringWriter;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;

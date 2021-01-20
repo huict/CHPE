@@ -66,13 +66,10 @@ public class a_Results extends AppCompatActivity {
         AAL.setTitleBar(getWindow());
 
         b_Home = findViewById(R.id.homeButton);
-        b_Home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(a_Results.this, a_Home.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
+        b_Home.setOnClickListener(v -> {
+            Intent intent = new Intent(a_Results.this, a_Home.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
         cardList = findViewById(R.id.resultCardList);
@@ -93,7 +90,7 @@ public class a_Results extends AppCompatActivity {
         c_ResultCard card = new c_ResultCard();
         card.setTitle("Hands Above Head");
         card.setDescription("Did you keep your hands above your head? @4:31");
-        card.setImage(R.drawable.ic_launcher);
+        card.setImage(R.mipmap.ic_launcher);
         for (int i = 0; i < 10; i++) {
             cards.add(card);
         }

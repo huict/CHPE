@@ -83,27 +83,8 @@ public class NNModelPosenet implements PoseModel {
     }
 
     @Override
-    public int[][] getPosePairs() {
-        return POSE_PAIRS;
-    }
-
-    @Override
-    public int getPoints() {
-        return points;
-    }
-
-    public String getProtocolBuffer() {
-        return protocol_buffer;
-    }
-
-    @Override
     public String getModel() {
         return model;
-    }
-
-    @Override
-    public String[] getBodyParts() {
-        return bodyParts;
     }
 
 }

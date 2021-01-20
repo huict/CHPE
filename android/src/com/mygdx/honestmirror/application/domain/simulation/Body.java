@@ -79,30 +79,6 @@ public class Body {
     }
 
     /**
-     * Returns all the BodyLimb objects as a ModelInstance Array.
-     * @return Array filled with ModelInstances.
-     */
-    public Array<ModelInstance> getLimbArray(){
-        Array<ModelInstance> result = new Array<>();
-        for(BodyLimb bl : limbArray){
-            result.add(bl.getInstance());
-        }
-        return result;
-    }
-
-    /**
-     * Returns all the BodyPart objects as a ModelInstance Array.
-     * @return Array filled with ModelInstances.
-     */
-    public Array<ModelInstance> getJointArray(){
-        Array<ModelInstance> result = new Array<>();
-        for(BodyPart jv : jointMap.values()){
-            result.add(jv.getInstance());
-        }
-        return result;
-    }
-
-    /**
      * This update function updates al the BodyLimb and BodyPart object with the data for the given frame.
      * @param frame
      * @param data
@@ -125,7 +101,7 @@ public class Body {
                     new Vector2(jointCoords.get(pp[1]).x * -data_scale, jointCoords.get(pp[1]).y * data_scale), 0);
             index++;
         }
-        if(scaled == false){
+        if(!scaled){
             head_scale = (jointCoords.get(NNModelMPI.body_part.waist.ordinal()).y - jointCoords.get(NNModelMPI.body_part.neck.ordinal()).y);
             scaled = true;
             limbDiameter = limbDiameter * 0.7f;

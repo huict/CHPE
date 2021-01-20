@@ -1,8 +1,5 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet;
 
-import com.mygdx.honestmirror.application.common.DebugLog;
-
-
 public class Position {
     private int x = 0;
     private int y = 0;

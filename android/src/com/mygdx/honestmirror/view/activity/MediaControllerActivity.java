@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.service.ForegroundService;

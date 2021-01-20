@@ -1,16 +1,10 @@
 package com.mygdx.honestmirror.application.domain.analysis;
 
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI;
-import com.badlogic.gdx.math.Vector3;
 
 import static java.lang.Math.toIntExact;
 
@@ -23,33 +17,11 @@ public class JSONData implements Data {
     /**
      * A JSON specific array that holds every frame's data
      */
-    private JSONArray frames;
+    private final JSONArray frames;
     /**
      * Location of the JSON file on disk.
      */
     private String filepath;
-
-    /**
-     * Constructor that inits member fields thus loading the data from disk.
-     *
-     * @param fp File path to the JSON file on disk.
-     */
-    JSONData(String fp) {
-        filepath = fp;
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader(filepath)) {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-            frames = (JSONArray) obj;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Constructor that grabs the frame data from a JSONLoader.
@@ -124,13 +96,6 @@ public class JSONData implements Data {
      */
     public float getFps() {
         return 24;
-    }
-
-    /**
-     * Implements Data's interface for writing the data back to the data structure.
-     * Does nothing for now.
-     */
-    public void serialize() {
     }
 
 }

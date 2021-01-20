@@ -1,16 +1,16 @@
 package com.mygdx.honestmirror.data.persistance.Relations;
 
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.PersistenceClient;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertTrue;
 

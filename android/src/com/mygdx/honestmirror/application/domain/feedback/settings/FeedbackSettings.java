@@ -6,7 +6,7 @@ import java.util.List;
 
 public class FeedbackSettings {
     private List<FeedbackSetting> settingList;
-    private double framerate;
+    private final double framerate;
 
     public FeedbackSettings(double framerate) {
         this.framerate = framerate;
@@ -14,15 +14,6 @@ public class FeedbackSettings {
 
     public void LoadDefaults(){
         settingList = SettingsLoader.GetDefaultSettings(framerate);
-    }
-
-    public OccurrenceOverTime getMaxOccurrence(EstimatedPose pose){
-        for (FeedbackSetting setting : settingList){
-            if (setting.getPose().equals(pose))
-                return (setting.getMaxOccurrence());
-        }
-
-        return null;
     }
 
     public int getMaxPersistSeconds(EstimatedPose pose){

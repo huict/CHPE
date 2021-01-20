@@ -8,9 +8,9 @@ import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
-import com.mygdx.honestmirror.R;
 
 import org.junit.After;
 import org.junit.Before;

@@ -17,16 +17,14 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
-import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Session;
-import com.mygdx.honestmirror.view.ui.a_Loading;
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicerFactory;
+import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterController;
-
-import javax.json.JsonArray;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Session;
+import com.mygdx.honestmirror.view.ui.a_Loading;
 
 /**
  * Class where the neural network will analyze the video footage
@@ -106,7 +104,7 @@ public class ForegroundService extends Service {
          Launch thread that performs the actual work
          */
 
-        this.otherUri = intent.getData();
+        otherUri = intent.getData();
 
         thread = new Thread(() -> {
 

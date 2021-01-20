@@ -1,12 +1,12 @@
 package com.mygdx.honestmirror.data.persistance.Video;
 
-import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 
 /**
  * The interface Nn video dao.

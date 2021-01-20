@@ -1,11 +1,13 @@
 package com.mygdx.honestmirror.application.domain.analysis;
 
 import com.mygdx.honestmirror.application.common.DebugLog;
+
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -19,33 +21,6 @@ public class JSONLoader {
      * A JSON specific array that holds every frame's data
      */
     private JSONArray frames;
-    /**
-     * Location of the JSON file on disk.
-     */
-    private String filepath = "";
-
-    /**
-     * Constructor that inits member fields thus loading the data from disk.
-     * @param fp File path to the JSON file on disk.
-     */
-    public JSONLoader(String fp) {
-        filepath = fp;
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader(filepath))
-        {
-            //Read JSON file
-            Object obj = jsonParser.parse(reader);
-            frames = (JSONArray) obj;
-        } catch (FileNotFoundException e) {
-            DebugLog.log("Unable to find " + fp);
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Constructor that loads the json data from a reader object.
@@ -62,9 +37,7 @@ public class JSONLoader {
         } catch (FileNotFoundException e) {
             DebugLog.log("Unable to process Reader");
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
 
@@ -74,6 +47,7 @@ public class JSONLoader {
      * Converts the data back to the original json string.
      * @return json string.
      */
+    @NotNull
     public String toString() {
         return frames.toString();
     }

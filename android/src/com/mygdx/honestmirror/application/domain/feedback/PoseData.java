@@ -1,8 +1,8 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
 public class PoseData {
-    private EstimatedPose pose;
-    private int timeMilliseconds;
+    private final EstimatedPose pose;
+    private final int timeMilliseconds;
 
     public PoseData(EstimatedPose pose, int timeMilliseconds) {
         this.pose = pose;

@@ -2,10 +2,11 @@ package com.mygdx.honestmirror.application.common.videohandler;
 
 import android.graphics.Bitmap;
 
-import java.util.List;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
+
+import java.util.List;
 
 /**
  * The interface Video splicer.
@@ -21,13 +22,6 @@ public interface VideoSplicer {
     boolean isNextFrameAvailable();
 
     boolean isNextTimeAvailable();
-
-    /**
-     * Gets frames processed.
-     *
-     * @return the frames processed
-     */
-    long getFramesProcessed();
 
     /**
      * Gets frame count.

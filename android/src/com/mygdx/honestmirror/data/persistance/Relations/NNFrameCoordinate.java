@@ -1,12 +1,12 @@
 package com.mygdx.honestmirror.data.persistance.Relations;
 
 
-import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
-import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+
+import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
+import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 
 /**
  * The type Nn frame coordinate.

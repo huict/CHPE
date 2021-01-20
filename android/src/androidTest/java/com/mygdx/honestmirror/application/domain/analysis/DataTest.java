@@ -1,20 +1,17 @@
 package com.mygdx.honestmirror.application.domain.analysis;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.honestmirror.application.common.DebugLog;
-import com.mygdx.honestmirror.data.MockData;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI;
+import com.mygdx.honestmirror.data.MockData;
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.PersistenceClient;
-
-import android.content.Context;
-
 
 import org.junit.After;
 import org.junit.Before;

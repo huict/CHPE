@@ -5,18 +5,20 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 import android.content.Context;
 
+import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
-import com.mygdx.honestmirror.data.persistance.AppDatabase;
-import com.mygdx.honestmirror.data.persistance.PersistenceClient;
-import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
+import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterController;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.ModelFactory;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
-import com.mygdx.honestmirror.application.nnanalysis.feedback.*;
-import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
+import com.mygdx.honestmirror.data.persistance.AppDatabase;
+import com.mygdx.honestmirror.data.persistance.PersistenceClient;
+import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;

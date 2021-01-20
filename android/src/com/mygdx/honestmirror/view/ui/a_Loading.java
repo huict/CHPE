@@ -20,10 +20,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
 import com.mygdx.honestmirror.view.service.ForegroundService;
-import com.mygdx.honestmirror.R;
 
 /**
  * Loading screen. This screen is visible when the app is performing the video analysis.
@@ -84,13 +84,10 @@ public class a_Loading extends AppCompatActivity {
         animationDrawable.setExitFadeDuration(1000);
         animationDrawable.start();
         b_Results = findViewById(R.id.resultsButton);
-        b_Results.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Context context = getApplicationContext();
-                Intent intent = new Intent(context, MainFeedbackActivity.class);
-                startActivity(intent);
-            }
+        b_Results.setOnClickListener(v -> {
+            Context context = getApplicationContext();
+            Intent intent = new Intent(context, MainFeedbackActivity.class);
+            startActivity(intent);
         });
         b_Results.setVisibility(View.INVISIBLE);
 
@@ -99,37 +96,28 @@ public class a_Loading extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setMax(progressMax);
 
-        ForegroundService.setWork(new Runnable() {
-            @Override
-            public void run() {
-                while (progress < progressMax) {
-                    // use a handler to post the progress back to the UI thread as text
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String txt = progress / 100 + "%";
-                            progressText.setText(txt);
-                        }
-                    });
-                    // update the progress and sleep for 200 ns
-                    progressBar.setProgress(progress);
-                    try {
-                        Thread.sleep(0, 4000);
-                    } catch (Exception e) {
-                        DebugLog.log(e.getMessage());
-                    }
-                    progress += 1;
-                }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyUser();
-                        b_Results.setVisibility(View.VISIBLE);
-                    }
+        ForegroundService.setWork(() -> {
+            while (progress < progressMax) {
+                // use a handler to post the progress back to the UI thread as text
+                handler.post(() -> {
+                    String txt = progress / 100 + "%";
+                    progressText.setText(txt);
                 });
-
-
+                // update the progress and sleep for 200 ns
+                progressBar.setProgress(progress);
+                try {
+                    Thread.sleep(0, 4000);
+                } catch (Exception e) {
+                    DebugLog.log(e.getMessage());
+                }
+                progress += 1;
             }
+            handler.post(() -> {
+                notifyUser();
+                b_Results.setVisibility(View.VISIBLE);
+            });
+
+
         });
         startService();
 
@@ -190,7 +178,4 @@ public class a_Loading extends AppCompatActivity {
     }
 
 
-    public void startFeedbackService(){
-
-    }
 }

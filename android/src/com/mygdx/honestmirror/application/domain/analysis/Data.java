@@ -1,7 +1,7 @@
 package com.mygdx.honestmirror.application.domain.analysis;
 
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI.body_part;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI.body_part;
 
 /**
  * this class provides an interface to the vector data so the analysis
@@ -51,11 +51,5 @@ public interface Data {
      * @return The number of frames per second of the original video.
      */
     float getFps();
-
-    /**
-     * Serializes the processed data back to the data structure object.
-     * TODO: WIP, this might end up being split into multiple functions
-     */
-    void serialize();
 
 }

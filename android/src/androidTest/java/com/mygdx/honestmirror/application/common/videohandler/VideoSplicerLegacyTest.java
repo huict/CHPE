@@ -7,11 +7,8 @@ import android.media.MediaMetadataRetriever;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getBlue;
-import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getGreen;
-import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getRed;
-import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
@@ -21,6 +18,9 @@ import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getBlue;
+import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getGreen;
+import static com.mygdx.honestmirror.application.common.videohandler.HelperTests.getRed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 

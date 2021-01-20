@@ -48,27 +48,8 @@ public class NNModelCOCO implements PoseModel {
     public int points = 18;
 
     @Override
-    public int[][] getPosePairs() {
-        return POSE_PAIRS;
-    }
-
-    @Override
-    public int getPoints() {
-        return points;
-    }
-
-    public String getProtocolBuffer() {
-        return protocol_buffer;
-    }
-
-    @Override
     public String getModel() {
         return model;
-    }
-
-    @Override
-    public String[] getBodyParts() {
-        return body_parts;
     }
 
 }

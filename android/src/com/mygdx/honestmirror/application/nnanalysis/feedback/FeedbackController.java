@@ -2,10 +2,7 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 
 import android.util.Log;
 
-import com.mygdx.honestmirror.application.domain.feedback.DesignTimeFeedbackDataContainer;
 import com.mygdx.honestmirror.application.domain.feedback.EstimatedPose;
-import com.mygdx.honestmirror.application.domain.feedback.FeedbackDataContainer;
-import com.mygdx.honestmirror.application.domain.feedback.FeedbackFactory;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItemBuilder;
 import com.mygdx.honestmirror.application.domain.feedback.PoseData;
@@ -111,7 +108,6 @@ public class FeedbackController implements FeedbackProcessor {
 
         EstimatedPose lastPose = null;
         int poseOccurrenceCount = 0;
-        int firstOccurrenceIndex = 0;
         double firstOccurrenceTimeMs = 0;
 
         for (int currentPoseOccurrenceIndex = 0; currentPoseOccurrenceIndex < poseData.size(); currentPoseOccurrenceIndex++){

@@ -4,7 +4,6 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 import android.content.Context;
 import android.util.Log;
 
-
 import com.mygdx.honestmirror.application.common.exceptions.InvalidModelParse;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.ModelFactory;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter;

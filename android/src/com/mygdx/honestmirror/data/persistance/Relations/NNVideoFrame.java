@@ -1,11 +1,11 @@
 package com.mygdx.honestmirror.data.persistance.Relations;
 
-import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
-import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+
+import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
+import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
 
 /**
  * The type Nn video frame.

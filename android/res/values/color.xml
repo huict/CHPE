@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_background_color">#FFFFFFFF</color>
-    <color name="transparent1">#FFF0F8FF</color>
-    <color name="ok_color">#4FDE84</color>
     <color name="cancel_color">#FF647A</color>
-    <color name="text_shadow">#7F000000</color>
     <color name="hu_light_gray">#EFEFEF</color>
     <color name="hu_red">#e72e2a</color>
     <color name="hu_blue">#00a1e2</color>
-    <color name="yellow">#FFFF00</color>
-    <color name="black">#000000</color>
-    <color name="light_blue">#add8e6</color>
 
 </resources>

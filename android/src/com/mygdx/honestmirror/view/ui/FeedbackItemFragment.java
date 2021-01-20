@@ -1,27 +1,18 @@
 package com.mygdx.honestmirror.view.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavHost;
-import androidx.navigation.NavHostController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
-import com.mygdx.honestmirror.view.HomeScreen;
-import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
-import com.mygdx.honestmirror.view.activity.SecondFragment;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 /**
@@ -42,7 +33,6 @@ public class FeedbackItemFragment extends Fragment {
     }
 
     // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static FeedbackItemFragment newInstance(int columnCount) {
         FeedbackItemFragment fragment = new FeedbackItemFragment();
         Bundle args = new Bundle();
@@ -57,11 +47,7 @@ public class FeedbackItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        view.findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-            }
+        view.findViewById(R.id.button3).setOnClickListener(view1 -> {
         });
     }
 

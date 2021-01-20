@@ -1,8 +1,5 @@
 package com.mygdx.honestmirror.view.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -24,8 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.mygdx.honestmirror.application.common.DebugLog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.application.common.DebugLog;
 
 import java.io.File;
 
@@ -115,12 +115,7 @@ public class a_VideoSelect extends AppCompatActivity {
         AAL.setTitleBar(getWindow());
 
         b_Home = findViewById(R.id.homeButton);
-        b_Home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        b_Home.setOnClickListener(v -> finish());
 
         dialog = new Dialog(this);
         mediaController = new MediaController(a_VideoSelect.this) {
@@ -138,18 +133,15 @@ public class a_VideoSelect extends AppCompatActivity {
         };
 
         b_selectVideo = findViewById(R.id.select_button);
-        b_selectVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // if all permissions were granted already we can just open the video gallery
-                // if not, request the missing permissions
-                if(AAL.permissionsGranted(getApplicationContext(), allPermissions)) {
-                    DebugLog.log("logger: Opening gallery");
-                    openVideoGallery();
-                } else {
-                    DebugLog.log("logger: Not opening gallery");
-                    AAL.requestPermissions(getApplicationContext(), a_VideoSelect.this, allPermissions);
-                }
+        b_selectVideo.setOnClickListener(v -> {
+            // if all permissions were granted already we can just open the video gallery
+            // if not, request the missing permissions
+            if(AAL.permissionsGranted(getApplicationContext(), allPermissions)) {
+                DebugLog.log("logger: Opening gallery");
+                openVideoGallery();
+            } else {
+                DebugLog.log("logger: Not opening gallery");
+                AAL.requestPermissions(getApplicationContext(), a_VideoSelect.this, allPermissions);
             }
         });
     }
@@ -166,21 +158,13 @@ public class a_VideoSelect extends AppCompatActivity {
         textView.setText(filepath);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        b_OK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), a_Loading.class);
-                intent.setData(videoUri);
-                startActivity(intent);
-            }
+        b_OK.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(getApplicationContext(), a_Loading.class);
+            intent.setData(videoUri);
+            startActivity(intent);
         });
-        b_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        b_Cancel.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 
@@ -192,22 +176,14 @@ public class a_VideoSelect extends AppCompatActivity {
         videoUri = Uri.parse(name);
         videoView.setVideoURI(videoUri);
         videoIsSelected = true;
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-                    @Override
-                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                        mediaController.hide();
-                        videoView.setMediaController(mediaController);
-                        mediaController.setAnchorView(videoView);
-                        ((ViewGroup) mediaController.getParent()).removeView(mediaController);
-                        ((FrameLayout) dialog.findViewById(R.id.framertje))
-                                .addView(mediaController);
-                    }
-                });
-            }
-        });
+        videoView.setOnPreparedListener(mp -> mp.setOnVideoSizeChangedListener((mp1, width, height) -> {
+            mediaController.hide();
+            videoView.setMediaController(mediaController);
+            mediaController.setAnchorView(videoView);
+            ((ViewGroup) mediaController.getParent()).removeView(mediaController);
+            ((FrameLayout) dialog.findViewById(R.id.framertje))
+                    .addView(mediaController);
+        }));
         videoView.setVideoURI(videoUri);
         videoView.start();
     }
@@ -271,7 +247,7 @@ public class a_VideoSelect extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), data.getData().getPath(), Toast.LENGTH_LONG);
                 toast.show();
                 filepath = data.getData().getPath();
-                File f = new File(data.getData().getPath());
+                new File(data.getData().getPath());
                 filepath = getFileName(data.getData());
                 showDialog();
                 initializePlayer(data.getData().toString());

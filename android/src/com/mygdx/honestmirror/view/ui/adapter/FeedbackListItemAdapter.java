@@ -1,7 +1,5 @@
 package com.mygdx.honestmirror.view.ui.adapter;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
-import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
-import org.jetbrains.annotations.NotNull;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
+import com.mygdx.honestmirror.view.activity.MediaControllerActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 

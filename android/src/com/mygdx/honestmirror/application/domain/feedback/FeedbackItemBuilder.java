@@ -1,7 +1,7 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
 public class FeedbackItemBuilder {
-    private double framerate;
+    private final double framerate;
     private FeedbackDataContainer dataContainer;
 
     public FeedbackItemBuilder(double framerate) {

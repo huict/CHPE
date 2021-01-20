@@ -1,9 +1,9 @@
 package com.mygdx.honestmirror.application.domain.feedback.settings;
 
 public class OccurrenceOverTime {
-    private int timeSeconds;
-    private int occurrence;
-    private double framerate;
+    private final int timeSeconds;
+    private final int occurrence;
+    private final double framerate;
 
     public OccurrenceOverTime(int timeSeconds, int occurrence, double framerate) {
         this.timeSeconds = timeSeconds;
