@@ -11,9 +11,8 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModel
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 
 
-/**
- * The type Chpe.
- */
+//The type Chpe.
+
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class CHPE {
     private final Resolution resolution;
@@ -21,26 +20,14 @@ public class CHPE {
     private PoseModel poseModel;
     private static final boolean BILINEAR_INTERPOLATION = true;
 
-    /**
-     * Instantiates a new CHPE.
-     *
-     * @param context    The context
-     * @param resolution The resolution used for scaling
-     * @param model      the model
-     */
+    //Instantiates a new CHPE.
     public CHPE(Context context, Resolution resolution, PoseModel model) {
         this.context = context;
         this.resolution = resolution;
         this.poseModel = model;
     }
 
-    /**
-     * Instantiates a new Chpe.
-     *
-     * @param context    the context
-     * @param resolution the resolution
-     * @param model      the model
-     */
+    //Instantiates a new Chpe.
     public CHPE(Context context, Resolution resolution, final int model) {
         this.context = context;
         this.resolution = resolution;
@@ -56,22 +43,15 @@ public class CHPE {
     }
 
 
-    /**
-     * Get pose model pose model.
-     *
-     * @return the pose model
-     */
+    //Get pose model pose model.
     PoseModel getPoseModel(){
         return this.poseModel;
     }
 
-    /**
-     * Process frame person based on the
-     *
-     * @param image         The supplied bitmap image
-     * @param nnInterpreter The nnInterpreter type (i.e. CPU/GPU/NNAPI)
-     * @return Instance of a Person found on the image
-     */
+     //Process frame person based on the
+     //image         The supplied bitmap image
+     //nnInterpreter The nnInterpreter type (i.e. CPU/GPU/NNAPI)
+     //returns Instance of a Person found on the image
 //    Person ProcessFrame(Bitmap image, NNInterpreter nnInterpreter) {
 //        long startTime = System.nanoTime();
 //        PoseNetHandler posenetHandler = new PoseNetHandler(this.context,
@@ -85,12 +65,9 @@ public class CHPE {
 //        return person; //
 //    }
 
-    /**
-     * Over loader, uses GPU as default device
-     *
-     * //@param image The supplied bitmap image
-     * @return Instance of a Person found on the image
-     */
+     //Over loader, uses GPU as default device
+     //@param image The supplied bitmap image
+     //return Instance of a Person found on the image
 //    Person ProcessFrame(Bitmap image) {
 //        return ProcessFrame(image, NNInterpreter.GPU);
 //    }

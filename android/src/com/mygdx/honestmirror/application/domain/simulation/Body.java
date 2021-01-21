@@ -12,10 +12,8 @@ import java.util.HashMap;
 
 import static com.mygdx.honestmirror.application.domain.simulation.HelperClass.vec3Subtraction;
 
-/**
- * The body class combines BodyPart and BodyLimb objects to create the layout of the human body into a singular object.
- * This class provides functionality to update the position of these arranged BodyParts and Limbs according to the provides data from the database.
- */
+//The body class combines BodyPart and BodyLimb objects to create the layout of the human body into a singular object.
+//This class provides functionality to update the position of these arranged BodyParts and Limbs according to the provides data from the database.
 public class Body {
     public float scale;
     public float limbDiameter = 1f;
@@ -33,12 +31,8 @@ public class Body {
     // Array to store joint coordinates from the data
     public Array<Vector3> jointCoords = new Array<>();
 
-    /**
-     * This function currently defines the object with its parameters.
-     * Will be replaced with a constructor in the future.
-     * @param scaleInstance
-     * @param data
-     */
+    //This function currently defines the object with its parameters.
+    //Will be replaced with a constructor in the future.
     public void create(float scaleInstance, Data data){
         scale = scaleInstance;
 
@@ -78,11 +72,7 @@ public class Body {
         }
     }
 
-    /**
-     * This update function updates al the BodyLimb and BodyPart object with the data for the given frame.
-     * @param frame
-     * @param data
-     */
+    //This update function updates al the BodyLimb and BodyPart object with the data for the given frame.
     public void update(int frame, Data data){
         //update joints -------------------------------------------------------------------------------------------------|
         for (int i = 0; i < jointCoords.size; i++){

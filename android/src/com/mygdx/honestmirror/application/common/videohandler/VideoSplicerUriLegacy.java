@@ -9,40 +9,25 @@ import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 
 import java.security.InvalidParameterException;
 
-/**
- * The type Video splicer.
- */
 public class VideoSplicerUriLegacy extends VideoSplicerUri {
-    /**
-     * The M uri.
-     */
+
     private String mUri;
-    /**
-     * The Uri.
-     */
+
     public Uri uri;
-    /**
-     * The Iter time us.
-     */
-    public long iterTimeUs; // Used to indicate how long a single frame is on screen
-    /**
-     * The Total time.
-     */
-    private long totalTime; // TODO: Update to allow longer video's. The current limit would be the size of an integer.
+
+    // Used to indicate how long a single frame is on screen
+    public long iterTimeUs;
+
+    private long totalTime;
 
     private static final long microSecondsToMiliseconds = 1000;
 
 
-    /**
-     * Instantiates a new Video splicer uri legacy.
-     *
-     * @param metadataRetriever the metadata retriever
-     */
+    //Instantiates a new Video splicer uri legacy.
     public VideoSplicerUriLegacy(MediaMetadataRetriever metadataRetriever){
         super(metadataRetriever);
         initialiseVideoSplicerLegacy();
     }
-
 
     private void initialiseVideoSplicerLegacy() {
         this.totalTime = getVideoDuration();
@@ -58,37 +43,27 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
     }
 
     private void getAmountOfFrames() {
-        DebugLog.log(this.totalTime + " totale duur");
-        DebugLog.log(this.iterTimeUs + " duur frame per seconde");
+        DebugLog.log(this.totalTime + " total time");
+        DebugLog.log(this.iterTimeUs + " duration frame per second");
         long l = this.iterTimeUs / microSecondsToMiliseconds;
-        DebugLog.log(l + " geconverteerde frame tijd");
+        DebugLog.log(l + " converted frame time");
 
         this.frameCount = totalTime / l;
         DebugLog.log(this.frameCount + " frame count");
     }
 
 
-    /**
-     * Gets next frame.
-     *
-     * @param frame the frame, MUST be atleast 1
-     * @return the next frame
-     */
-    @Override
+    //Gets next frame.
+    //the frame MUST be at least 1
     public Bitmap getNextFrame(int frame) {
 
         if (frame == 0 || frame < 0 || frame > this.frameCount) {
-            throw new InvalidParameterException("Value must between 1 - " + this.frameCount);
+            throw new InvalidParameterException("Value must be between 1 - " + this.frameCount);
         }
         return this.mediaMetadataRetriever.getFrameAtTime(
                 frame * this.iterTimeUs);
     }
 
-    /**
-     * Gets frame iter time.
-     *
-     * @return the frame iter time
-     */
     private long getFrameIterTime() {
 
         Bitmap bp;
@@ -104,13 +79,7 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
 
     }
 
-    /**
-     * Gets next frame.
-     *
-     * @return the next frame
-     * @throws InvalidFrameAccess the invalid frame access
-     */
-    @Override
+    @Deprecated
     public Bitmap getNextFrame() throws InvalidFrameAccess {
         if (isNextFrameAvailable()) {
 
@@ -127,7 +96,6 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
     private Bitmap getFrameAtTime(long ms) {
         return this.mediaMetadataRetriever.getFrameAtTime(
                 ms);
-
     }
 
 

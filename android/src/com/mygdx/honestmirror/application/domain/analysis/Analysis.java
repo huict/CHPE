@@ -5,36 +5,25 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModel
 import java.util.HashMap;
 
 
-/**
- * @author Nico van Bentum
- * Main class that provides (and performs) the functionality for analyzing a data set
- * of vector coordinates for detecting human body language and actions.
- */
+//Main class that provides (and performs) the functionality for analyzing a data set
+// of vector coordinates for detecting human body language and actions.
+
 public class Analysis {
-    /**
-     * A handle to the detection class that handles detecting specific Actions.
-     */
+    //A handle to the detection class that handles detecting specific Actions.
     private final Detection detection;
 
-    /**
-     * Object that can perform various filter techniques on the data object.
-     */
+    //Object that can perform various filter techniques on the data object.
     private final Filter filter;
 
-    /**
-     * Constructor. Initializes member fields.
-     * @param data Object for interfacing with the data set.
-     */
+    //Constructor. Initializes member fields.
+    //data Object for interfacing with the data set.
     public Analysis(final Data data) {
         detection = new Detection(data);
         filter = new Filter(data);
     }
     
-    /**
-     * Lets the Detection object perform it's operations.
-     * @return A hash map containing every action and whether it was detected or not.
-     * TODO: Implementation
-     */
+    //Lets the Detection object perform it's operations.
+    //return A hash map containing every action and whether it was detected or not.
     public HashMap<Action, Boolean> detect() {
         HashMap<Action, Boolean> results = new HashMap<>();
 
@@ -53,10 +42,8 @@ public class Analysis {
         return results;
     }
     
-    /**
-     * Filters and processes the data.
-     * Most of this will be done in Python first because of faster - and visual - testing.
-     */
+    //Filters and processes the data.
+    //Most of this will be done in Python first because of faster - and visual - testing.
     public void process() {
         filter.resolveZeros();
         filter.averageOf(NNModelMPI.body_part.waist, NNModelMPI.body_part.l_hip, NNModelMPI.body_part.r_hip);

@@ -6,27 +6,17 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModel
 
 import java.util.ArrayList;
 
-/**
- * @author Nico van Bentum
- * This class can perform various filtering actions on a Data class.
- */
+//This class can perform various filtering actions on a Data class.
 class Filter {
-    /**
-     * Data you want to filter.
-     */
+    //Data you want to filter.
     private final Data data;
 
-    /**
-     * Constructor, sets the data.
-     * @param pData external data object.
-     */
+    //Constructor, sets the data.
     Filter(final Data pData) {
         data = pData;
     }
 
-    /**
-     * Looks for zeros in the entire data set and changes them to previous entry.
-     */
+    //Looks for zeros in the entire data set and changes them to previous entry.
     void resolveZeros() {
         for(NNModelMPI.body_part bp : NNModelMPI.body_part.values()) {
             for(int f = 1; f < data.getFrameCount(); f++) {
@@ -40,23 +30,17 @@ class Filter {
         }
     }
 
-    /**
-     * Calculates the absolute average between two numbers.
-     * @param a first number
-     * @param b second number
-     * @return resulting absolute average.
-     */
-    double absAverage(double a, double b) {
-        return a + Math.abs((a - b) / 2);
+    //Calculates the absolute average between two numbers.
+    //returns resulting absolute average.
+    double absAverage(double first_number, double second_number) {
+        return first_number + Math.abs((first_number - second_number) / 2);
     }
 
-    /**
-     * Updates every coordinate for a given body part with the average of two other body parts.
-     * Mainly used for changing the waist coordinates to the average of both hips.
-     * @param toUpdate which body part you want to give the average to
-     * @param left first body part
-     * @param right second body part
-     */
+    // Updates every coordinate for a given body part with the average of two other body parts.
+    // Mainly used for changing the waist coordinates to the average of both hips.
+    // toUpdate which body part you want to give the average to
+    // left first body part
+    // right second body part
     void averageOf(NNModelMPI.body_part toUpdate, NNModelMPI.body_part left, NNModelMPI.body_part right) {
         for(int f = 0; f < data.getFrameCount(); f++) {
             double x = absAverage(data.getCoord(f, left).x, data.getCoord(f, right).x);
@@ -66,10 +50,8 @@ class Filter {
         }
     }
 
-    /**
-     * Performs a linear performed weighted average kernel filtering over the data set.
-     * @param kernel array of doubles to use as kernel
-     */
+    // Performs a linear performed weighted average kernel filtering over the data set.
+    // Kernel array of doubles to use as kernel
     void kernelFilter(double[] kernel) {
         int offset = kernel.length / 2;
         int sum = 0;

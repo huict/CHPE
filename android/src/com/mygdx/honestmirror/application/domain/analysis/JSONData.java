@@ -65,14 +65,14 @@ public class JSONData implements Data {
     /**
      * Implements Data's interface for setting the y component of a coordinate.
      */
-    public void setY(long frame, NNModelMPI.body_part bp, double y) {
+    public void setY(long frame, NNModelMPI.body_part bp, double newComponentValue_Y) {
         if (Integer.MAX_VALUE < frame) {
             throw new java.lang.RuntimeException("JSONData Error: attempting to access frame outside of jsonArray");
         }
 
         JSONObject bodyparts = (JSONObject) frames.get(toIntExact(frame));
         JSONArray coords = (JSONArray) bodyparts.get(bp.toString());
-        coords.set(1, y);
+        coords.set(1, newComponentValue_Y);
     }
 
     /**

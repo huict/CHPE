@@ -79,7 +79,7 @@ project(":android") {
     }
 }
 
-project(":core") { // TODO: Delete
+project(":core") {
     apply plugin: "java-library"
 
 
