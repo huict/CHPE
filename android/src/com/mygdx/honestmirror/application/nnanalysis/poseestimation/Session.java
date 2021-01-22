@@ -23,9 +23,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 
-/**
- * The type Session.
- */
+//The type Session.
 @SuppressWarnings({"FieldMayBeFinal"})
 public class Session {
 
@@ -43,12 +41,7 @@ public class Session {
     private InterpreterController interpreterController;
     private FeedbackController feedbackController;
 
-    /**
-     * Instantiates a new Session.
-     *
-     * @param context      the context
-     * @param videoSplicer the video splicer
-     */
+    //Instantiates a new Session.
     public Session(Context context, VideoSplicer videoSplicer){
         this(context, videoSplicer, null, null);
     }
@@ -75,9 +68,7 @@ public class Session {
         this.nnInsert = new NNInserts(this.appDatabase);
     }
 
-    /**
-     * Loops through a video and stores it continuously
-     */
+    //Loops through a video and stores it continuously
     public void runVideo() {
         PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
         List<Person> persons = this.videoSplicer.performAnalyse(pnh);
@@ -93,10 +84,7 @@ public class Session {
             }
         }
     }
-    /**
-     * The NormaliseData query.
-     * Should run after the run video run to normalise the data.
-     */
+    //The NormaliseData query.
     public void normaliseData() {
         this.nnInsert.normalise(this.videoId);
     }

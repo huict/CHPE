@@ -25,54 +25,32 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
 import com.mygdx.honestmirror.view.service.ForegroundService;
 
-/**
- * Loading screen. This screen is visible when the app is performing the video analysis.
- */
+//Loading screen. This screen is visible when the app is performing the video analysis.
 public class a_Loading extends AppCompatActivity {
-    /**
-     * Current progress of the loading bar. Should not exceed 100.
-     */
+    //Current progress of the loading bar. Should not exceed 100.
     int progress = 0;
 
-    /**
-     * Max value for the progress bar. Android wants big integers to animate smoothly.
-     */
+    //Max value for the progress bar. Android wants big integers to animate smoothly.
     final int progressMax = 10000;
 
-    /**
-     * Layout of the activity.
-     */
+    //Layout of the activity.
     ConstraintLayout constraintLayout;
 
-    /**
-     * Handle for the animated circular progress bar.
-     */
+    // Handle for the animated circular progress bar.
     AnimationDrawable animationDrawable;
 
-    /**
-     * Progress text to display.
-     */
+    //Progress text to display
     TextView progressText;
 
-    /**
-     * Progress bar.
-      */
     ProgressBar progressBar;
 
-    /**
-     * Handler thread that updates the progress animation.
-     */
+    // Handler thread that updates the progress animation.
     Handler handler = new Handler();
 
-    /**
-     * Result button that appears when loading is done.
-     */
+    //Result button that appears when loading is done.
     Button b_Results;
 
-    /**
-     * Android default constructor.
-     * @param savedInstanceState
-     */
+    // Android default constructor.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,18 +102,14 @@ public class a_Loading extends AppCompatActivity {
 
     }
 
-    /**
-     * Android function override, stops the service.
-     */
+    // Android function override, stops the service.
     @Override
     public void onStop() {
         super.onStop();
         finish();
     }
 
-    /**
-     * Notifies the user when it's done loading.
-     */
+    //Notifies the user when it's done loading.
     public void notifyUser() {
         int importance = NotificationManager.IMPORTANCE_HIGH;
         final String CHANNEL_ID = "notifyUser";
@@ -166,9 +140,7 @@ public class a_Loading extends AppCompatActivity {
         notificationManager.notify(12, notification);
     }
 
-    /**
-     * Starts the foreground service. Typically called when this activity starts.
-     */
+    //Starts the foreground service. Typically called when this activity starts.
     public void startService() {
         Toast toast = Toast.makeText(getApplicationContext(), "Started video analysis, this could take a while", Toast.LENGTH_LONG);
         toast.show();

@@ -15,24 +15,17 @@ import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
-/**
- * A fragment reprenting a list of Items.
- */
+// A fragment reprenting a list of Items.
 public class FeedbackItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    // Mandatory empty constructor for the fragment manager to instantiate the
+    // fragment (e.g. upon screen orientation changes).
     public FeedbackItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
     public static FeedbackItemFragment newInstance(int columnCount) {
         FeedbackItemFragment fragment = new FeedbackItemFragment();
         Bundle args = new Bundle();

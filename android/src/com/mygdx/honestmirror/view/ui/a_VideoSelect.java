@@ -29,13 +29,9 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 
 import java.io.File;
 
-/**
- * This screen is used open the vieo gallery and select a video to process.
- */
+//This screen is used open the vieo gallery and select a video to process.
 public class a_VideoSelect extends AppCompatActivity {
-    /**
-     * Permission we need to proceed.
-     */
+    //Permission we need to proceed.
     public static final String[] allPermissions = new String[] {
             Manifest.permission.INTERNET,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -45,57 +41,37 @@ public class a_VideoSelect extends AppCompatActivity {
             Manifest.permission.VIBRATE
     };
 
-    /**
-     * Uuri to the selected video.
-     */
+    //Uuri to the selected video.
     Uri videoUri;
 
-    /**
-     * Dialog box to confirm the selected video.
-     */
+    //Dialog box to confirm the selected video.
     Dialog dialog;
 
-    /**
-     * Filepath retrieved from the Uri.
-     */
+    // Filepath retrieved from the Uri.
     String filepath;
 
-    /**
-     * Selected video played back to the user through this view.
-     */
+    // Selected video played back to the user through this view.
     VideoView videoView;
 
-    /**
-     * Button to return to the homescreen.
-     */
+    // Button to return to the homescreen.
     ImageButton b_Home;
 
-    /**
-     * Button to open the video gallery.
-     */
+    // Button to open the video gallery.
     ImageButton b_selectVideo;
 
-    /**
-     * Thing that shows the media controls.
-     */
+    //Thing that shows the media controls.
     MediaController mediaController;
 
-    /**
-     * Check to see if we've selected a video.
-     */
+    //Check to see if we've selected a video.
     boolean videoIsSelected = false;
 
-    /**
-     * Request code.
-     */
+    // Request code.
     final int SELECT_VIDEO_REQUEST = 1;
 
-    /**
-     * Android function override, asks for permissions of not granted already. Opens the video gallery after.
-     * @param requestCode random request code.
-     * @param permissions String array of permissions
-     * @param grantResults Results to see if permissions have been granted or not.
-     */
+    //Android function override, asks for permissions of not granted already. Opens the video gallery after.
+    // requestCode random request code.
+    //permissions String array of permissions
+    //grantResults Results to see if permissions have been granted or not.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -104,10 +80,7 @@ public class a_VideoSelect extends AppCompatActivity {
         }
     }
 
-    /**
-     * Default android constructor.
-     * @param savedInstanceState
-     */
+    //Default android constructor.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,9 +119,7 @@ public class a_VideoSelect extends AppCompatActivity {
         });
     }
 
-    /**
-     * Shows the selected video confirmation dialog.
-     */
+    //Shows the selected video confirmation dialog.
     public void showDialog() {
         dialog.setContentView(R.layout.layout_dialog);
         videoView = dialog.findViewById(R.id.videoView2);
@@ -168,10 +139,8 @@ public class a_VideoSelect extends AppCompatActivity {
         dialog.show();
     }
 
-    /**
-     * Initializes the video player used in the confirmation dialog.
-     * @param name String version of the video URI
-     */
+    // Initializes the video player used in the confirmation dialog.
+    // name String version of the video URI
     public void initializePlayer(String name) {
         videoUri = Uri.parse(name);
         videoView.setVideoURI(videoUri);
@@ -188,9 +157,7 @@ public class a_VideoSelect extends AppCompatActivity {
         videoView.start();
     }
 
-    /**
-     * Opens the device's default video gallery in order to select a video.
-     */
+    // Opens the device's default video gallery in order to select a video.
     public void openVideoGallery() {
         Intent intent;
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -233,12 +200,7 @@ public class a_VideoSelect extends AppCompatActivity {
         return result;
     }
 
-    /**
-     * Android function override, opens the confirmation dialog after selecting a video in the gallery.
-     * @param requestCode random request code.
-     * @param resultCode random result code.
-     * @param data Intent.
-     */
+    // Android function override, opens the confirmation dialog after selecting a video in the gallery.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

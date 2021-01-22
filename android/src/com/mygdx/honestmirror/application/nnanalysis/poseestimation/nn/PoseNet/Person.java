@@ -9,32 +9,19 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-/**
- * The type Person.
- */
+//The type Person.
 public class Person {
-    /**
-     * Instantiates a new Person.
-     */
+    //Instantiates a new Person.
     public Person() {
     }
 
-
-    /**
-     * The Score.
-     */
+    //The Score.
     public Float score = 0.0f;
 
-    /**
-     * The Key points.
-     */
+    //The Key points.
     public List<KeyPoint> keyPoints = new ArrayList<>();
 
-    /**
-     * Gets key points.
-     *
-     * @return the key points
-     */
+    //Gets key points.
     public List<KeyPoint> getKeyPoints() {
         return keyPoints;
     }

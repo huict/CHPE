@@ -57,14 +57,12 @@ class PoseNetHandler(
         //gpuDelegate = null
     }
 
-    /** Returns value within [0,1].   */
+    // Returns value within [0,1].
     private fun sigmoid(x: Float): Float {
         return (1.0f / (1.0f + exp(-x)))
     }
 
-    /**
-     * Scale the image to a byteBuffer of [-1,1] values.
-     */
+    //Scale the image to a byteBuffer of [-1,1] values.
     private fun initInputArray(bitmap: Bitmap): ByteBuffer {
         val bytesPerChannel = 4
         val inputChannels = 3
@@ -88,7 +86,7 @@ class PoseNetHandler(
         return inputBuffer
     }
 
-    /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
+    //Preload and memory map the model file, returning a MappedByteBuffer containing the model.
     private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
@@ -97,9 +95,7 @@ class PoseNetHandler(
         )
     }
 
-    /**
-     * Initializes an outputMap of 1 * x * y * z FloatArrays for the model processing to populate.
-     */
+    //Initializes an outputMap of 1 * x * y * z FloatArrays for the model processing to populate.
     private fun initOutputMap(interpreter: Interpreter): HashMap<Int, Any> {
         val outputMap = HashMap<Int, Any>()
 
@@ -136,7 +132,7 @@ class PoseNetHandler(
         return outputMap
     }
 
-    /** Crop Bitmap to maintain aspect ratio of model input.   */
+    // Crop Bitmap to maintain aspect ratio of model input.
     private fun cropBitmap(bitmap: Bitmap): Bitmap {
         val bitmapRatio = bitmap.height.toFloat() / bitmap.width
         val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
@@ -173,14 +169,7 @@ class PoseNetHandler(
         return croppedBitmap
     }
 
-    /**
-     * Estimates the pose for a single person.
-     * args:
-     *      bitmap: image bitmap of frame that should be processed
-     * returns:
-     *      person: a Person object containing data about keypoint locations and confidence scores
-     */
-
+    //Estimates the pose for a single person.
     fun estimateSinglePose(bitmap: Bitmap): Person {
         val person: Person
         person = if(bitmap.height / bitmap.width != 1){

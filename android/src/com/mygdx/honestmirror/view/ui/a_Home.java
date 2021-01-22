@@ -10,17 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.view.activity.HelpAppActivity;
 
-/**
- * Home screen class. This is the first screen you see when you start the app.
- */
+// Home screen class. This is the first screen you see when you start the app.
 public class a_Home extends AppCompatActivity {
-    /**
-     * Button to go the presentation archive.
-     */
+
     Button b_archive;
-    /**
-     * Button to start the video selection process.
-     */
+
     Button b_start;
 
     Button b_help_app;
@@ -28,19 +22,14 @@ public class a_Home extends AppCompatActivity {
     Button b_help_gloves;
 
 
-    /**
-     * Android function override.
-     * This closes the app.
-     */
+    // Android function override.
+    //This closes the app.
     @Override
     public void onBackPressed() {
         finishAffinity();
     }
 
-    /**
-     * Android default constructor.
-     * @param savedInstanceState
-     */
+    // Android default constructor.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +55,7 @@ public class a_Home extends AppCompatActivity {
         b_help_gloves.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
     }
 
-    /**
-     * Helper function for creating and launching an intent.
-     * @param cls
-     */
+    //Helper function for creating and launching an intent.
     public void launchIntent(Class<?> cls) {
         Intent intent = new Intent(this, cls);
         startActivity(intent);

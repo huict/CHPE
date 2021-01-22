@@ -26,18 +26,12 @@ import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterControl
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Session;
 import com.mygdx.honestmirror.view.ui.a_Loading;
 
-/**
- * Class where the neural network will analyze the video footage
- * @author Gianluca Piccardo
- */
+//Class where the neural network will analyze the video footage
 public class ForegroundService extends Service {
-    /**
-     * Declaration of the name inside the notification
-     */
+    //Declaration of the name inside the notification
     public String CHANNEL_ID = "ForegroundService";
     static Thread thread;
     static Runnable work;
-    private VideoSplicer videoSplicer;
     private static FeedbackController feedbackController;
     private static Uri otherUri;
 
@@ -45,41 +39,28 @@ public class ForegroundService extends Service {
         return otherUri;
     }
 
-    /**
-     * This function sets the work that the foreground service will perform on start command.
-     * @param r Android runnable that contains the work.
-     */
+    //This function sets the work that the foreground service will perform on start command.
     public static void setWork(Runnable r) {
         work = r;
     }
 
-
-    /**
-     * Constructor
-     */
     @Override
     public void onCreate() {
         super.onCreate();
     }
-    /**
-     * Function that starts as soon the Service is called upon
-     * Notificationchannel and Notication is created
-     * Uri's are copied and service gets started
-     * @author Gianluca Piccardo
-     * @param intent what intents to use
-     * @param flags what permissions have been set
-     * @param startID A unique integer representing this specific request to start
-     * @return STICKY_NOT_STICKY The return value indicates what semantics the system should use for the
-     * service's current started state.
-     */
+
+    //Function that starts as soon the Service is called upon
+    // Notificationchannel and Notication is created
+    // Uri's are copied and service gets started
+    // intent what intents to use
+    // flags what permissions have been set
+    // startID A unique integer representing this specific request to start
+    // returns STICKY_NOT_STICKY The return value indicates what semantics the system should use for the
+    // service's current started state.
     @SuppressLint("NewApi")
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
-        /**
-         * Creating Uri for MediaMetadataRetriever
-         */
-
-
+        //Creating Uri for MediaMetadataRetriever
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), a_Loading.class), PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -96,13 +77,9 @@ public class ForegroundService extends Service {
                 .setOngoing(true)
                 .setChannelId(CHANNEL_ID)
                 .build();
-        /**
-         * Starting actual notification on Foreground
-         */
+        //Starting actual notification on Foreground
         startForeground(7, notification);
-        /**
-         Launch thread that performs the actual work
-         */
+        //Launch thread that performs the actual work
 
         otherUri = intent.getData();
 
@@ -134,16 +111,13 @@ public class ForegroundService extends Service {
         return START_NOT_STICKY;
     }
 
-    /**
-     * Necessary function overrides
-     */
+    //Necessary function overrides
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
-    /**
-     * Necessary function overrides
-     */
+
+    //Necessary function overrides
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

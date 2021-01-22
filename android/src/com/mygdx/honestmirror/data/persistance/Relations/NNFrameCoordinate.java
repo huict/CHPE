@@ -8,9 +8,7 @@ import androidx.room.ForeignKey;
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 
-/**
- * The type Nn frame coordinate.
- */
+//The type Nn frame coordinate.
 @Entity(
         primaryKeys = {
                 "frame_id",
@@ -34,27 +32,14 @@ import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 
 public class NNFrameCoordinate {
 
-    /**
-     * The Frame id.
-     * The primary key of the frame record.
-     */
     @ColumnInfo(index = true)
     public long frame_id;
-    /**
-     * The Coordinate id.
-     * The primary key of the coordinate id
-     */
     @ColumnInfo(index = true)
     public long coordinate_id;
 
 
-    /**
-     * Instantiates a new NNFrame coordinate.
-     * The only way to instantiate this object is with both ID's
-     *
-     * @param frame_id      the frame id
-     * @param coordinate_id the coordinate id
-     */
+    //Instantiates a new NNFrame coordinate.
+    //The only way to instantiate this object is with both ID's
     public NNFrameCoordinate(long frame_id, long coordinate_id) {
         this.frame_id = frame_id;
         this.coordinate_id = coordinate_id;

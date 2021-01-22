@@ -13,10 +13,8 @@ import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrame;
 import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrameDAO;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideoDAO;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 
 public class MockData {
 
@@ -30,8 +28,6 @@ public class MockData {
         }
         return result;
     }
-
-    // TODO: Insert wrapper for inserting frames would be useful
 
     private long insertFrame(int frameCount) {
         NNFrame nnFrame = new NNFrame(frameCount);

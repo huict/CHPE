@@ -7,9 +7,7 @@ import androidx.room.ForeignKey;
 import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
 
-/**
- * The type Nn video frame.
- */
+//The type Nn video frame.
 @Entity(
         primaryKeys = {
                 "video_id",
@@ -31,26 +29,13 @@ import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
 )
 public class NNVideoFrame {
 
-    /**
-     * The Video id.
-     * The primary key of the video record.
-     */
     @ColumnInfo(index = true)
     public long video_id;
-    /**
-     * The Frame id.
-     * The primary key of the video record.
-     */
     @ColumnInfo(index = true)
     public long frame_id;
 
-    /**
-     * Instantiates a new NNVideoFrame.
-     * The only way to instantiate this object is with both ID's
-     *
-     * @param video_id the video id
-     * @param frame_id the frame id
-     */
+    //Instantiates a new NNVideoFrame.
+    //The only way to instantiate this object is with both ID's
     public NNVideoFrame(long video_id, long frame_id) {
         this.video_id = video_id;
         this.frame_id = frame_id;
