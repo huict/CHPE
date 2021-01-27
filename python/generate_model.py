@@ -12,12 +12,9 @@
 #===========================================================================#
 from typing import List
 import os, sys, getopt
-#Prevent tensorflow from printing warnings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import numpy as np
 import tensorflow as tf
-#Prevent tensorflow converter from printing warnings
-tf.get_logger().setLevel('ERROR')
+
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
@@ -243,6 +240,12 @@ def main(argv):
 		print("The epochs argument must be of type integer")
 		sys.exit(2)
 
+	if not show_model:
+		#Prevent tensorflow from printing warnings
+		os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+		#Prevent tensorflow converter from printing warnings
+		tf.get_logger().setLevel('ERROR')
+
 	# Load the json data
 	poses_load = load_data_from_JSON(poses_json)
 	labels_load = load_data_from_JSON(labels_json)
@@ -262,7 +265,6 @@ def main(argv):
 			label_indexes[temp_label] = index
 			index+=1
 		label_per_image.append(label_indexes[temp_label])
-
 
 	# Create model
 	model = create_model(len(training_data[0]), len(label_indexes), layer_list)
