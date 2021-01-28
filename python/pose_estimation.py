@@ -2,12 +2,25 @@
 # 							pose-estimation.py								#
 #---------------------------------------------------------------------------#
 #	Authors	:	Duur Alblas & Maaike Hovenkamp								#
-#	Version	:	V1.0														#
-#	Date	:	20-10-2020													#
+#	Version	:	V1.1														#
+#	Date	:	28-1-2021													#
 #---------------------------------------------------------------------------#
 # This is a small application with which you can generate a .json file		#
 # containing pose data for each image in the image directory using a		#
 # PoseNet model.															#
+#																			#
+#    This program is free software: you can redistribute it and/or modify	#
+#    it under the terms of the GNU General Public License as published by	#
+#    the Free Software Foundation, either version 3 of the License, or		#
+#    (at your option) any later version.									#
+#																			#
+#    This program is distributed in the hope that it will be useful,		#
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of			#
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the			#
+#    GNU General Public License for more details.							#
+#																			#
+#   You should have received a copy of the GNU General Public License		#
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.	#
 #===========================================================================#
 
 import os, sys, getopt
