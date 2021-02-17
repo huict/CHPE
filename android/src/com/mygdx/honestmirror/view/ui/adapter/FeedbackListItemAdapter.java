@@ -23,6 +23,7 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     View view;
     static String feedback;
     static String shortFeed;
+    private final List<FeedbackItem> mValues;
 
     public static String getFeedback() {
         return feedback;
@@ -31,8 +32,6 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     public static String getShortFeed() {
         return shortFeed;
     }
-
-    private final List<FeedbackItem> mValues;
 
     public FeedbackListItemAdapter(List<FeedbackItem> items) {
         mValues = items;
@@ -49,7 +48,6 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-
         feedback = mValues.get(position).getFeedback();
         DebugLog.log("------------------------feedback: " + feedback + " --------------------------------");
         holder.mIdView.setText(feedback);

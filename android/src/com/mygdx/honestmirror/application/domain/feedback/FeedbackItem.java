@@ -27,8 +27,16 @@ public class FeedbackItem {
        return name;
     }
 
-
     public String getShortFeedback() {
         return description;
+    }
+
+    @Override
+    public String toString() {
+        return "FeedbackItem{" +
+                "estimatedPose=" + estimatedPose +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

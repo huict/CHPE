@@ -2,6 +2,7 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 
 import android.util.Log;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.domain.feedback.EstimatedPose;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItemBuilder;
@@ -23,12 +24,9 @@ public class FeedbackController implements FeedbackProcessor {
     private FeedbackItemBuilder feedbackItemBuilder;
     private double framerate;
 
-
     private FeedbackController() {
         resetData();
     }
-
-
 
     public static FeedbackController getInstance(){
         if (instance == null)
@@ -144,7 +142,7 @@ public class FeedbackController implements FeedbackProcessor {
     @Override
     public List<FeedbackItem> getFeedbackItems(){
         generateFeedback();
-
+        DebugLog.log("----FEEDBACK LIST: " + this.feedbackItems + "-----------");
         return this.feedbackItems;
     }
 
@@ -154,10 +152,6 @@ public class FeedbackController implements FeedbackProcessor {
 
         return "Despite you not moving your hands the whole time this presentation was very very good";
     }
-
-
-
-
 
     private int getTimeInMilliseconds(int frameCount){
         double milliseconds = frameCount * 3.333;
