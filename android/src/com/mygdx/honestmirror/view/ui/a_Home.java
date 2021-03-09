@@ -1,5 +1,6 @@
 package com.mygdx.honestmirror.view.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,8 @@ public class a_Home extends AppCompatActivity {
         b_start = findViewById(R.id.b_start);
         b_help_app = findViewById(R.id.b_help_app);
         b_help_gloves = findViewById(R.id.b_help_gloves);
+
+        //b_start_2 = findViewById(R.id.b_start2);
 
 
         AAL.setTitleBar(getWindow());

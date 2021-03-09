@@ -83,6 +83,8 @@ public class Session {
                 feedbackController.addData(interpreterController.getOutput());
             }
         }
+
+//        feedbackController.generateMockData();
     }
     //The NormaliseData query.
     public void normaliseData() {

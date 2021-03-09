@@ -17,7 +17,12 @@ public class FeedbackItemBuilder {
         if (dataContainer == null)
             dataContainer = new DesignTimeFeedbackDataContainer();
 
-        return new FeedbackItem(pose, dataContainer.getName(pose), dataContainer.getDescription(pose));
+        FeedbackItem newFeedbackItem = new FeedbackItem(pose, dataContainer.getName(pose), dataContainer.getDescription(pose));
+
+        newFeedbackItem.setStartSeconds(startTimeSeconds);
+        newFeedbackItem.setEndSeconds(endTimeSeconds);
+
+        return newFeedbackItem;
     }
 
 

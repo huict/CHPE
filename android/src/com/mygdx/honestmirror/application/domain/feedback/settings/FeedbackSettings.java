@@ -12,7 +12,7 @@ public class FeedbackSettings {
         this.framerate = framerate;
     }
 
-    public void LoadDefaults(){
+    public void loadDefaults(){
         settingList = SettingsLoader.GetDefaultSettings(framerate);
     }
 
