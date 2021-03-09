@@ -24,6 +24,7 @@ public class FeedbackController implements FeedbackProcessor {
     private double framerate = 24.23;
     private FeedbackSettings settings  = new FeedbackSettings(framerate);;
     private FeedbackItemBuilder feedbackItemBuilder;
+    private int firstOccurrenceIndex = 0;
 
     private FeedbackController() {
         resetData();
@@ -141,6 +142,7 @@ public class FeedbackController implements FeedbackProcessor {
                     DebugLog.log("--- generate Feedback items else ---" + lastPose);
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
                     double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
+                    DebugLog.log("{}{}{}{}{}{}{}{}{}{}{}int 1: " + (int) firstOccurenceTimeSeconds + ", int2: " + (int) lastOccurrenceTimeSeconds + " {}{}{}{}{}{}{}{}");
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
                     DebugLog.log("Feedback items " + feedbackItems);
                     firstOccurrenceIndex = currentPoseOccurrenceIndex;

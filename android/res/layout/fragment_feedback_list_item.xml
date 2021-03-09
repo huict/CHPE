@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="140dp"
     android:orientation="horizontal">
@@ -14,8 +15,8 @@
 
         <TextView
             android:id="@+id/item_number"
-            android:layout_width="324dp"
-            android:layout_height="59dp"
+            android:layout_width="315dp"
+            android:layout_height="68dp"
             android:layout_margin="@dimen/text_margin"
             android:text="0:12 - 0:30"
             android:textAppearance="?attr/textAppearanceListItem"
@@ -34,15 +35,15 @@
             android:text=">"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.953"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.195" />
 
         <TextView
             android:id="@+id/description_textView"
-            android:layout_width="316dp"
-            android:layout_height="59dp"
+            android:layout_width="362dp"
+            android:layout_height="34dp"
             android:text="At this moment you were doing very badly"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
