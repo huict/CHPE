@@ -48,12 +48,10 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        feedback = mValues.get(position).getFeedback();
-        DebugLog.log("------------------------feedback: " + feedback + " --------------------------------");
-        holder.mIdView.setText(feedback);
 
-        shortFeed = mValues.get(position).getShortFeedback();
-        holder.mContentView.setText(shortFeed);
+        holder.mIdView.setText(mValues.get(position).getName());
+
+        holder.mContentView.setText(mValues.get(position).getDescription());
 
         holder.mButton.setOnClickListener(v -> {
             //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick
