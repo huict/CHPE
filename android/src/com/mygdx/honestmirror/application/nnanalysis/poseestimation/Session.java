@@ -5,6 +5,7 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 import android.content.Context;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterController;
@@ -60,7 +61,7 @@ public class Session {
     private void initialiseDatabase() {
 
         this.videoId = this.appDatabase.nnVideoDAO().insert(new NNVideo(
-                24.54f,
+                24.0f,
                 this.videoSplicer.getFrameCount(),
                 this.resolution.getScreenWidth(),
                 this.resolution.getScreenHeight()
@@ -70,17 +71,28 @@ public class Session {
 
     //Loops through a video and stores it continuously
     public void runVideo() {
+   //   int temptestInt = 0;
         PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
         List<Person> persons = this.videoSplicer.performAnalyse(pnh);
+     //   DebugLog.log("*******interpreterController persons.size()********* " + persons.size() );
 
         if (interpreterController != null){
             for(Person person: persons){
-                if (person == null)
-                    continue;
+            //    DebugLog.log("*******Person********* " + persons.toString() );
+            //    DebugLog.log("*******Person********* " + person.getKeyPoints() );
 
-                interpreterController.setJsonInput(person.toJson());
-                interpreterController.runNN();
-                feedbackController.addData(interpreterController.getOutput());
+                //DebugLog.log("keypoints " + person.getKeyPoints().toString());
+
+
+                if (person != null){
+
+            //      DebugLog.log("*******interpreterController person.toString()********* " + person.toString() );
+                    interpreterController.setJsonInput(person.toJson());
+                    interpreterController.runNN();
+                    feedbackController.addData(interpreterController.getOutput());//no frameIndex given so allways null why?
+         //         temptestInt++;
+            //      DebugLog.log("*******interpreterController.getOutput()********* " + interpreterController.getOutput() );
+                }
             }
         }
 

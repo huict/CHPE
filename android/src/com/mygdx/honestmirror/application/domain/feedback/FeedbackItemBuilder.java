@@ -19,7 +19,7 @@ public class FeedbackItemBuilder {
         if (dataContainer == null)
             dataContainer = new DesignTimeFeedbackDataContainer();
 
-        DebugLog.log("Ints: " + startTimeSeconds + " , " + endTimeSeconds);
+//        DebugLog.log("Ints: " + startTimeSeconds + " , " + endTimeSeconds);
         FeedbackItem newFeedbackItem = new FeedbackItem(pose, dataContainer.getName(pose), dataContainer.getDescription(pose));
 
         newFeedbackItem.setStartSeconds(startTimeSeconds);

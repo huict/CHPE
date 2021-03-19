@@ -25,7 +25,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 @SuppressWarnings("CallToThreadRun")
 public class VideoSplicerUri implements VideoSplicer {
     private static final String TAG = VideoSplicerUri.class.getSimpleName();
-    private static final int META_VIDEO_FRAME_COUNT = 32;
+    private static final int META_VIDEO_FRAME_COUNT = 24;
     private static final int META_VIDEO_DURATION = 9;
 
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
@@ -65,9 +65,10 @@ public class VideoSplicerUri implements VideoSplicer {
     //Instantiates a new Video splicer uri.
     public VideoSplicerUri(MediaMetadataRetriever retriever){
         this.mediaMetadataRetriever = retriever;
-
+        DebugLog.log("getVideoDuration " +  this.getVideoDuration());
         this.getVideoDuration();
         this.getAmountOfFrames();
+        DebugLog.log("***getAmountOfFrames*** " +  this.frameCount);
     }
 
     public long getFrameCount() {
@@ -139,7 +140,8 @@ public class VideoSplicerUri implements VideoSplicer {
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
         BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
-        for(int i = 0; i < totalTimeInMs; i+= 67){
+        for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
+            DebugLog.log("i." + i);
             integerQueue.add(i);
         }
 

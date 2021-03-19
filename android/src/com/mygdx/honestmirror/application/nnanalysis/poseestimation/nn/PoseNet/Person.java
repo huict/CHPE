@@ -33,18 +33,24 @@ public class Person {
 
         StringWriter sw = new StringWriter();
 
-        for (KeyPoint keyPoint : keyPoints){
-            if (keyPoint.bodyPart == null || keyPoint.bodyPart.name() == null)
-                continue;
-
-            jsonObjectBuilderCoords = Json.createArrayBuilder();
-
-            jsonObjectBuilderCoords.add(keyPoint.getPosition().rawX);
-            jsonObjectBuilderCoords.add(keyPoint.getPosition().rawY);
-            jsonObjectBuilderRoot.add(keyPoint.bodyPart.name(), jsonObjectBuilderCoords);
+        for (KeyPoint keyPoint : keyPoints) {
+            if (keyPoint.bodyPart != null || keyPoint.bodyPart.name() != null){
+               jsonObjectBuilderCoords = Json.createArrayBuilder();
+               jsonObjectBuilderCoords.add(keyPoint.getPosition().rawX);
+               jsonObjectBuilderCoords.add(keyPoint.getPosition().rawY);
+               jsonObjectBuilderRoot.add(keyPoint.bodyPart.name(), jsonObjectBuilderCoords);
+            }
         }
 
         return jsonObjectBuilderRoot.build();
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "score=" + score +
+                ", keyPoints=" + keyPoints.toString() +
+                '}';
     }
 }
 

@@ -40,4 +40,14 @@ public class KeyPoint {
     public void setScore(Float score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "KeyPoint{" +
+                "bodyPart=" + bodyPart +
+                ", positionx=" + position.getX() +
+                ", positiony=" + position.getY() +
+                ", score=" + score +
+                '}';
+    }
 }

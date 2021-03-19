@@ -3,6 +3,7 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 import android.content.Context;
 import android.util.Log;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet;
 
 import org.tensorflow.lite.Interpreter;
@@ -25,9 +26,6 @@ public class InterpreterController {
     float[][] outputArray;
     private Interpreter interpreter = null;
 
-
-
-
     private final String output = "";
     private final Context context;
 
@@ -47,11 +45,8 @@ public class InterpreterController {
         if (jsonInput == null)
             throw new IllegalArgumentException("imput is null!");
 
-
-
         List<Float> normalisedCoords = new ArrayList<>();
         String[] bodyParts = NNModelPosenet.bodyParts;
-
 
         for (String bodyPart : bodyParts){
             JsonArray coordsArray = jsonInput.getJsonArray(bodyPart);
@@ -64,15 +59,17 @@ public class InterpreterController {
 
             float coordX = bigDecimalX.floatValue();
             float coordY = bigDecimalY.floatValue();
-
+            //normalised? voor zo ver ik zie word er niets met de data gedaan...
             normalisedCoords.add(coordX);
             normalisedCoords.add(coordY);
         }
 
         inputArray = new float[normalisedCoords.size()];
-
+       // DebugLog.log("inputArray" + inputArray);
+        //why? waarom word data overgeschreven van een list<float> naar een float[]?
         for (int index = 0; index < normalisedCoords.size(); index++){
             inputArray[index] = normalisedCoords.get(index).floatValue();
+ //           DebugLog.log("inputArray" +inputArray[index]);
         }
 
         if (interpreter != null){
@@ -84,11 +81,18 @@ public class InterpreterController {
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
             }
         }
-
-        Log.i("InterpreterController", "Output Length" + outputArray.length);
+        for(int i = 0; i < outputArray.length; i++)
+        {
+            for(int j = 0; j < outputArray[i].length; j++)
+            {
+               // DebugLog.log("output array i =[" + i + "] j = [" + j +"] value = " + outputArray[i][j]   );
+            }
+        }
+ //       Log.i("InterpreterController", "Output Length" + outputArray);
     }
 
     private Object getJsonInput(){
+ //       DebugLog.log("jsonInput.toString() " +jsonInput.toString());
         return jsonInput.toString();
     }
 
@@ -101,6 +105,9 @@ public class InterpreterController {
     }
 
     public float[][] getOutput(){
+//        DebugLog.log("****outputArray[0].length****" + outputArray[0].length);
+//        DebugLog.log("****outputArray.length****" + outputArray.length);
+
         return outputArray;
     }
 }

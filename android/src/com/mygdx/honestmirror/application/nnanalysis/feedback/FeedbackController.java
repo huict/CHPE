@@ -18,10 +18,10 @@ public class FeedbackController implements FeedbackProcessor {
 
     private List<FeedbackItem> feedbackItems;
     private List<PoseData> poseData;
-    private int currentFrameCount = 0;
+    private float currentFrameCount = 0;
     private int maxFloatIndex;
     private boolean feedbackGenerated;
-    private double framerate = 24.23;
+    private double framerate = 24;
     private FeedbackSettings settings  = new FeedbackSettings(framerate);;
     private FeedbackItemBuilder feedbackItemBuilder;
     private int firstOccurrenceIndex = 0;
@@ -43,7 +43,7 @@ public class FeedbackController implements FeedbackProcessor {
         poseData = new ArrayList<>();
         currentFrameCount = 0;
         feedbackGenerated = false;
-        framerate = 24.23;
+        framerate = 24;
         feedbackItemBuilder = new FeedbackItemBuilder(framerate);
     }
 
@@ -54,6 +54,15 @@ public class FeedbackController implements FeedbackProcessor {
 
     @Override
     public void addData(float[][] data, Integer frameIndex){
+
+        for(int i = 0; i < data.length; i++)
+        {
+            for(int j = 0; j < data[i].length; j++)
+            {
+               //  DebugLog.log("data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
+            }
+        }
+      //  DebugLog.log("----data frameIndex----- " + frameIndex   );
         currentFrameCount++;
 
 
@@ -78,11 +87,12 @@ public class FeedbackController implements FeedbackProcessor {
             Log.e(this.getClass().getCanonicalName(), e.getMessage());
         }
 
-        int frameCount = currentFrameCount;
+        float frameCount = currentFrameCount;
         if (frameIndex != null)
             frameCount = frameIndex + 1;
 
         poseData.add(new PoseData(estimatedPose, getTimeInMilliseconds(currentFrameCount)));
+    //    DebugLog.log("poseData " + poseData);
     }
 
     @Override
@@ -105,7 +115,8 @@ public class FeedbackController implements FeedbackProcessor {
             return;
 
         // detect pose persisting over time
-
+        DebugLog.log("poseData items " + poseData);
+        DebugLog.log("poseData items " + poseData.size());
         EstimatedPose lastPose = null;
         int poseOccurrenceCount = 0;
         double firstOccurrenceTimeMs = 0;
@@ -125,29 +136,28 @@ public class FeedbackController implements FeedbackProcessor {
 
                 continue;
             }
-            DebugLog.log("pose " + poseDataItem.getPose());
+ //           DebugLog.log("pose " + poseDataItem.getPose());
 //            DebugLog.log("pose size " + poseData.size());
             if (lastPose.equals(poseDataItem.getPose()) && (currentPoseOccurrenceIndex + 1) != poseData.size()){
   //              DebugLog.log("--- generate Feedback items second if---" + poseOccurrenceCount);
                 poseOccurrenceCount++;
                 lastOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
- //               DebugLog.log("--- generate Feedback items second if---" + lastOccurrenceTimeMs);
+                //DebugLog.log("--- generate Feedback items second if---" + lastOccurrenceTimeMs);
             }
 
             else{
        //         DebugLog.log("--- generate Feedback items else---");
-                DebugLog.log("--- generate Feedback items else--- settings.getMaxPersistSeconds(lastPose)" + settings.getMaxPersistSeconds(lastPose) );
-                DebugLog.log("--- generate Feedback items else---poseOccurrenceCount / framerate" + poseOccurrenceCount / framerate );
-           //     if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)){
-                    DebugLog.log("--- generate Feedback items else ---" + lastPose);
+ //               DebugLog.log("--- generate Feedback items else--- settings.getMaxPersistSeconds(lastPose)" + settings.getMaxPersistSeconds(lastPose) );
+ //               DebugLog.log("--- generate Feedback items else---poseOccurrenceCount / framerate" + poseOccurrenceCount / framerate );
+        //        if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)){
+  //                  DebugLog.log("--- generate Feedback items else ---" + lastPose);
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
                     double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
-                    DebugLog.log("{}{}{}{}{}{}{}{}{}{}{}int 1: " + (int) firstOccurenceTimeSeconds + ", int2: " + (int) lastOccurrenceTimeSeconds + " {}{}{}{}{}{}{}{}");
+//                    DebugLog.log("{}{}{}{}{}{}{}{}{}{}{}int 1: " + (int) firstOccurenceTimeSeconds + ", int2: " + (int) lastOccurrenceTimeSeconds + " {}{}{}{}{}{}{}{}");
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
-                    DebugLog.log("Feedback items " + feedbackItems);
                     firstOccurrenceIndex = currentPoseOccurrenceIndex;
                     firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
-            //    }
+          //      }
             }
             lastPose = poseDataItem.getPose();
         }
@@ -157,6 +167,7 @@ public class FeedbackController implements FeedbackProcessor {
 
         // detect pose not changing over time
 
+        DebugLog.log("Feedback items " + feedbackItems);
         feedbackGenerated = true;
     }
 
@@ -193,9 +204,9 @@ public class FeedbackController implements FeedbackProcessor {
         }
     }
 
-    private int getTimeInMilliseconds(int frameCount){
-        double milliseconds = frameCount * (1000 / this.framerate);
-
-        return (int) milliseconds;
+    private float getTimeInMilliseconds(float frameCount){
+        float milliseconds = (float) ((frameCount * (1000 / this.framerate))*3);
+//        DebugLog.log("----milliseconds " + milliseconds + "-----------");
+        return milliseconds;
     }
 }
