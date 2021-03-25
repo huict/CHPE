@@ -11,7 +11,7 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer{
                 name = "Giving the back to the audience";
                 break;
             case standing_with_the_bodyweight_on_one_leg:
-                name = "Standing with the bodyweight on on e leg";
+                name = "Standing with the bodyweight on one leg";
                 break;
             case hands_touching_face:
                 name = "Hands touching face";

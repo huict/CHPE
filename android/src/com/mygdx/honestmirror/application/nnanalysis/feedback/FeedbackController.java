@@ -55,13 +55,7 @@ public class FeedbackController implements FeedbackProcessor {
     @Override
     public void addData(float[][] data, Integer frameIndex){
 
-        for(int i = 0; i < data.length; i++)
-        {
-            for(int j = 0; j < data[i].length; j++)
-            {
-               //  DebugLog.log("data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
-            }
-        }
+
       //  DebugLog.log("----data frameIndex----- " + frameIndex   );
         currentFrameCount++;
 
@@ -72,13 +66,30 @@ public class FeedbackController implements FeedbackProcessor {
         maxFloatIndex = 0;
 
         for (int index=0; index < probabilityArray.length; index++){
+         //   DebugLog.log("--if[" + probabilityArray[index] +" > "+ maxFloat   );
             if (probabilityArray[index] > maxFloat){
+          //      DebugLog.log("--true" );
                 maxFloatIndex = index;
                 maxFloat = probabilityArray[index];
+              //  DebugLog.log("-----maxFloat " + maxFloat   );
+             //   DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
             }
         }
 
+
         EstimatedPose estimatedPose = EstimatedPose.empty;
+        for(int i = 0; i < data.length; i++)
+        {
+            for(int j = 0; j < data[i].length; j++)
+            {
+                //DebugLog.log("--data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
+            }
+        }
+          //  DebugLog.log("maxFloat" + maxFloat   );
+        DebugLog.log("-----maxFloat " + maxFloat   );
+        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
+
+
 
         try{
             estimatedPose = EstimatedPose.values()[maxFloatIndex];
@@ -93,6 +104,7 @@ public class FeedbackController implements FeedbackProcessor {
 
         poseData.add(new PoseData(estimatedPose, getTimeInMilliseconds(currentFrameCount)));
     //    DebugLog.log("poseData " + poseData);
+        DebugLog.log("*******-----data added ------****** " );
     }
 
     @Override
@@ -139,7 +151,7 @@ public class FeedbackController implements FeedbackProcessor {
  //           DebugLog.log("pose " + poseDataItem.getPose());
 //            DebugLog.log("pose size " + poseData.size());
             if (lastPose.equals(poseDataItem.getPose()) && (currentPoseOccurrenceIndex + 1) != poseData.size()){
-  //              DebugLog.log("--- generate Feedback items second if---" + poseOccurrenceCount);
+                //              DebugLog.log("--- generate Feedback items second if---" + poseOccurrenceCount);
                 poseOccurrenceCount++;
                 lastOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
                 //DebugLog.log("--- generate Feedback items second if---" + lastOccurrenceTimeMs);
