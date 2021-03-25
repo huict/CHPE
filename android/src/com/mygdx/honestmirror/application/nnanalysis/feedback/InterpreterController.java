@@ -3,7 +3,6 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 import android.content.Context;
 import android.util.Log;
 
-import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet;
 
 import org.tensorflow.lite.Interpreter;
@@ -20,7 +19,7 @@ import javax.json.JsonObject;
 
 public class InterpreterController {
     private JsonObject jsonInput = null;
-    private final String modelFilePath = "model_2.tflite";
+    private final String modelFilePath = "feedback_model.tflite";
 
     float[] inputArray;
     float[][] outputArray;
