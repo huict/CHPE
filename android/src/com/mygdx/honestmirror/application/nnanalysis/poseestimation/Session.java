@@ -35,10 +35,6 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
-    List<Person> persons = new ArrayList<>();
-    JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-    private JsonArray jsonFrames = null;
-
     private InterpreterController interpreterController;
     private FeedbackController feedbackController;
 
@@ -71,35 +67,27 @@ public class Session {
 
     //Loops through a video and stores it continuously
     public void runVideo() {
-   //   int temptestInt = 0;
-        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
-        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
-     //   DebugLog.log("*******interpreterController persons.size()********* " + persons.size() );
-
-        if (interpreterController != null){
-            for(Person person: persons){
-            //    DebugLog.log("*******Person********* " + persons.toString() );
-            //    DebugLog.log("*******Person********* " + person.getKeyPoints() );
-
-                //DebugLog.log("keypoints " + person.getKeyPoints().toString());
-
-
-                if (person != null){
-
-            //      DebugLog.log("*******interpreterController person.toString()********* " + person.toString() );
-                    interpreterController.setJsonInput(person.toJson());
-                    interpreterController.runNN();
-                    feedbackController.addData(interpreterController.getOutput());//no frameIndex given so allways null why?
-         //         temptestInt++;
-            //      DebugLog.log("*******interpreterController.getOutput()********* " + interpreterController.getOutput() );
-                }
-            }
-        }
+//        long startTime = System.nanoTime();
+//        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+//        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
+//
+//        if (interpreterController != null){
+//
+//            for(Person person: persons){
+//
+//                if (person != null){
+//                    feedbackController.addData(interpreterController.runNN(person.toJson()));
+//                }
+//            }
+//        }
+//        long endTime = System.nanoTime();
+//        DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
+          feedbackController.addData(interpreterController.testChin_Up());
 
 //        feedbackController.generateMockData();
     }
     //The NormaliseData query.
-    public void normaliseData() {
-        this.nnInsert.normalise(this.videoId);
-    }
+    //public void normaliseData() {
+        //this.nnInsert.normalise(this.videoId);
+    //}
 }
