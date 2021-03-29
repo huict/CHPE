@@ -24,27 +24,9 @@
         app:layout_constraintGuide_percent=".50" />
 
     <Button
-        android:id="@+id/b_archive"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="160dp"
-        android:background="@color/hu_red"
-        android:text="@string/btn_archive"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"
-        app:layout_constraintHeight_percent=".06"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/b_start"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="367dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="160dp"
         android:background="@color/hu_red"
         android:shadowRadius="0"
@@ -53,32 +35,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent=".06"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/b_help_app"
         android:layout_width="367dp"
-        android:layout_height="49dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="100dp"
         android:background="@color/hu_red"
         android:text="@string/help_app"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/b_start"
-        app:layout_constraintStart_toStartOf="@+id/b_archive" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/b_help_gloves"
-        android:layout_width="364dp"
-        android:layout_height="53dp"
+        android:layout_width="367dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="36dp"
         android:background="@color/hu_red"
         android:text="@string/help_gloves"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/b_start"
-        app:layout_constraintStart_toStartOf="@+id/b_archive" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"

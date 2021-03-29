@@ -36,7 +36,6 @@ public class a_Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_home);
 
-        b_archive = findViewById(R.id.b_archive);
         b_start = findViewById(R.id.b_start);
         b_help_app = findViewById(R.id.b_help_app);
         b_help_gloves = findViewById(R.id.b_help_gloves);
@@ -45,11 +44,6 @@ public class a_Home extends AppCompatActivity {
 
 
         AAL.setTitleBar(getWindow());
-
-        b_archive.setOnClickListener(v -> {
-            launchIntent(a_Results.class);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-        });
 
         b_start.setOnClickListener(v -> launchIntent(a_VideoSelect.class));
 
