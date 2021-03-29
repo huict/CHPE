@@ -17,6 +17,8 @@ import java.util.List;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
+
 public class InterpreterController {
     private JsonObject jsonInput = null;
     private final String modelFilePath = "feedback_model.tflite";
@@ -68,7 +70,7 @@ public class InterpreterController {
         //why? waarom word data overgeschreven van een list<float> naar een float[]?
         for (int index = 0; index < normalisedCoords.size(); index++){
             inputArray[index] = normalisedCoords.get(index).floatValue();
- //           DebugLog.log("inputArray" +inputArray[index]);
+            DebugLog.log("inputArray i = ["+index + "] value = ["+ inputArray[index] + "]");
         }
 
         if (interpreter != null){
@@ -80,11 +82,12 @@ public class InterpreterController {
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
             }
         }
+        
         for(int i = 0; i < outputArray.length; i++)
         {
             for(int j = 0; j < outputArray[i].length; j++)
             {
-               // DebugLog.log("output array i =[" + i + "] j = [" + j +"] value = " + outputArray[i][j]   );
+              //  DebugLog.log("output array i =[" + i + "] j = [" + j +"] value = " + outputArray[i][j]   );
             }
         }
  //       Log.i("InterpreterController", "Output Length" + outputArray);
