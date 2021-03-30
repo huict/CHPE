@@ -38,7 +38,7 @@ public class a_Home extends AppCompatActivity {
 
         b_start = findViewById(R.id.b_start);
         b_help_app = findViewById(R.id.b_help_app);
-        b_help_gloves = findViewById(R.id.b_help_gloves);
+        //b_help_gloves = findViewById(R.id.b_help_gloves);
 
         //b_start_2 = findViewById(R.id.b_start2);
 
@@ -49,7 +49,7 @@ public class a_Home extends AppCompatActivity {
 
         b_help_app.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
 
-        b_help_gloves.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
+        //b_help_gloves.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
     }
 
     //Helper function for creating and launching an intent.
