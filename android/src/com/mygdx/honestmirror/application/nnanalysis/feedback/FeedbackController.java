@@ -85,9 +85,8 @@ public class FeedbackController implements FeedbackProcessor {
                 //DebugLog.log("--data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
             }
         }
-          //  DebugLog.log("maxFloat" + maxFloat   );
-        DebugLog.log("-----maxFloat " + maxFloat   );
-        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
+//        DebugLog.log("-----maxFloat " + maxFloat   );
+//        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
 
 
 
@@ -127,8 +126,6 @@ public class FeedbackController implements FeedbackProcessor {
             return;
 
         // detect pose persisting over time
-        DebugLog.log("poseData items " + poseData);
-        DebugLog.log("poseData items " + poseData.size());
         EstimatedPose lastPose = null;
         int poseOccurrenceCount = 0;
         double firstOccurrenceTimeMs = 0;
