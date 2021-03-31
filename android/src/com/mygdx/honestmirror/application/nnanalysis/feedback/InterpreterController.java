@@ -183,7 +183,7 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
+        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 
@@ -235,7 +235,59 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
+        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
+        return outputArray;
+    }
+
+    public float[][] testNeckForward(){
+        float[] inputArray;
+        float[][] outputArray = new float[1][13];
+        List<Float> floatArrayList = new ArrayList<>();
+
+        floatArrayList.add((float) 76.61337661743164);
+        floatArrayList.add((float) 134.84249877929688);
+        floatArrayList.add((float) 61.58050751686096);
+        floatArrayList.add((float) 129.23977327346802);
+        floatArrayList.add((float) 80.47257709503174);
+        floatArrayList.add((float) 109.65440464019775);
+        floatArrayList.add((float) 62.48586416244507);
+        floatArrayList.add((float) 104.72969341278076);
+        floatArrayList.add((float) 76.91960144042969);
+        floatArrayList.add((float) 137.83020401000977);
+
+        floatArrayList.add((float) 80.99498653411865);
+        floatArrayList.add((float) 142.35570335388184);
+        floatArrayList.add((float) 98.79914236068726);
+        floatArrayList.add((float) 115.31657409667969);
+        floatArrayList.add((float) 137.14905166625977);
+        floatArrayList.add((float) 160.95603680610657);
+        floatArrayList.add((float) 129.6016948223114);
+        floatArrayList.add((float) 123.17432737350464);
+        floatArrayList.add((float) 181.7554168701172);
+        floatArrayList.add((float) 124.75791025161743);
+
+        floatArrayList.add((float) 176.28990173339844);
+        floatArrayList.add((float) 121.30801773071289);
+        floatArrayList.add((float) 147.79155731201172);
+        floatArrayList.add((float) 146.86993598937988);
+        floatArrayList.add((float) 148.7962474822998);
+        floatArrayList.add((float) 128.43872886896133);
+        floatArrayList.add((float) 192.37470877170563);
+        floatArrayList.add((float) 139.24109840393066);
+        floatArrayList.add((float) 191.3964725136757);
+        floatArrayList.add((float) 148.41278839111328);
+
+        floatArrayList.add((float) 193.54937553405762);
+        floatArrayList.add((float) 123.16229248046875);
+        floatArrayList.add((float) 226.22679781913757);
+        floatArrayList.add((float) 145.26788902282715);
+
+        inputArray = new float[floatArrayList.size()];
+        for (int index = 0; index < floatArrayList.size(); index++){
+            inputArray[index] = floatArrayList.get(index);
+        }
+        interpreter.run(inputArray, outputArray);
+        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 
