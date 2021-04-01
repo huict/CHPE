@@ -141,7 +141,6 @@ public class VideoSplicerUri implements VideoSplicer {
         //24 frames per second makes 2.5 seconds per frame
         BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
         for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
-            DebugLog.log("i." + i);
             integerQueue.add(i);
         }
 

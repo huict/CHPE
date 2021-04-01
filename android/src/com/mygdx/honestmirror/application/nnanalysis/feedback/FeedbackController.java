@@ -102,7 +102,6 @@ public class FeedbackController implements FeedbackProcessor {
             frameCount = frameIndex + 1;
 
         poseData.add(new PoseData(estimatedPose, getTimeInMilliseconds(currentFrameCount)));
-        DebugLog.log("poseData " + poseData);
         DebugLog.log("*******-----data added ------****** " );
     }
 

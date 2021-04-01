@@ -72,11 +72,14 @@ public class CHPE {
 //        return ProcessFrame(image, NNInterpreter.GPU);
 //    }
 
+    // Instance of the model used
+    // Device on which the execution will take place
+    // Instance of resolution used for scaling
     PoseNetHandler givePoseNetHandler(NNInterpreter nnInterpreter) {
         PoseNetHandler posenetHandler = new PoseNetHandler(this.context,
-                this.poseModel.getModel(), // Instance of the model used
-                nnInterpreter, // Device on which the execution will take place
-                this.resolution); // Instance of resolution used for scaling
+                this.poseModel.getModel(),
+                nnInterpreter,
+                this.resolution);
         return posenetHandler;
     }
 }

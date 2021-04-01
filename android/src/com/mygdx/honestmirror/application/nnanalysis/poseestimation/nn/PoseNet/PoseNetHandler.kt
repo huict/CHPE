@@ -28,7 +28,7 @@ class PoseNetHandler(
         private val resolution: Resolution
 ) : AutoCloseable {
 
-    private var interpreter: Interpreter? = null
+    private var interpreter: Interpreter? = getInterpreter()
     //private var gpuDelegate: GpuDelegate? = null
 
     private fun getInterpreter(): Interpreter {
@@ -172,13 +172,14 @@ class PoseNetHandler(
     //Estimates the pose for a single person.
     fun estimateSinglePose(bitmap: Bitmap): Person {
         val person: Person
-        person = if(bitmap.height / bitmap.width != 1){
-            val croppedBitmap = cropBitmap(bitmap)
-            trueEstimation(croppedBitmap)
-        }
-        else{
-            trueEstimation(bitmap)
-        }
+        person = trueEstimation(bitmap);
+//        person = if(bitmap.height / bitmap.width != 1){
+//            val croppedBitmap = cropBitmap(bitmap)
+//            trueEstimation(croppedBitmap)
+//        }
+//        else{
+//            trueEstimation(bitmap)
+//        }
         return person
     }
 
@@ -186,11 +187,11 @@ class PoseNetHandler(
     private fun trueEstimation(bitmap: Bitmap): Person{
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(scaledBitmap))
-        val outputMap = initOutputMap(getInterpreter())
+        val outputMap = initOutputMap(interpreter!!)
         try{
-            getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+            interpreter!!.runForMultipleInputsOutputs(inputArray, outputMap)
         }
-        catch(e: Exception){
+        catch (e: Exception){
             DebugLog.log("Exception: $e")
         }
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>

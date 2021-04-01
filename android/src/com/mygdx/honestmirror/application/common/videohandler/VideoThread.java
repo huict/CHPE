@@ -36,7 +36,7 @@ class BitmapThread extends Thread {
            //     Bitmap bitmap = (this.mediaMetadataRetriever.getFrameAtIndex(i));
                 bitmaps.add(bitmap);
                 long endTime = System.nanoTime();
-                DebugLog.log("BitmapThread: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
+                DebugLog.log("run BitmapThread: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -63,7 +63,6 @@ class BitmapThread2 extends Thread {
             try {
                 long startTime = System.nanoTime();
                 int i = integerQueue.take();
-                DebugLog.log("integerQueue  i  " + i );
                 Bitmap bitmap = (this.mediaMetadataRetriever.getScaledFrameAtTime(i,0,257,257));
         //        Bitmap bitmap = (this.mediaMetadataRetriever.getFrameAtIndex(i));
                 bitmaps.add(bitmap);
