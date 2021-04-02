@@ -1,4 +1,4 @@
-@file:Suppress("SpellCheckingInspection", "PackageName")
+@file:Suppress("SpellCheckingInspection", "PackageName", "unused", "UNCHECKED_CAST")
 
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
@@ -18,6 +18,7 @@ import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import kotlin.math.abs
 import kotlin.math.exp
+import kotlin.math.pow
 
 
 @SuppressLint("NewApi")
@@ -59,7 +60,8 @@ class PoseNetHandler(
 
     // Returns value within [0,1].
     private fun sigmoid(x: Float): Float {
-        return (1.0f / (1.0f + exp(-x)))
+        // 1 / (1 + (-value)**2)
+        return (1 / (1 + (Math.pow(-x.toDouble(), 2.0)))).toFloat()
     }
 
     //Scale the image to a byteBuffer of [-1,1] values.
@@ -171,19 +173,17 @@ class PoseNetHandler(
 
     //Estimates the pose for a single person.
     fun estimateSinglePose(bitmap: Bitmap): Person {
-        val person: Person
-        person = trueEstimation(bitmap);
-//        person = if(bitmap.height / bitmap.width != 1){
+        //    person = if(bitmap.height / bitmap.width != 1){
 //            val croppedBitmap = cropBitmap(bitmap)
 //            trueEstimation(croppedBitmap)
 //        }
 //        else{
 //            trueEstimation(bitmap)
 //        }
-        return person
+        return trueEstimation(bitmap)
     }
 
-    @Suppress("UNCHECKED_CAST")
+
     private fun trueEstimation(bitmap: Bitmap): Person{
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(scaledBitmap))
@@ -196,6 +196,16 @@ class PoseNetHandler(
         }
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
+
+        val sigmoidConversion = heatmaps
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 17){
+                    val f = sigmoidConversion[0][x][y][z]
+                    heatmaps[0][x][y][z] = sigmoid(f)
+                }
+            }
+        }
 
         val height = heatmaps[0].size
         val width = heatmaps[0][0].size
@@ -226,17 +236,17 @@ class PoseNetHandler(
         keypointPositions.forEachIndexed { idx, position ->
             val positionY = keypointPositions[idx].first
             val positionX = keypointPositions[idx].second
-            yCoords[idx] = (
-                    position.first / (height - 1).toFloat() * bitmap.height +
-                            offsets[0][positionY][positionX][idx]
-                    )
-            DebugLog.log("ycoord: " + yCoords[idx]);
-            xCoords[idx] = (
-                    position.second / (width - 1).toFloat() * bitmap.width +
-                            offsets[0][positionY]
-                                    [positionX][idx + numKeypoints]
-                    )
-            DebugLog.log("xcoord: " + yCoords[idx]);
+            val pFirst = position.first
+            val hFirst = offsets[0][positionY][positionX][idx]
+            val pSecond = position.second
+            val hSecond = offsets[0][positionY][positionX][idx]
+
+            yCoords[idx] = (pFirst * 32 + hFirst)
+
+            DebugLog.log("ycoord: " + yCoords[idx])
+            xCoords[idx] = (pSecond * 32 + hSecond)
+            DebugLog.log("xcoord: " + xCoords[idx])
+
             confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
         }
 
