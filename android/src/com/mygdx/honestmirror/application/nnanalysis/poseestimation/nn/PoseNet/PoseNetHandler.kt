@@ -220,8 +220,8 @@ class PoseNetHandler(
         }
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
-        val xCoords = IntArray(numKeypoints)
-        val yCoords = IntArray(numKeypoints)
+        val xCoords = FloatArray(numKeypoints)
+        val yCoords = FloatArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
         keypointPositions.forEachIndexed { idx, position ->
             val positionY = keypointPositions[idx].first
@@ -229,12 +229,14 @@ class PoseNetHandler(
             yCoords[idx] = (
                     position.first / (height - 1).toFloat() * bitmap.height +
                             offsets[0][positionY][positionX][idx]
-                    ).toInt()
+                    )
+            DebugLog.log("ycoord: " + yCoords[idx]);
             xCoords[idx] = (
                     position.second / (width - 1).toFloat() * bitmap.width +
                             offsets[0][positionY]
                                     [positionX][idx + numKeypoints]
-                    ).toInt()
+                    )
+            DebugLog.log("xcoord: " + yCoords[idx]);
             confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
         }
 

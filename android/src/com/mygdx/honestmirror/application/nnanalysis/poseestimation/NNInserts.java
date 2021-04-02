@@ -44,16 +44,16 @@ public class NNInserts {
         long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
         linkFrameIdToVideo(frameId, videoId);
 
-        for (KeyPoint keyPoint : person.getKeyPoints()) {
-            linkFrameToCoordinate(
-                    frameId,
-            this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
-                                            keyPoint.getPosition().getX(),
-                                            keyPoint.getPosition().getY()
-                                    )
-                            )
-            );
-        }
+//        for (KeyPoint keyPoint : person.getKeyPoints()) {
+//            linkFrameToCoordinate(
+//                    frameId,
+//            this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
+//                                            keyPoint.getPosition().getX(),
+//                                            keyPoint.getPosition().getY()
+//                                    )
+//                            )
+//            );
+//        }
     }
 
 
