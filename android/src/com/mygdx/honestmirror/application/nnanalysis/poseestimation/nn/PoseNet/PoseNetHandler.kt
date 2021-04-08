@@ -12,13 +12,13 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModel
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
+import java.math.RoundingMode
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import java.text.DecimalFormat
 import kotlin.math.abs
-import kotlin.math.exp
-import kotlin.math.pow
 
 
 @SuppressLint("NewApi")
@@ -183,7 +183,6 @@ class PoseNetHandler(
         return trueEstimation(bitmap)
     }
 
-
     private fun trueEstimation(bitmap: Bitmap): Person{
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(scaledBitmap))
@@ -194,15 +193,37 @@ class PoseNetHandler(
         catch (e: Exception){
             DebugLog.log("Exception: $e")
         }
+
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
+
+        val person1 = Person()
+        val floatHeatmapArray = person1.readHeatmapFile(context)
+        val floatOffsetArray = person1.readOffsetFile(context)
+
+        var i = 0;
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 17){
+                    if(i < 1377){
+                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
+                        offsets[0][x][y][z] = floatOffsetArray[i]
+                        i++
+                    }
+                }
+            }
+        }
 
         val sigmoidConversion = heatmaps
         for(x in 0 until 9){
             for(y in 0 until 9){
                 for(z in 0 until 17){
                     val f = sigmoidConversion[0][x][y][z]
-                    heatmaps[0][x][y][z] = sigmoid(f)
+                    val sigmoid = sigmoid(f)
+                    val df = DecimalFormat("#.########")
+                    df.roundingMode = RoundingMode.HALF_UP
+                    val sigmoidf = df.format(sigmoid)
+                    heatmaps[0][x][y][z] = sigmoidf.toFloat()
                 }
             }
         }
@@ -234,17 +255,16 @@ class PoseNetHandler(
         val yCoords = FloatArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
         keypointPositions.forEachIndexed { idx, position ->
-            val positionY = keypointPositions[idx].first
-            val positionX = keypointPositions[idx].second
-            val pFirst = position.first
+            val positionY = keypointPositions[idx].second
+            val positionX = keypointPositions[idx].first
             val hFirst = offsets[0][positionY][positionX][idx]
-            val pSecond = position.second
-            val hSecond = offsets[0][positionY][positionX][idx]
+            val hSecond = offsets[0][positionY][positionX][idx + numKeypoints]
+            val igggg = 0;
 
-            yCoords[idx] = (pFirst * 32 + hFirst)
+            yCoords[idx] = (positionY * 32 + hSecond)
 
             DebugLog.log("ycoord: " + yCoords[idx])
-            xCoords[idx] = (pSecond * 32 + hSecond)
+            xCoords[idx] = (positionX * 32 + hFirst)
             DebugLog.log("xcoord: " + xCoords[idx])
 
             confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
