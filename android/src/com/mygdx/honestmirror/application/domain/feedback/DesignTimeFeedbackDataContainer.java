@@ -1,5 +1,13 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
+import android.content.Context;
+import com.mygdx.honestmirror.application.common.DebugLog;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer{
 
     @Override
@@ -23,7 +31,7 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer{
                 name = "Hands in pockets";
                 break;
             case delivered_gestures:
-                name = "Deliverd gestures";
+                name = "Delivered gestures";
                 break;
             case crossing_legs:
                 name = "Crossing legs";

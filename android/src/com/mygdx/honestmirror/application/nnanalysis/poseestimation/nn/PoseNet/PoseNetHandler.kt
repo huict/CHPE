@@ -20,8 +20,6 @@ import java.nio.channels.FileChannel
 import java.text.DecimalFormat
 import kotlin.math.abs
 
-
-@SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
         private val filename: String,
@@ -200,15 +198,27 @@ class PoseNetHandler(
         val person1 = Person()
         val floatHeatmapArray = person1.readHeatmapFile(context)
         val floatOffsetArray = person1.readOffsetFile(context)
+        person1.readFeedbackMessagesNL(context);
 
-        var i = 0;
+        var i = 0
+        var j = 0
         for(x in 0 until 9){
             for(y in 0 until 9){
                 for(z in 0 until 17){
-                    if(i < 1377){
+                    if(i < 1378){
                         heatmaps[0][x][y][z] = floatHeatmapArray[i]
-                        offsets[0][x][y][z] = floatOffsetArray[i]
                         i++
+                    }
+                }
+            }
+        }
+
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 34){
+                    if(j < 2755){
+                        offsets[0][x][y][z] = floatOffsetArray[j]
+                        j++
                     }
                 }
             }
@@ -259,15 +269,11 @@ class PoseNetHandler(
             val positionX = keypointPositions[idx].first
             val hFirst = offsets[0][positionY][positionX][idx]
             val hSecond = offsets[0][positionY][positionX][idx + numKeypoints]
-            val igggg = 0;
-
-            yCoords[idx] = (positionY * 32 + hSecond)
-
-            DebugLog.log("ycoord: " + yCoords[idx])
-            xCoords[idx] = (positionX * 32 + hFirst)
-            DebugLog.log("xcoord: " + xCoords[idx])
-
-            confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
+            val yCoord = (positionY * 32 + hSecond)
+            val xCoord = (positionX * 32 + hFirst)
+            yCoords[idx] = yCoord
+            xCoords[idx] = xCoord
+            confidenceScores[idx] = heatmaps[0][positionX][positionY][idx]
         }
 
         val person = Person()

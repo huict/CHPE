@@ -23,17 +23,14 @@ import javax.json.JsonObjectBuilder;
 
 //The type Person.
 public class Person {
+
     //Instantiates a new Person.
     public Person() {
     }
 
-    //The Score.
     public Float score = 0.0f;
-
-    //The Key points.
     public List<KeyPoint> keyPoints = new ArrayList<>();
 
-    //Gets key points.
     public List<KeyPoint> getKeyPoints() {
         return keyPoints;
     }
@@ -68,7 +65,6 @@ public class Person {
 
     public Float[] readHeatmapFile(Context context) throws IOException {
         InputStream is = context.getAssets().open("output_details[0].txt");
-        //Float[][][][] mLines = new Float[1][9][9][17];
         Float[] heatmapArray = new Float[1377];
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
@@ -78,43 +74,38 @@ public class Person {
             line = reader.readLine();
             f = Float.parseFloat(line);
             heatmapArray[i] = f;
-            //DebugLog.log("O: " + f);
-
-//            for(int j = 0; j < 9; j++){
-//                for(int k = 0; k < 9; k++){
-//                    for(int l = 0; l < 17; l++){
-//                        mLines[0][j][k][l] = f;
-//                    }
-//                }
-//            }
         }
         return heatmapArray;
     }
 
     public Float[] readOffsetFile(Context context) throws IOException{
         InputStream is = context.getAssets().open("output_details[1].txt");
-
-        //Array<Array<Array<FloatArray>>> mLines = new Array<Array<Array<FloatArray>>>();
-        Float[] offsetArray = new Float[1377];
+        Float[] offsetArray = new Float[2754];
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
         float f;
 
-        for(int i = 0; i < 1377; i++) {
+        for(int i = 0; i < 2754; i++) {
             line = reader.readLine();
             f = Float.parseFloat(line);
             offsetArray[i] = f;
-            //DebugLog.log("O: " + f);
-
-//            for(int j = 0; j < 9; j++){
-//                for(int k = 0; k < 9; k++){
-//                    for(int l = 0; l < 17; l++){
-//                        mLines[0][j][k][l] = f;
-//                    }
-//                }
-//            }
         }
         return offsetArray;
+    }
+
+    public ArrayList<String> readFeedbackMessagesNL(Context context) throws IOException {
+        InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        ArrayList<String> feedbackmessages = new ArrayList<>();
+        String line;
+        int i = 1;
+        while(reader.readLine() != null){
+            line = reader.readLine();
+            feedbackmessages.add(line);
+            DebugLog.log(line);
+            i++;
+        }
+        return feedbackmessages;
     }
 }
 
