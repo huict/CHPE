@@ -3,6 +3,7 @@ package com.mygdx.honestmirror.application.nnanalysis.feedback;
 import com.mygdx.honestmirror.application.domain.feedback.FeedbackItem;
 import com.mygdx.honestmirror.application.domain.feedback.settings.FeedbackSettings;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface FeedbackProcessor {
@@ -16,7 +17,7 @@ public interface FeedbackProcessor {
 
     void setSettings(FeedbackSettings settings);
 
-    List<FeedbackItem> getFeedbackItems();
+    List<FeedbackItem> getFeedbackItems() throws IOException;
 
-    String getSummary();
+    String getSummary() throws IOException;
 }

@@ -28,11 +28,12 @@ public class Person {
     public Person() {
     }
 
+    public Context context;
     public Float score = 0.0f;
     public List<KeyPoint> keyPoints = new ArrayList<>();
 
-    public List<KeyPoint> getKeyPoints() {
-        return keyPoints;
+    public void setContext(Context context){
+        this.context = context;
     }
 
     public JsonObject toJson(){
@@ -93,7 +94,7 @@ public class Person {
         return offsetArray;
     }
 
-    public ArrayList<String> readFeedbackMessagesNL(Context context) throws IOException {
+    public ArrayList<String> readFeedbackMessagesNL() throws IOException {
         InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         ArrayList<String> feedbackmessages = new ArrayList<>();

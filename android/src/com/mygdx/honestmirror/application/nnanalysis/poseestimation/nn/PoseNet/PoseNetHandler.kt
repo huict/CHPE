@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import com.mygdx.honestmirror.application.common.DebugLog
+import com.mygdx.honestmirror.application.domain.feedback.DesignTimeFeedbackDataContainer
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
@@ -198,7 +199,6 @@ class PoseNetHandler(
         val person1 = Person()
         val floatHeatmapArray = person1.readHeatmapFile(context)
         val floatOffsetArray = person1.readOffsetFile(context)
-        person1.readFeedbackMessagesNL(context);
 
         var i = 0
         var j = 0

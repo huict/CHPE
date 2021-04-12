@@ -67,25 +67,26 @@ public class Session {
 
     //Loops through a video and stores it continuously
     public void runVideo() {
-        long startTime = System.nanoTime();
-        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
-        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
-
-        if (interpreterController != null){
-
-            for(Person person: persons){
-
-                if (person != null){
-                    feedbackController.addData(interpreterController.runNN(person.toJson()));
-                }
-            }
-        }
-        long endTime = System.nanoTime();
-        DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
-//          feedbackController.addData(interpreterController.testChin_Up());
-//          feedbackController.addData(interpreterController.testTouching_Hair());
-//          feedbackController.addData(interpreterController.testNeckForward());
-//          feedbackController.addData(interpreterController.testBodyWeightOneLeg());
+//        long startTime = System.nanoTime();
+//        PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
+//        List<Person> persons = this.videoSplicer.performAnalyse(pnh);
+//
+//        if (interpreterController != null){
+//
+//            for(Person person: persons){
+//
+//                if (person != null){
+//                    feedbackController.addData(interpreterController.runNN(person.toJson()));
+//                }
+//            }
+//        }
+//        long endTime = System.nanoTime();
+//        DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
+          feedbackController.addData(interpreterController.testChin_Up());
+          feedbackController.addData(interpreterController.testTouching_Hair());
+          feedbackController.addData(interpreterController.testNeckForward());
+          feedbackController.addData(interpreterController.testBodyWeightOneLeg());
+          feedbackController.addData(interpreterController.testBodyWeightOneLeg());
 //        feedbackController.generateMockData();
     }
     //The NormaliseData query.

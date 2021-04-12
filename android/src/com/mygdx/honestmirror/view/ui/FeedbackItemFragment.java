@@ -15,6 +15,8 @@ import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
+import java.io.IOException;
+
 // A fragment reprenting a list of Items.
 public class FeedbackItemFragment extends Fragment {
 
@@ -60,7 +62,11 @@ public class FeedbackItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new FeedbackListItemAdapter(feedbackController.getFeedbackItems()));
+            try {
+                recyclerView.setAdapter(new FeedbackListItemAdapter(feedbackController.getFeedbackItems()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return view;
     }

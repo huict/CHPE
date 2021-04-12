@@ -2,6 +2,8 @@ package com.mygdx.honestmirror.application.domain.feedback;
 
 import com.mygdx.honestmirror.application.common.DebugLog;
 
+import java.io.IOException;
+
 public class FeedbackItemBuilder {
     private final double framerate;
     private FeedbackDataContainer dataContainer;
@@ -15,7 +17,7 @@ public class FeedbackItemBuilder {
     }
 
 
-    public FeedbackItem make(EstimatedPose pose, int startTimeSeconds, int endTimeSeconds){
+    public FeedbackItem make(EstimatedPose pose, int startTimeSeconds, int endTimeSeconds) throws IOException {
         if (dataContainer == null)
             dataContainer = new DesignTimeFeedbackDataContainer();
 

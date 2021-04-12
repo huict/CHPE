@@ -1,20 +1,27 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
 import android.content.Context;
+
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.application.common.DebugLog;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer{
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
+public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
 
     @Override
     public String getName(EstimatedPose pose) {
         String name = "";
 
-        switch (pose){
+        switch (pose) {
             case giving_the_back_to_the_audience:
                 name = "Giving the back to the audience";
                 break;
@@ -60,48 +67,60 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer{
     }
 
     @Override
-    public String getDescription(EstimatedPose pose) {
+    public String getDescription(EstimatedPose pose) throws IOException {
         String description = "";
 
-        switch (pose){
+        Context context = GlobalApplication.getAppContext();
+        InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        ArrayList<String> feedbackmessages = new ArrayList<>();
+        String line;
+        int i = 1;
+        while (reader.readLine() != null) {
+            line = reader.readLine();
+            feedbackmessages.add(line);
+            DebugLog.log(line);
+            i++;
+        }
+        switch (pose) {
             case giving_the_back_to_the_audience:
-                description = "You were giving your back to the audience";
+                description = feedbackmessages.get(0);
                 break;
             case standing_with_the_bodyweight_on_one_leg:
-                description = "You were standing with your bodyweight on one leg";
+                description = feedbackmessages.get(1);
                 break;
             case hands_touching_face:
-                description = "You were touching your face with your hands";
+                description = feedbackmessages.get(2);
                 break;
             case crossed_arms:
-                description = "You had your arms crossed";
+                description = feedbackmessages.get(3);
                 break;
             case hands_in_pockets:
-                description = "You held your hands in your pockets";
+                description = feedbackmessages.get(4);
                 break;
             case delivered_gestures:
-                description = "You delivered gestures";
+                description = feedbackmessages.get(5);
                 break;
             case crossing_legs:
-                description = "You had your legs crossed";
+                description = feedbackmessages.get(6);
                 break;
             case feet_between_shoulders_and_waist_width_firmly_on_the_ground:
-                description = "You held an upright position with your feet between your shoulders and waist width firmly on the ground";
+                description = feedbackmessages.get(7);
                 break;
             case hands_touching_hair:
-                description = "You were touching your hair.";
+                description = feedbackmessages.get(8);
                 break;
             case hands_behind_the_back:
-                description = "You held your hands behind your back";
+                description = feedbackmessages.get(9);
                 break;
             case chin_up:
-                description = "You held your chin upward.";
+                description = feedbackmessages.get(10);
                 break;
             case neck_forward:
-                description = "You held your neck forward";
+                description = feedbackmessages.get(11);
                 break;
             case empty:
-                description = "EMPTY_DESCRIPTION";
+                description = feedbackmessages.get(12);
                 break;
         }
 

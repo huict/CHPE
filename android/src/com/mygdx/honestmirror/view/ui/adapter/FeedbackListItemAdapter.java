@@ -25,11 +25,11 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
     static String shortFeed;
     private final List<FeedbackItem> mValues;
 
-    public static String getFeedback() {
+    public static String getFeedbackName() {
         return feedback;
     }
 
-    public static String getShortFeed() {
+    public static String getFeedbackDescription() {
         return shortFeed;
     }
 
@@ -50,8 +50,9 @@ public class FeedbackListItemAdapter extends RecyclerView.Adapter<FeedbackListIt
         holder.mItem = mValues.get(position);
 
         holder.mIdView.setText(mValues.get(position).getName());
-
         holder.mContentView.setText(mValues.get(position).getDescription());
+        feedback = mValues.get(position).getName();
+        shortFeed = mValues.get(position).getDescription();
 
         holder.mButton.setOnClickListener(v -> {
             //https://stackoverflow.com/questions/28767413/how-to-open-a-different-activity-on-recyclerview-item-onclick

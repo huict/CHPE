@@ -10,6 +10,7 @@ import com.mygdx.honestmirror.application.domain.feedback.settings.FeedbackSetti
 
 import com.mygdx.honestmirror.application.common.DebugLog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class FeedbackController implements FeedbackProcessor {
         this.settings = settings;
     }
 
-    private void generateFeedback() {
+    private void generateFeedback() throws IOException {
              DebugLog.log("--- generate Feedback items ---");
         settings.loadDefaults();
         if (feedbackGenerated)
@@ -175,14 +176,14 @@ public class FeedbackController implements FeedbackProcessor {
     }
 
     @Override
-    public List<FeedbackItem> getFeedbackItems(){
+    public List<FeedbackItem> getFeedbackItems() throws IOException {
         generateFeedback();
         DebugLog.log("----FEEDBACK LIST: " + this.feedbackItems + "-----------");
         return this.feedbackItems;
     }
 
     @Override
-    public String getSummary(){
+    public String getSummary() throws IOException {
         generateFeedback();
 
         return "Despite delivering gestures for 13 consecutive seconds this presentation was very very good";

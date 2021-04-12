@@ -16,8 +16,8 @@ import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 public class MediaControllerActivity extends AppCompatActivity {
     Uri uri = ForegroundService.getOtherUri();
-    String feedback = FeedbackListItemAdapter.getFeedback();
-    String shortFeedback = FeedbackListItemAdapter.getShortFeed();
+    String feedback_name = FeedbackListItemAdapter.getFeedbackName();
+    String feedback_description = FeedbackListItemAdapter.getFeedbackDescription();
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -30,20 +30,20 @@ public class MediaControllerActivity extends AppCompatActivity {
         MediaController mediaController= new MediaController(this);
         mediaController.setAnchorView(videoView);
 
-        DebugLog.log("------------------------feedback in activity: " + feedback + " --------------------------------");
-        DebugLog.log("------------------------short feedback in activity: " + shortFeedback + " --------------------------------");
+        DebugLog.log("------------------------feedback in activity: " + feedback_name + " --------------------------------");
+        DebugLog.log("------------------------short feedback in activity: " + feedback_description + " --------------------------------");
 
         TextView feedbackView = findViewById(R.id.title);
         TextView shortFeedbackView = findViewById(R.id.shortFeedbackView);
-        if(feedback == null){
+        if(feedback_name == null){
             feedbackView.setText("no feedback retrieved");
         }
-        if(shortFeedback == null){
+        if(feedback_description == null){
             shortFeedbackView.setText("no short feedback retrieved");
         }
         else{
-            feedbackView.setText(feedback);
-            shortFeedbackView.setText(shortFeedback);
+            feedbackView.setText(feedback_name);
+            shortFeedbackView.setText(feedback_description);
         }
 
 
