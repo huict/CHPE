@@ -1,8 +1,10 @@
 package com.mygdx.honestmirror.view.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -12,11 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.service.ForegroundService;
+import com.mygdx.honestmirror.view.ui.FeedbackItemFragment;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 public class MediaControllerActivity extends AppCompatActivity {
     Uri uri = ForegroundService.getOtherUri();
-    String feedback_name = FeedbackListItemAdapter.getFeedbackName();
+    //String feedback_name = FeedbackListItemAdapter.getFeedbackName();
     String feedback_description = FeedbackListItemAdapter.getFeedbackDescription();
 
     @SuppressLint("SetTextI18n")
@@ -30,22 +33,21 @@ public class MediaControllerActivity extends AppCompatActivity {
         MediaController mediaController= new MediaController(this);
         mediaController.setAnchorView(videoView);
 
-        DebugLog.log("------------------------feedback in activity: " + feedback_name + " --------------------------------");
-        DebugLog.log("------------------------short feedback in activity: " + feedback_description + " --------------------------------");
+        //DebugLog.log("------------------------feedback in activity: " + feedback_name + " --------------------------------");
+        //DebugLog.log("------------------------short feedback in activity: " + feedback_description + " --------------------------------");
 
         TextView feedbackView = findViewById(R.id.title);
         TextView shortFeedbackView = findViewById(R.id.shortFeedbackView);
-        if(feedback_name == null){
-            feedbackView.setText("no feedback retrieved");
-        }
+//        if(feedback_name == null){
+//            feedbackView.setText("no feedback retrieved");
+//        }
         if(feedback_description == null){
             shortFeedbackView.setText("no short feedback retrieved");
         }
         else{
-            feedbackView.setText(feedback_name);
+            //feedbackView.setText(feedback_name);
             shortFeedbackView.setText(feedback_description);
         }
-
 
         //Starting VideoView By Setting MediaController and URI
         videoView.setMediaController(mediaController);

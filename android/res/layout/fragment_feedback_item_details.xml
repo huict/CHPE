@@ -13,72 +13,56 @@
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.0">
 
         <VideoView
             android:id="@+id/videoView"
-            android:layout_width="378dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/button_second"
+            android:layout_width="333dp"
+            android:layout_height="299dp"
+            android:layout_alignBottom="@+id/textview"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="240dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="26dp" />
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="27dp" />
 
         <TextView
             android:id="@+id/textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="267dp"
+            android:layout_height="19dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="41dp"
-            android:layout_marginTop="672dp"
-            android:layout_marginEnd="53dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="630dp"
+            android:layout_marginEnd="25dp"
             android:text="@string/press_the_video_for_pausing_and_the_video" />
-
         <Button
             android:id="@+id/button_second"
-            android:layout_width="273dp"
-            android:layout_height="68dp"
-            android:layout_alignParentStart="true"
+            android:layout_width="53dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textview"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="73dp"
-            android:layout_marginEnd="74dp"
-            android:layout_marginBottom="26dp"
-            android:text="@string/previous" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="332dp"
-            android:layout_height="46dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginEnd="26dp"
-            android:text="@string/this_is_where_the_title_should_go" />
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="27dp"
+            android:text="@string/arrow" />
 
         <TextView
             android:id="@+id/shortFeedbackView"
-            android:layout_width="334dp"
-            android:layout_height="138dp"
+            android:layout_width="331dp"
+            android:layout_height="278dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="85dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
             android:text="TextView" />
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
