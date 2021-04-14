@@ -178,7 +178,6 @@ public class FeedbackController implements FeedbackProcessor {
     @Override
     public List<FeedbackItem> getFeedbackItems() throws IOException {
         generateFeedback();
-        DebugLog.log("----FEEDBACK LIST: " + this.feedbackItems + "-----------");
         return this.feedbackItems;
     }
 

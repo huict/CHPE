@@ -93,21 +93,6 @@ public class Person {
         }
         return offsetArray;
     }
-
-    public ArrayList<String> readFeedbackMessagesNL() throws IOException {
-        InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        ArrayList<String> feedbackmessages = new ArrayList<>();
-        String line;
-        int i = 1;
-        while(reader.readLine() != null){
-            line = reader.readLine();
-            feedbackmessages.add(line);
-            DebugLog.log(line);
-            i++;
-        }
-        return feedbackmessages;
-    }
 }
 
 

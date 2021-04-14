@@ -75,12 +75,9 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         ArrayList<String> feedbackmessages = new ArrayList<>();
         String line;
-        int i = 1;
         while (reader.readLine() != null) {
             line = reader.readLine();
             feedbackmessages.add(line);
-            DebugLog.log(line);
-            i++;
         }
         switch (pose) {
             case giving_the_back_to_the_audience:

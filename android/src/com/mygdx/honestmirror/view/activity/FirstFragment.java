@@ -39,20 +39,7 @@ public class FirstFragment extends Fragment {
 //            }
 //        });
 
-        TextView summary = view.findViewById(R.id.summary_textview);
-
         FeedbackController feedbackController = FeedbackController.getInstance();
-
-
-
-
-        if (summary != null) {
-            try {
-                summary.setText(feedbackController.getSummary());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
         RecyclerView recyclerView = view.findViewById(R.id.feedback_item_recyclerview);
 
