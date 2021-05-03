@@ -67,10 +67,6 @@ public class FeedbackItem {
 
     @Override
     public String toString() {
-        return "FeedbackItem{" +
-                "estimatedPose=" + estimatedPose +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "estimatedPose = " + estimatedPose;
     }
 }

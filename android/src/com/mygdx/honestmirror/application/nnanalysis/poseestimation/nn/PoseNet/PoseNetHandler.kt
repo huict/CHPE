@@ -196,33 +196,33 @@ class PoseNetHandler(
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
 
-        val person1 = Person()
-        val floatHeatmapArray = person1.readHeatmapFile(context)
-        val floatOffsetArray = person1.readOffsetFile(context)
-
-        var i = 0
-        var j = 0
-        for(x in 0 until 9){
-            for(y in 0 until 9){
-                for(z in 0 until 17){
-                    if(i < 1378){
-                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
-                        i++
-                    }
-                }
-            }
-        }
-
-        for(x in 0 until 9){
-            for(y in 0 until 9){
-                for(z in 0 until 34){
-                    if(j < 2755){
-                        offsets[0][x][y][z] = floatOffsetArray[j]
-                        j++
-                    }
-                }
-            }
-        }
+//        val person1 = Person()
+//        val floatHeatmapArray = person1.readHeatmapFile(context)
+//        val floatOffsetArray = person1.readOffsetFile(context)
+//
+//        var i = 0
+//        var j = 0
+//        for(x in 0 until 9){
+//            for(y in 0 until 9){
+//                for(z in 0 until 17){
+//                    if(i < 1378){
+//                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
+//                        i++
+//                    }
+//                }
+//            }
+//        }
+//
+//        for(x in 0 until 9){
+//            for(y in 0 until 9){
+//                for(z in 0 until 34){
+//                    if(j < 2755){
+//                        offsets[0][x][y][z] = floatOffsetArray[j]
+//                        j++
+//                    }
+//                }
+//            }
+//        }
 
         val sigmoidConversion = heatmaps
         for(x in 0 until 9){

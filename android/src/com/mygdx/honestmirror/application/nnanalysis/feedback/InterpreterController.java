@@ -33,7 +33,7 @@ public class InterpreterController {
 
     public float[][] runNN(JsonObject PersonsAsJson){
         float[] inputArray;
-        float[][] outputArray = new float[1][13];
+        float[][] outputArray = new float[1][6];
 
         if (PersonsAsJson == null)
             throw new IllegalArgumentException("input is null!");
@@ -65,6 +65,7 @@ public class InterpreterController {
 
             try{
                 interpreter.run(inputArray, outputArray);
+                DebugLog.log(Arrays.deepToString(outputArray));
             }
             catch (Exception e){
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
@@ -82,62 +83,9 @@ public class InterpreterController {
         return outputArray;
     }
 
-    public float[][] testChin_Up(){
-        float[] inputArray;
-        float[][] outputArray = new float[1][13];
-        List<Float> floatArrayList = new ArrayList<>();
-
-        floatArrayList.add((float) 26.7021427154541);
-        floatArrayList.add((float) 122.90178871154785);
-        floatArrayList.add((float) 27.366634845733643);
-        floatArrayList.add((float) 122.11682987213135);
-        floatArrayList.add((float) 27.206862449645996);
-        floatArrayList.add((float) 120.34361267089844);
-        floatArrayList.add((float) 56.82061052322388);
-        floatArrayList.add((float) 136.81968212127686);
-        floatArrayList.add((float) 55.47068500518799);
-        floatArrayList.add((float) 141.21107006072998);
-
-        floatArrayList.add((float) 56.828299045562744);
-        floatArrayList.add((float) 141.52256202697754);
-        floatArrayList.add((float) 57.38221740722656);
-        floatArrayList.add((float) 138.329833984375);
-        floatArrayList.add((float) 97.78847634792328);
-        floatArrayList.add((float) 95.31030905246735);
-        floatArrayList.add((float) 72.26025199890137);
-        floatArrayList.add((float) 129.29709041118622);
-        floatArrayList.add((float) 140.38017082214355);
-        floatArrayList.add((float) 112.75652885437012);
-
-        floatArrayList.add((float) 111.78064060211182);
-        floatArrayList.add((float) 98.45100450515747);
-        floatArrayList.add((float) 103.51701927185059);
-        floatArrayList.add((float) 160.71825122833252);
-        floatArrayList.add((float) 91.6095199584961);
-        floatArrayList.add((float) 141.43992233276367);
-        floatArrayList.add((float) 162.2060854434967);
-        floatArrayList.add((float) 137.42376708984375);
-        floatArrayList.add((float) 161.08633995056152);
-        floatArrayList.add((float) 139.38702201843262);
-
-        floatArrayList.add((float) 225.2100374698639);
-        floatArrayList.add((float) 119.8869457244873);
-        floatArrayList.add((float) 224.93200063705444);
-        floatArrayList.add((float) 123.78856229782104);
-
-
-        inputArray = new float[floatArrayList.size()];
-        for (int index = 0; index < floatArrayList.size(); index++){
-            inputArray[index] = floatArrayList.get(index);
-        }
-        interpreter.run(inputArray, outputArray);
-        DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
-        return outputArray;
-    }
-
     public float[][] testTouching_Hair(){
         float[] inputArray;
-        float[][] outputArray = new float[1][13];
+        float[][] outputArray = new float[1][6];
         List<Float> floatArrayList = new ArrayList<>();
         floatArrayList.add((float) 51.27184009552002);
         floatArrayList.add((float) 130.98658800125122);
@@ -183,13 +131,13 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
+        DebugLog.log("OutputArray touching hair: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 
     public float[][] testBodyWeightOneLeg(){
         float[] inputArray;
-        float[][] outputArray = new float[1][13];
+        float[][] outputArray = new float[1][6];
         List<Float> floatArrayList = new ArrayList<>();
 
         floatArrayList.add((float) 112.62297821044922);
@@ -235,59 +183,7 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
-        return outputArray;
-    }
-
-    public float[][] testNeckForward(){
-        float[] inputArray;
-        float[][] outputArray = new float[1][13];
-        List<Float> floatArrayList = new ArrayList<>();
-
-        floatArrayList.add((float) 76.61337661743164);
-        floatArrayList.add((float) 134.84249877929688);
-        floatArrayList.add((float) 61.58050751686096);
-        floatArrayList.add((float) 129.23977327346802);
-        floatArrayList.add((float) 80.47257709503174);
-        floatArrayList.add((float) 109.65440464019775);
-        floatArrayList.add((float) 62.48586416244507);
-        floatArrayList.add((float) 104.72969341278076);
-        floatArrayList.add((float) 76.91960144042969);
-        floatArrayList.add((float) 137.83020401000977);
-
-        floatArrayList.add((float) 80.99498653411865);
-        floatArrayList.add((float) 142.35570335388184);
-        floatArrayList.add((float) 98.79914236068726);
-        floatArrayList.add((float) 115.31657409667969);
-        floatArrayList.add((float) 137.14905166625977);
-        floatArrayList.add((float) 160.95603680610657);
-        floatArrayList.add((float) 129.6016948223114);
-        floatArrayList.add((float) 123.17432737350464);
-        floatArrayList.add((float) 181.7554168701172);
-        floatArrayList.add((float) 124.75791025161743);
-
-        floatArrayList.add((float) 176.28990173339844);
-        floatArrayList.add((float) 121.30801773071289);
-        floatArrayList.add((float) 147.79155731201172);
-        floatArrayList.add((float) 146.86993598937988);
-        floatArrayList.add((float) 148.7962474822998);
-        floatArrayList.add((float) 128.43872886896133);
-        floatArrayList.add((float) 192.37470877170563);
-        floatArrayList.add((float) 139.24109840393066);
-        floatArrayList.add((float) 191.3964725136757);
-        floatArrayList.add((float) 148.41278839111328);
-
-        floatArrayList.add((float) 193.54937553405762);
-        floatArrayList.add((float) 123.16229248046875);
-        floatArrayList.add((float) 226.22679781913757);
-        floatArrayList.add((float) 145.26788902282715);
-
-        inputArray = new float[floatArrayList.size()];
-        for (int index = 0; index < floatArrayList.size(); index++){
-            inputArray[index] = floatArrayList.get(index);
-        }
-        interpreter.run(inputArray, outputArray);
-        //DebugLog.log("OutputArray: " + Arrays.deepToString(outputArray));
+        DebugLog.log("OutputArray body weight on one leg: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 

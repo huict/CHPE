@@ -5,5 +5,11 @@
     <color name="hu_light_gray">#EFEFEF</color>
     <color name="hu_red">#e72e2a</color>
     <color name="hu_blue">#00a1e2</color>
-
+    <color name="light_red">#FF7276</color>
+    <color name="light_orange">#FCD299</color>
+    <color name="vermillion">#FF9913</color>
+    <color name="dark_blue">#06038D</color>
+    <color name="leaf_green">#30B700</color>
+    <color name="forest_green">#006E33</color>
+    <color name="black">#000000</color>
 </resources>

@@ -12,6 +12,7 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FeedbackController implements FeedbackProcessor {
@@ -66,19 +67,18 @@ public class FeedbackController implements FeedbackProcessor {
         float maxFloat = 0f;
         maxFloatIndex = 0;
 
+        DebugLog.log(Arrays.toString(probabilityArray));
         for (int index=0; index < probabilityArray.length; index++){
-         //   DebugLog.log("--if[" + probabilityArray[index] +" > "+ maxFloat   );
             if (probabilityArray[index] > maxFloat){
-          //      DebugLog.log("--true" );
                 maxFloatIndex = index;
                 maxFloat = probabilityArray[index];
-              //  DebugLog.log("-----maxFloat " + maxFloat   );
-             //   DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
             }
         }
 
+        //TODO: ADD MINIMUM LIMIT, SO THAT THE APPLICATION DOESN'T ADD UNRELIABLE FEEDBACK
 
-        EstimatedPose estimatedPose = EstimatedPose.empty;
+
+        EstimatedPose estimatedPose = null;
         for(int i = 0; i < data.length; i++)
         {
             for(int j = 0; j < data[i].length; j++)
@@ -198,7 +198,7 @@ public class FeedbackController implements FeedbackProcessor {
 
         for (int index = 0; index < 50; index++ ){
             int counter = (index + 1) * 200;
-            this.poseData.add(new PoseData(EstimatedPose.feet_between_shoulders_and_waist_width_firmly_on_the_ground, counter));
+            this.poseData.add(new PoseData(EstimatedPose.crossed_arms, counter));
         }
 
         for (int index = 50; index < 120; index++ ){

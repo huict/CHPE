@@ -95,6 +95,7 @@ class AnalyseThread extends Thread {
 
                 Bitmap bitmap = bitmapQueue.take();
                 Person p = pnh.estimateSinglePose(bitmap);
+                DebugLog.log(p.toString());
                 persons.add(p);
                 DebugLog.log("start Successful in Thread" + Thread.currentThread().getName() + ", " + bitmapQueue.size() + " remaining");
             } catch (InterruptedException e) {
