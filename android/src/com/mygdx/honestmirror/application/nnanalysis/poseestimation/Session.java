@@ -70,7 +70,7 @@ public class Session {
         long startTime = System.nanoTime();
         PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
         List<Person> persons = this.videoSplicer.performAnalyse(pnh);
-
+        feedbackController.resetData();
         if (interpreterController != null){
 
             for(Person person: persons){
