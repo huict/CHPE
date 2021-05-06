@@ -74,28 +74,21 @@ public class FeedbackController implements FeedbackProcessor {
                 maxFloat = probabilityArray[index];
             }
         }
-
         //TODO: ADD MINIMUM LIMIT, SO THAT THE APPLICATION DOESN'T ADD UNRELIABLE FEEDBACK
 
 
         EstimatedPose estimatedPose = null;
-        for(int i = 0; i < data.length; i++)
-        {
-            for(int j = 0; j < data[i].length; j++)
-            {
-                //DebugLog.log("--data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
-            }
-        }
-//        DebugLog.log("-----maxFloat " + maxFloat   );
+
+        DebugLog.log("-----maxFloat " + maxFloat   );
 //        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
 
 
-
-        try{
-            estimatedPose = EstimatedPose.values()[maxFloatIndex];
-        }
-        catch (Exception e){
-            Log.e(this.getClass().getCanonicalName(), e.getMessage());
+        if(maxFloat >= 0.55) {
+            try {
+                estimatedPose = EstimatedPose.values()[maxFloatIndex];
+            } catch (Exception e) {
+                Log.e(this.getClass().getCanonicalName(), e.getMessage());
+            }
         }
 
         float frameCount = currentFrameCount;
@@ -160,10 +153,10 @@ public class FeedbackController implements FeedbackProcessor {
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
                     firstOccurrenceIndex = currentPoseOccurrenceIndex;
                     firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
-                    //      }
-                //}
-                lastPose = poseDataItem.getPose();
+                }
             }
+                lastPose = poseDataItem.getPose();
+        }
 
 
             // detect pose recurring often over time
@@ -172,8 +165,8 @@ public class FeedbackController implements FeedbackProcessor {
             
             //DebugLog.log("Feedback items " + feedbackItems);
             feedbackGenerated = true;
-        }
     }
+
 
     @Override
     public List<FeedbackItem> getFeedbackItems() throws IOException {
