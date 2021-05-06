@@ -74,13 +74,11 @@ public class FeedbackController implements FeedbackProcessor {
                 maxFloat = probabilityArray[index];
             }
         }
-        //TODO: ADD MINIMUM LIMIT, SO THAT THE APPLICATION DOESN'T ADD UNRELIABLE FEEDBACK
-
 
         EstimatedPose estimatedPose = null;
 
-        DebugLog.log("-----maxFloat " + maxFloat   );
-//        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
+        //DebugLog.log("-----maxFloat " + maxFloat   );
+        //DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
 
 
         if(maxFloat >= 0.55) {
@@ -110,7 +108,7 @@ public class FeedbackController implements FeedbackProcessor {
     }
 
     private void generateFeedback() throws IOException {
-             //DebugLog.log("--- generate Feedback items ---");
+        //DebugLog.log("--- generate Feedback items ---");
         settings.loadDefaults();
         if (feedbackGenerated)
             return;
@@ -147,7 +145,7 @@ public class FeedbackController implements FeedbackProcessor {
             }
             else {
                 //DebugLog.log("--- generate Feedback items ELSE---");
-                //if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)) {
+                if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)) {
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
                     double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
@@ -155,16 +153,16 @@ public class FeedbackController implements FeedbackProcessor {
                     firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
                 }
             }
-                lastPose = poseDataItem.getPose();
+            lastPose = poseDataItem.getPose();
         }
 
 
-            // detect pose recurring often over time
+        // detect pose recurring often over time
 
-            // detect pose not changing over time
-            
-            //DebugLog.log("Feedback items " + feedbackItems);
-            feedbackGenerated = true;
+        // detect pose not changing over time
+
+        //DebugLog.log("Feedback items " + feedbackItems);
+        feedbackGenerated = true;
     }
 
 
