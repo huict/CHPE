@@ -65,7 +65,7 @@ public class InterpreterController {
 
             try{
                 interpreter.run(inputArray, outputArray);
-                DebugLog.log(Arrays.deepToString(outputArray));
+                //DebugLog.log(Arrays.deepToString(outputArray));
             }
             catch (Exception e){
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());

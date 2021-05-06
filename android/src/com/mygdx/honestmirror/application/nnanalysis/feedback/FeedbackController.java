@@ -67,35 +67,28 @@ public class FeedbackController implements FeedbackProcessor {
         float maxFloat = 0f;
         maxFloatIndex = 0;
 
-        DebugLog.log(Arrays.toString(probabilityArray));
+       // DebugLog.log(Arrays.toString(probabilityArray));
         for (int index=0; index < probabilityArray.length; index++){
             if (probabilityArray[index] > maxFloat){
                 maxFloatIndex = index;
                 maxFloat = probabilityArray[index];
             }
         }
-
         //TODO: ADD MINIMUM LIMIT, SO THAT THE APPLICATION DOESN'T ADD UNRELIABLE FEEDBACK
 
 
         EstimatedPose estimatedPose = null;
-        for(int i = 0; i < data.length; i++)
-        {
-            for(int j = 0; j < data[i].length; j++)
-            {
-                //DebugLog.log("--data array i =[" + i + "] j = [" + j +"] value = " + data[i][j]   );
-            }
-        }
-//        DebugLog.log("-----maxFloat " + maxFloat   );
+
+        DebugLog.log("-----maxFloat " + maxFloat   );
 //        DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
 
 
-
-        try{
-            estimatedPose = EstimatedPose.values()[maxFloatIndex];
-        }
-        catch (Exception e){
-            Log.e(this.getClass().getCanonicalName(), e.getMessage());
+        if(maxFloat >= 0.55) {
+            try {
+                estimatedPose = EstimatedPose.values()[maxFloatIndex];
+            } catch (Exception e) {
+                Log.e(this.getClass().getCanonicalName(), e.getMessage());
+            }
         }
 
         float frameCount = currentFrameCount;
@@ -154,16 +147,16 @@ public class FeedbackController implements FeedbackProcessor {
             }
             else {
                 DebugLog.log("--- generate Feedback items ELSE---");
-                //if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)) {
+                if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)) {
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
                     double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
                     feedbackItems.add(feedbackItemBuilder.make(lastPose, (int) firstOccurenceTimeSeconds, (int) lastOccurrenceTimeSeconds));
                     firstOccurrenceIndex = currentPoseOccurrenceIndex;
                     firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
-                    //      }
-                //}
-                lastPose = poseDataItem.getPose();
+                }
             }
+                lastPose = poseDataItem.getPose();
+        }
 
 
             // detect pose recurring often over time
@@ -172,8 +165,8 @@ public class FeedbackController implements FeedbackProcessor {
             
             DebugLog.log("Feedback items " + feedbackItems);
             feedbackGenerated = true;
-        }
     }
+
 
     @Override
     public List<FeedbackItem> getFeedbackItems() throws IOException {
