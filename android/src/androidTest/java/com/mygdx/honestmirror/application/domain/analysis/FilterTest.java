@@ -40,7 +40,7 @@ public class FilterTest {
         try {
             is = am.open("data/tedtalk.json");
         } catch (IOException e) {
-            DebugLog.log("Unable to load asset norm json");
+            //DebugLog.log("Unable to load asset norm json");
         }
         Reader r = new InputStreamReader(is);
         JSONLoader loader = new JSONLoader(r);

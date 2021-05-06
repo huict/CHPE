@@ -190,7 +190,7 @@ class PoseNetHandler(
             interpreter!!.runForMultipleInputsOutputs(inputArray, outputMap)
         }
         catch (e: Exception){
-            DebugLog.log("Exception: $e")
+            //DebugLog.log("Exception: $e")
         }
 
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>

@@ -75,7 +75,7 @@ public class MockData {
         try {
             this.entries = new JSONArray();
         } catch (Exception ex) {
-            DebugLog.log(ex.getMessage());
+            //DebugLog.log(ex.getMessage());
         }
 
         executeInserts();
@@ -83,7 +83,7 @@ public class MockData {
     }
 
     public void executeInserts() {
-        DebugLog.log(String.valueOf(entries.size()));
+        //DebugLog.log(String.valueOf(entries.size()));
         long sessionId = insertSession(this.entries.size());
         long insertId = 0;
         NNModelMPI poseModel = new NNModelMPI();
@@ -105,7 +105,7 @@ public class MockData {
                     insertFrameCoordinate(frameId, recordInsertID);
                 }
             } catch (Exception ex) {
-                DebugLog.log(ex.getMessage());
+                //DebugLog.log(ex.getMessage());
             }
         }
 
@@ -122,7 +122,7 @@ public class MockData {
         try {
             this.entries = content;
         } catch (Exception ex) {
-            DebugLog.log(ex.getMessage());
+            //DebugLog.log(ex.getMessage());
         }
     }
 

@@ -40,7 +40,7 @@ public class VideoSplicerFactoryTest {
     @Before
     public void setUp() {
 
-        DebugLog.log(Integer.toString(defaultSDK));
+        //DebugLog.log(Integer.toString(defaultSDK));
         final AssetFileDescriptor afd = targetContext.getResources().openRawResourceFd(R.raw.example_video);
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
         metadataRetriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());

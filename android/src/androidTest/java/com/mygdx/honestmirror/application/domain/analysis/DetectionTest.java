@@ -41,7 +41,7 @@ public class DetectionTest {
         try {
             is = am.open("data/wave.json");
         } catch (IOException e) {
-            DebugLog.log("Unable to load asset norm json");
+            //DebugLog.log("Unable to load asset norm json");
         }
         Reader r = new InputStreamReader(is);
         JSONLoader loader = new JSONLoader(r);

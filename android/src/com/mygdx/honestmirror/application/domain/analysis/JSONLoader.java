@@ -28,7 +28,7 @@ public class JSONLoader {
             Object obj = jsonParser.parse(r);
             frames = (JSONArray) obj;
         } catch (FileNotFoundException e) {
-            DebugLog.log("Unable to process Reader");
+            //DebugLog.log("Unable to process Reader");
             e.printStackTrace();
         } catch (IOException | ParseException e) {
             e.printStackTrace();

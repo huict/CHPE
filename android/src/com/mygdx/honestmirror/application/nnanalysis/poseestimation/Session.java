@@ -72,7 +72,6 @@ public class Session {
         List<Person> persons = this.videoSplicer.performAnalyse(pnh);
 
         if (interpreterController != null){
-
             for(Person person: persons){
 
                 if (person != null){
@@ -81,7 +80,7 @@ public class Session {
             }
         }
         long endTime = System.nanoTime();
-        DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
+        //DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
 //        feedbackController.addData(interpreterController.testBodyWeightOneLeg());
 //        feedbackController.addData(interpreterController.testTouching_Hair());
 //        feedbackController.addData(interpreterController.testTouching_Hair());

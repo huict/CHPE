@@ -110,10 +110,10 @@ public class a_VideoSelect extends AppCompatActivity {
             // if all permissions were granted already we can just open the video gallery
             // if not, request the missing permissions
             if(AAL.permissionsGranted(getApplicationContext(), allPermissions)) {
-                DebugLog.log("logger: Opening gallery");
+                //DebugLog.log("logger: Opening gallery");
                 openVideoGallery();
             } else {
-                DebugLog.log("logger: Not opening gallery");
+                //DebugLog.log("logger: Not opening gallery");
                 AAL.requestPermissions(getApplicationContext(), a_VideoSelect.this, allPermissions);
             }
         });

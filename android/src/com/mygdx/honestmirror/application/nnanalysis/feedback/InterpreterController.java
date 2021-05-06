@@ -65,7 +65,7 @@ public class InterpreterController {
 
             try{
                 interpreter.run(inputArray, outputArray);
-                DebugLog.log(Arrays.deepToString(outputArray));
+                //DebugLog.log(Arrays.deepToString(outputArray));
             }
             catch (Exception e){
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
@@ -131,7 +131,7 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        DebugLog.log("OutputArray touching hair: " + Arrays.deepToString(outputArray));
+        //DebugLog.log("OutputArray touching hair: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 
@@ -183,7 +183,7 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        DebugLog.log("OutputArray body weight on one leg: " + Arrays.deepToString(outputArray));
+        //DebugLog.log("OutputArray body weight on one leg: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 

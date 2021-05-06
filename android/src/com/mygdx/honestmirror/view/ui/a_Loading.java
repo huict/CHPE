@@ -86,7 +86,7 @@ public class a_Loading extends AppCompatActivity {
                 try {
                     Thread.sleep(0, 4000);
                 } catch (Exception e) {
-                    DebugLog.log(e.getMessage());
+                    //DebugLog.log(e.getMessage());
                 }
                 progress += 1;
             }

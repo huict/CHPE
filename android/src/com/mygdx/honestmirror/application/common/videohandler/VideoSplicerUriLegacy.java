@@ -43,13 +43,13 @@ public class VideoSplicerUriLegacy extends VideoSplicerUri {
     }
 
     private void getAmountOfFrames() {
-        DebugLog.log(this.totalTime + " total time");
-        DebugLog.log(this.iterTimeUs + " duration frame per second");
+        //DebugLog.log(this.totalTime + " total time");
+        //DebugLog.log(this.iterTimeUs + " duration frame per second");
         long l = this.iterTimeUs / microSecondsToMiliseconds;
-        DebugLog.log(l + " converted frame time");
+        //DebugLog.log(l + " converted frame time");
 
         this.frameCount = totalTime / l;
-        DebugLog.log(this.frameCount + " frame count");
+        //DebugLog.log(this.frameCount + " frame count");
     }
 
 

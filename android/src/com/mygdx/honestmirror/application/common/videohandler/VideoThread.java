@@ -36,7 +36,7 @@ class BitmapThread extends Thread {
            //     Bitmap bitmap = (this.mediaMetadataRetriever.getFrameAtIndex(i));
                 bitmaps.add(bitmap);
                 long endTime = System.nanoTime();
-                DebugLog.log("run BitmapThread: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
+                //DebugLog.log("run BitmapThread: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -67,7 +67,7 @@ class BitmapThread2 extends Thread {
         //        Bitmap bitmap = (this.mediaMetadataRetriever.getFrameAtIndex(i));
                 bitmaps.add(bitmap);
                 long endTime = System.nanoTime();
-                DebugLog.log("run BitmapThread2: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
+                //DebugLog.log("run BitmapThread2: Successful in "+ ((endTime-startTime) / 1000000) + "ms in thread " + Thread.currentThread().getName() + ", " + integerQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -95,9 +95,9 @@ class AnalyseThread extends Thread {
 
                 Bitmap bitmap = bitmapQueue.take();
                 Person p = pnh.estimateSinglePose(bitmap);
-                DebugLog.log(p.toString());
+                //DebugLog.log(p.toString());
                 persons.add(p);
-                DebugLog.log("start Successful in Thread" + Thread.currentThread().getName() + ", " + bitmapQueue.size() + " remaining");
+                //DebugLog.log("start Successful in Thread" + Thread.currentThread().getName() + ", " + bitmapQueue.size() + " remaining");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

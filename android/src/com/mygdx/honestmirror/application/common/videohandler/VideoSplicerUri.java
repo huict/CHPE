@@ -65,10 +65,10 @@ public class VideoSplicerUri implements VideoSplicer {
     //Instantiates a new Video splicer uri.
     public VideoSplicerUri(MediaMetadataRetriever retriever){
         this.mediaMetadataRetriever = retriever;
-        DebugLog.log("getVideoDuration " +  this.getVideoDuration());
+        //DebugLog.log("getVideoDuration " +  this.getVideoDuration());
         this.getVideoDuration();
         this.getAmountOfFrames();
-        DebugLog.log("***getAmountOfFrames*** " +  this.frameCount);
+        //DebugLog.log("***getAmountOfFrames*** " +  this.frameCount);
     }
 
     public long getFrameCount() {
@@ -81,7 +81,7 @@ public class VideoSplicerUri implements VideoSplicer {
             this.totalTimeInMs = Long.parseLong(sTotalTime);
             return totalTimeInMs;
         } catch (NumberFormatException nfe) {
-            DebugLog.log("125: Line Exception" + nfe);
+            //DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
         }
     }
@@ -135,7 +135,7 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public List<Person> performAnalyse(PoseNetHandler pnh) {
 
-        DebugLog.log("currently on: "+ Thread.currentThread().getName());
+        //DebugLog.log("currently on: "+ Thread.currentThread().getName());
         long startTime = System.nanoTime();
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
@@ -165,10 +165,10 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         while(bitmapThread.isAlive()){
-            DebugLog.log("waiting...");
+            //DebugLog.log("waiting...");
         }
         this.mediaMetadataRetriever.close();
-        DebugLog.log("BitmapThreads finished, starting analysis!");
+        //DebugLog.log("BitmapThreads finished, starting analysis!");
 
         //create queue with all the bitmaps
         BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapList);
@@ -178,17 +178,17 @@ public class VideoSplicerUri implements VideoSplicer {
         //currently only runs on one thread, being 10.5
         AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
         for(int i = 1; i < 2; i++){
-            DebugLog.log("AnalyseThread " + i + " starts now");
+            //DebugLog.log("AnalyseThread " + i + " starts now");
             try{
                 analyseThread.start();
             }
             catch (IllegalThreadStateException e){
-                DebugLog.log("Further Threads have not been made");
+                //DebugLog.log("Further Threads have not been made");
             }
         }
 
         long endTime = System.nanoTime();
-        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+        //DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
 
         //receive all persons
         return analyseThread.getPersons();
