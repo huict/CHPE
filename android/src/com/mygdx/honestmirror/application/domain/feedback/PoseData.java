@@ -1,5 +1,8 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
+/**
+ * hold the infomration found about a pose in a frame
+ */
 public class PoseData {
     private final EstimatedPose pose;
     private final float timeMilliseconds;

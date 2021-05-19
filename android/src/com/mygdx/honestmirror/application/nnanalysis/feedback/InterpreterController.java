@@ -16,6 +16,9 @@ import java.util.List;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+/**
+ *
+ */
 public class InterpreterController {
 
 
@@ -31,6 +34,11 @@ public class InterpreterController {
         }
     }
 
+    /**
+     * runs the feedback NN
+     * @param PersonsAsJson json data on human poses made by posenet
+     * @return output array[][] from the feedback NN
+     */
     public float[][] runNN(JsonObject PersonsAsJson){
         float[] inputArray;
         float[][] outputArray = new float[1][6];
@@ -54,35 +62,29 @@ public class InterpreterController {
         }
 
         inputArray = new float[floatArrayList.size()];
-       // DebugLog.log("inputArray" + inputArray);
-        //why? waarom word data overgeschreven van een list<float> naar een float[]?
+
         for (int index = 0; index < floatArrayList.size(); index++){
             inputArray[index] = floatArrayList.get(index);
-//            DebugLog.log("inputArray i = ["+index + "] value = ["+ inputArray[index] + "]");
         }
 
         if (interpreter != null){
 
             try{
                 interpreter.run(inputArray, outputArray);
-                //DebugLog.log(Arrays.deepToString(outputArray));
+
             }
             catch (Exception e){
                 Log.e("InterpreterController", "Exception occurred when running the model:" + e.getMessage());
             }
         }
-//
-//        for(int i = 0; i < outputArray.length; i++)
-//        {
-//            for(int j = 0; j < outputArray[i].length; j++)
-//            {
-//                DebugLog.log("output array i =[" + i + "] j = [" + j +"] value = " + outputArray[i][j]   );
-//            }
-//        }
-//        Log.i("InterpreterController", "Output Length" + Arrays.deepToString(outputArray));
+
         return outputArray;
     }
 
+    /**
+     * test function hold hard coded information of a pose
+     * @return output array from the feedback NN
+     */
     public float[][] testTouching_Hair(){
         float[] inputArray;
         float[][] outputArray = new float[1][6];
@@ -131,10 +133,12 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        //DebugLog.log("OutputArray touching hair: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
-
+    /**
+     * test function hold hard coded information of a pose
+     * @return output array from the feedback NN
+     */
     public float[][] testBodyWeightOneLeg(){
         float[] inputArray;
         float[][] outputArray = new float[1][6];
@@ -183,7 +187,6 @@ public class InterpreterController {
             inputArray[index] = floatArrayList.get(index);
         }
         interpreter.run(inputArray, outputArray);
-        //DebugLog.log("OutputArray body weight on one leg: " + Arrays.deepToString(outputArray));
         return outputArray;
     }
 

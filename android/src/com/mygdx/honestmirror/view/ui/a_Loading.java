@@ -149,5 +149,10 @@ public class a_Loading extends AppCompatActivity {
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
+    public void setProgressBar(int i)
+    {
+        this.progress = i;
+    }
+
 
 }

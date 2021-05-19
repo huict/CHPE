@@ -15,8 +15,16 @@ import java.util.ArrayList;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
+/**
+ * translates the found pose to text for the UI.
+ */
 public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
 
+    /**
+     * translates the estimated pose to its corsponding string info
+     * @param pose estimated pose
+     * @return the string information for the pose
+     */
     @Override
     public String getName(EstimatedPose pose) {
         String name = "";
@@ -26,7 +34,7 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
                 name = "Giving the back to the audience";
                 break;
             case standing_with_the_bodyweight_on_one_leg:
-                name = "Standing with the bodyweight on one leg";
+                name = "Standing with the body weight on one leg";
                 break;
             case hands_touching_face:
                 name = "Hands touching face";
@@ -45,6 +53,12 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
         return name;
     }
 
+    /**
+     * translates the esrimated pose to its corsponding detailt information
+     * @param pose estimated pose that you want in detailt information on
+     * @return detailt information for the pose information
+     * @throws IOException
+     */
     @Override
     public String getDescription(EstimatedPose pose) throws IOException {
         String description = "";

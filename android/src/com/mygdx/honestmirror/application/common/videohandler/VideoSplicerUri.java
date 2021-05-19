@@ -13,11 +13,14 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
+import com.mygdx.honestmirror.view.ui.a_Loading;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 /**
  * The type Video splicer.
@@ -140,9 +143,20 @@ public class VideoSplicerUri implements VideoSplicer {
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
         BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
+        DebugLog.log("totalTimeInMs = " + this.totalTimeInMs*1000);
+        getAmountOfFrames();
+        DebugLog.log("framecount = " + this.frameCount);
+        //andriod function needs timestamps in nanoseconds!
+        int numberOfframes = 0;
         for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
             integerQueue.add(i);
+            numberOfframes += 1;
         }
+
+        a_Loading proggresbar = ((a_Loading)getApplicationContext());
+        proggresbar.setProgressBar(50);
+
+        DebugLog.log("number of frames = " + numberOfframes);
 
         //get all the bitmaps
         //performs on 3 threads as of writing, Thread 7, 9 and 10.
@@ -188,7 +202,7 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         long endTime = System.nanoTime();
-        //DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
 
         //receive all persons
         return analyseThread.getPersons();

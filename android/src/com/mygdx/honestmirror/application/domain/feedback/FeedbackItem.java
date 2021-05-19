@@ -1,5 +1,8 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
+/**
+ * holds the information needed for the feedback UI element
+ */
 public class FeedbackItem {
     private EstimatedPose estimatedPose;
     private String name;
@@ -25,6 +28,10 @@ public class FeedbackItem {
         this.endSeconds = endSeconds;
     }
 
+    /**
+     * function to get name and timestamp if end seconds is > 0
+     * @return name and if endseconds are set returns name + timestamp
+     */
     public String getName()
     {
         if (endSeconds != 0){
@@ -38,7 +45,11 @@ public class FeedbackItem {
         return description;
     }
 
-
+    /**
+     * translates a given amount of seconds in minutes and second
+     * @param seconds amount of seconds to translate
+     * @return timestamp string 00:00
+     */
     private String getTimeFormat(int seconds){
 
         int timeSeconds = seconds;
@@ -57,6 +68,10 @@ public class FeedbackItem {
         return timeMinutes + ":" + timeSeconds;
     }
 
+    /**
+     * returns the saved name asosiated whit the estimated pose
+     * @return name of the estimated pose
+     */
     public String getFeedback() {
        return name;
     }

@@ -9,12 +9,17 @@ import com.mygdx.honestmirror.application.domain.feedback.PoseData;
 import com.mygdx.honestmirror.application.domain.feedback.settings.FeedbackSettings;
 
 import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.view.ui.a_Loading;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * runs the feedback network and adds the pose data
+ * generates feedback items accordingly.
+ */
 public class FeedbackController implements FeedbackProcessor {
     private static FeedbackController instance;
 
@@ -32,6 +37,10 @@ public class FeedbackController implements FeedbackProcessor {
         resetData();
     }
 
+    /**
+     * creats new feedback controller if non exists otherwise returns existing one
+     * @return the new or old feedback controller
+     */
     public static FeedbackController getInstance(){
         if (instance == null)
             instance = new FeedbackController();
@@ -39,6 +48,10 @@ public class FeedbackController implements FeedbackProcessor {
         return instance;
     }
 
+    /**
+     * resets the data stored from feedback generation
+     * use to insure clean start for new feedback
+     */
     @Override
     public void resetData(){
         feedbackItems = new ArrayList<>();
@@ -49,16 +62,23 @@ public class FeedbackController implements FeedbackProcessor {
         feedbackItemBuilder = new FeedbackItemBuilder(framerate);
     }
 
+    /**
+     *  finds the estimated pose.
+     * @param data the probability's array from the feedback array
+     */
     @Override
     public void addData(float[][] data){
         addData(data, null);
     }
 
+    /**
+     * fill's the poseData array of estimated poses from given probability array
+     * @param data the probability's array from the feedback network
+     * @param frameIndex the index of the frame used for timestamp
+     */
     @Override
     public void addData(float[][] data, Integer frameIndex){
 
-
-      //  DebugLog.log("----data frameIndex----- " + frameIndex   );
         currentFrameCount++;
 
 
@@ -67,7 +87,6 @@ public class FeedbackController implements FeedbackProcessor {
         float maxFloat = 0f;
         maxFloatIndex = 0;
 
-        //DebugLog.log(Arrays.toString(probabilityArray));
         for (int index=0; index < probabilityArray.length; index++){
             if (probabilityArray[index] > maxFloat){
                 maxFloatIndex = index;
@@ -76,11 +95,7 @@ public class FeedbackController implements FeedbackProcessor {
         }
 
         EstimatedPose estimatedPose = null;
-
-        //DebugLog.log("-----maxFloat " + maxFloat   );
-        //DebugLog.log("-----maxFloatIndex " + maxFloatIndex   );
-
-
+        //filers all estimated poses where the max surety of the pose is below 0.55 (-55%)
         if(maxFloat >= 0.55) {
             try {
                 estimatedPose = EstimatedPose.values()[maxFloatIndex];
@@ -94,7 +109,7 @@ public class FeedbackController implements FeedbackProcessor {
             frameCount = frameIndex + 1;
 
         poseData.add(new PoseData(estimatedPose, getTimeInMilliseconds(currentFrameCount)));
-        //DebugLog.log("*******-----data added ------****** " );
+
     }
 
     @Override
@@ -107,8 +122,12 @@ public class FeedbackController implements FeedbackProcessor {
         this.settings = settings;
     }
 
+    /**
+     * generates feedback items from the pose data array
+     * also sets the timestamp for the feedback ui element.
+     * @throws IOException
+     */
     private void generateFeedback() throws IOException {
-        //DebugLog.log("--- generate Feedback items ---");
         settings.loadDefaults();
         if (feedbackGenerated)
             return;
@@ -123,12 +142,10 @@ public class FeedbackController implements FeedbackProcessor {
         double lastOccurrenceTimeMs = 0;
 
         for (int currentPoseOccurrenceIndex = 0; currentPoseOccurrenceIndex < poseData.size(); currentPoseOccurrenceIndex++) {
-            //DebugLog.log("--- generate Feedback items start for loop---");
             PoseData poseDataItem = poseData.get(currentPoseOccurrenceIndex);
-            //DebugLog.log("pose " + poseDataItem.getPose());
+
 
             if (lastPose == null) {
-                //DebugLog.log("--- generate Feedback items first if---");
                 firstOccurrenceIndex = currentPoseOccurrenceIndex;
                 firstOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
 
@@ -139,12 +156,11 @@ public class FeedbackController implements FeedbackProcessor {
             }
 
             if (lastPose.equals(poseDataItem.getPose()) && (currentPoseOccurrenceIndex + 1) != poseData.size()) {
-                //DebugLog.log("--- generate Feedback items second if---" + poseOccurrenceCount);
                 poseOccurrenceCount++;
                 lastOccurrenceTimeMs = poseDataItem.getTimeMilliseconds();
             }
             else {
-                //DebugLog.log("--- generate Feedback items ELSE---");
+
                 if ((poseOccurrenceCount / framerate) > settings.getMaxPersistSeconds(lastPose)) {
                     double firstOccurenceTimeSeconds = firstOccurrenceTimeMs / 1000;
                     double lastOccurrenceTimeSeconds = lastOccurrenceTimeMs / 1000;
@@ -161,7 +177,6 @@ public class FeedbackController implements FeedbackProcessor {
 
         // detect pose not changing over time
 
-        //DebugLog.log("Feedback items " + feedbackItems);
         feedbackGenerated = true;
     }
 
@@ -179,6 +194,9 @@ public class FeedbackController implements FeedbackProcessor {
         return "Despite delivering gestures for 13 consecutive seconds this presentation was very very good";
     }
 
+    /**
+     * generates mock data for to be drawn on the ui
+     */
 
     public void generateMockData(){
         //this.resetData();
@@ -199,7 +217,6 @@ public class FeedbackController implements FeedbackProcessor {
     }
 
     private float getTimeInMilliseconds(float frameCount){
-        //        DebugLog.log("----milliseconds " + milliseconds + "-----------");
         return (float) ((frameCount * (1000 / this.framerate))*3);
     }
 }
