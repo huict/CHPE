@@ -28,6 +28,7 @@
     <string name="step_3_gloves">step 3 gloves</string>
     <string name="honest_mirror">HONEST MIRROR</string>
     <string name="arrow"><![CDATA[<]]></string>
+    <string name="switch_to_english_feedback">Switch to English Feedback</string>
     <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>

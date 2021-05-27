@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.view.ui.a_Home;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
 
     /**
-     * translates the estimated pose to its corsponding string info
+     * translates the estimated pose to its corresponding string info
      * @param pose estimated pose
      * @return the string information for the pose
      */
@@ -62,9 +63,17 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
     @Override
     public String getDescription(EstimatedPose pose) throws IOException {
         String description = "";
+        InputStream is = null;
 
         Context context = GlobalApplication.getAppContext();
-        InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
+        GlobalApplication globalApplication = a_Home.getGlobalApplication();
+        GlobalApplication.Language language = globalApplication.getLanguage();
+        if (language.equals(GlobalApplication.Language.Dutch)){
+            is = context.getAssets().open("feedbackmessages(NL).txt");
+        }
+        if (language.equals(GlobalApplication.Language.English)){
+            is = context.getAssets().open("feedbackmessages(EN).txt");
+        }
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         ArrayList<String> feedbackmessages = new ArrayList<>();
         String line;

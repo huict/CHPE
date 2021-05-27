@@ -147,16 +147,16 @@ public class VideoSplicerUri implements VideoSplicer {
         getAmountOfFrames();
         DebugLog.log("framecount = " + this.frameCount);
         //andriod function needs timestamps in nanoseconds!
-        int numberOfframes = 0;
+//        int numberOfframes = 0;
         for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
             integerQueue.add(i);
-            numberOfframes += 1;
+//            numberOfframes += 1;
         }
 
-        a_Loading proggresbar = ((a_Loading)getApplicationContext());
-        proggresbar.setProgressBar(50);
-
-        DebugLog.log("number of frames = " + numberOfframes);
+//        a_Loading proggresbar = ((a_Loading)getApplicationContext());
+//        proggresbar.setProgressBar(50);
+//
+//        DebugLog.log("number of frames = " + numberOfframes);
 
         //get all the bitmaps
         //performs on 3 threads as of writing, Thread 7, 9 and 10.
@@ -179,7 +179,7 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         while(bitmapThread.isAlive()){
-            //DebugLog.log("waiting...");
+            DebugLog.log("waiting...");
         }
         this.mediaMetadataRetriever.close();
         //DebugLog.log("BitmapThreads finished, starting analysis!");

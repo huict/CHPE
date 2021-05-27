@@ -1,7 +1,7 @@
 package com.mygdx.honestmirror.application.domain.feedback;
 
 /**
- * enumm that holds all the posible poses the feedback NN can find.
+ * enum that holds all the possible poses the feedback NN can find.
  */
 public enum EstimatedPose {
     crossed_arms,
