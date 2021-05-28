@@ -14,6 +14,7 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.activity.HelpAppActivity;
 
 // Home screen class. This is the first screen you see when you start the app.
+@SuppressWarnings("Convert2Lambda")
 public class a_Home extends AppCompatActivity {
 
     private static GlobalApplication globalApplication = new GlobalApplication();
@@ -36,7 +37,6 @@ public class a_Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_home);
-
         b_start = findViewById(R.id.b_start);
         b_help_app = findViewById(R.id.b_help_app);
         b_language = findViewById(R.id.languageButton);
@@ -48,20 +48,26 @@ public class a_Home extends AppCompatActivity {
 
         b_help_app.setOnClickListener(v -> launchIntent(HelpAppActivity.class));
 
-        b_language.setOnClickListener(v -> {
-            GlobalApplication.Language language = globalApplication.getLanguage();
-            switch (language){
-                case Dutch:
-                    globalApplication.setLanguage(GlobalApplication.Language.English);
-                    b_language.setText("Click for Dutch Feedback");
-                    break;
+        b_language.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                GlobalApplication.Language language = globalApplication.getLanguage();
+                DebugLog.log("language: " + language.toString());
+                switch (language){
+                    case Dutch:
+                        globalApplication.setLanguage(GlobalApplication.Language.English);
+                        b_language.setText("Click for Dutch Feedback");
+                        break;
 
-                case English:
-                    globalApplication.setLanguage(GlobalApplication.Language.Dutch);
-                    b_language.setText("Click for English Feedback");
-                    break;
+                    case English:
+                        globalApplication.setLanguage(GlobalApplication.Language.Dutch);
+                        b_language.setText("Click for English Feedback");
+                        break;
+                }
             }
+
         });
+
     }
 
     public static GlobalApplication getGlobalApplication(){

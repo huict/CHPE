@@ -13,13 +13,12 @@ public class GlobalApplication extends Application {
 
     private static Context appContext;
     public enum Language{Dutch, English}
-    private Language language;
+    private Language language = Language.Dutch;
 
     @Override
     public void onCreate() {
         super.onCreate();
         appContext = getApplicationContext();
-        language = Language.Dutch;
     }
 
     public static Context getAppContext() {
@@ -27,7 +26,7 @@ public class GlobalApplication extends Application {
     }
 
     public Language getLanguage() {
-        return language;
+        return this.language;
     }
 
     public void setLanguage(Language language) {
