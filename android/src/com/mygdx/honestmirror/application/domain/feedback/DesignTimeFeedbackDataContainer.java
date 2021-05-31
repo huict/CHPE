@@ -58,29 +58,14 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
      * translates the esrimated pose to its corsponding detailt information
      * @param pose estimated pose that you want in detailt information on
      * @return detailt information for the pose information
-     * @throws IOException
      */
     @Override
-    public String getDescription(EstimatedPose pose) throws IOException {
+    public String getDescription(EstimatedPose pose) {
         String description = "";
-        InputStream is = null;
 
-        Context context = GlobalApplication.getAppContext();
         GlobalApplication globalApplication = a_Home.getGlobalApplication();
-        GlobalApplication.Language language = globalApplication.getLanguage();
-        if (language.equals(GlobalApplication.Language.Dutch)){
-            is = context.getAssets().open("feedbackmessages(NL).txt");
-        }
-        if (language.equals(GlobalApplication.Language.English)){
-            is = context.getAssets().open("feedbackmessages(EN).txt");
-        }
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        ArrayList<String> feedbackmessages = new ArrayList<>();
-        String line;
-        while (reader.readLine() != null) {
-            line = reader.readLine();
-            feedbackmessages.add(line);
-        }
+        ArrayList<String> feedbackmessages = globalApplication.getFeedbackMessages();
+
         switch (pose) {
             case giving_the_back_to_the_audience:
                 description = feedbackmessages.get(0);

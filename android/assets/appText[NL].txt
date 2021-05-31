@@ -1,0 +1,24 @@
+-Start button
+Start analyse
+-Language button
+Taal
+-Help button
+Hulp pagina
+-Help info text
+fdigkugsfbgjdhgfdkughkdfgfhdkgdkghdghdfjkhghkjfd
+-Previous Button
+terug
+-Cancel Button
+annuleer
+-Ok Button
+Ok
+-Results button
+Resultaten
+-video instruction
+Klik op de video om te pauseren en slepen
+-notification analysis started
+De video analyse is gestart. Dit kan een tijdje duren
+-notification in progress
+De video is aan het verwerken in het neural netwerk
+-notification analysis finished
+Het neuraal netwerk is klaar met analyseren

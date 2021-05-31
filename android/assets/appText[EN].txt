@@ -1,0 +1,24 @@
+-Start button
+Start analysis
+-Language button
+language
+-Help button
+Help page
+-Help info text
+fdigkugsfbgjdhgfdkughkdfgfhdkgdkghdghdfjkhghkjfd
+-Previous Button
+previous
+-Cancel Button
+cancel
+-Ok Button
+Ok
+-Results button
+Results
+-video instruction
+Click on the video to pause and slide
+-notification analysis started
+The video analysis has started. This could take a while
+-notification in progress
+The video is being analysed in the neural network
+-notification analysis finished
+The neural network has finished analysing
