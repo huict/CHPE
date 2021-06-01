@@ -7,9 +7,9 @@ Help page
 -Help info text
 fdigkugsfbgjdhgfdkughkdfgfhdkgdkghdghdfjkhghkjfd
 -Previous Button
-previous
+Previous
 -Cancel Button
-cancel
+Cancel
 -Ok Button
 Ok
 -Results button

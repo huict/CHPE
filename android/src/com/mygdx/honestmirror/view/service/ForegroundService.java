@@ -17,6 +17,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
@@ -24,7 +25,10 @@ import com.mygdx.honestmirror.application.common.videohandler.VideoSplicerFactor
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterController;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Session;
+import com.mygdx.honestmirror.view.ui.a_Home;
 import com.mygdx.honestmirror.view.ui.a_Loading;
+
+import java.io.IOException;
 
 //Class where the neural network will analyze the video footage
 public class ForegroundService extends Service {
@@ -62,6 +66,10 @@ public class ForegroundService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID) {
         //Creating Uri for MediaMetadataRetriever
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+        GlobalApplication globalApplication = a_Home.getGlobalApplication();
+        String string = globalApplication.getLayoutMessages().get(10);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), a_Loading.class), PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "JointFinder", importance);
@@ -71,7 +79,7 @@ public class ForegroundService extends Service {
         notificationManager.createNotificationChannel(notificationChannel);
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
                 .setContentTitle("Honest Mirror")
-                .setContentText("Processing video in neural network")
+                .setContentText(string)
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
                 .setOngoing(true)

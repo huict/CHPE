@@ -7,9 +7,9 @@ Hulp pagina
 -Help info text
 fdigkugsfbgjdhgfdkughkdfgfhdkgdkghdghdfjkhghkjfd
 -Previous Button
-terug
+Terug
 -Cancel Button
-annuleer
+Annuleer
 -Ok Button
 Ok
 -Results button

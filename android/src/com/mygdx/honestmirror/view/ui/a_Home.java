@@ -10,7 +10,6 @@ import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.activity.HelpAppActivity;
-
 import java.io.IOException;
 
 // Home screen class. This is the first screen you see when you start the app.
@@ -29,7 +28,6 @@ public class a_Home extends AppCompatActivity {
     private void setFiles() throws IOException {
         globalApplication.obtainMessages();
         globalApplication.obtainAppText();
-        DebugLog.log("print this out");
     }
     // Android function override.
     //This closes the app.
@@ -61,15 +59,15 @@ public class a_Home extends AppCompatActivity {
                     switch (language) {
                         case Dutch:
                             globalApplication.setLanguage(GlobalApplication.Language.English);
-                            setFiles();
-                            b_language.setText("Click for Dutch Feedback");
                             break;
                         case English:
                             globalApplication.setLanguage(GlobalApplication.Language.Dutch);
-                            setFiles();
-                            b_language.setText("Click for English Feedback");
                             break;
                     }
+                    setFiles();
+                    b_start.setText(globalApplication.getLayoutMessages().get(0));
+                    b_language.setText(globalApplication.getLayoutMessages().get(1));
+                    b_help_app.setText(globalApplication.getLayoutMessages().get(2));
 
                 } catch (IOException e) {
                     e.printStackTrace();

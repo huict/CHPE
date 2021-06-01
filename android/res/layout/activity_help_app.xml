@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/HelpPage"
         android:layout_width="298dp"
         android:layout_height="55dp"
         android:text="@string/help_page_app"

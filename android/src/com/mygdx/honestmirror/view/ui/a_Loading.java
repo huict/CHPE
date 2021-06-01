@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.activity.MainFeedbackActivity;
@@ -49,6 +50,9 @@ public class a_Loading extends AppCompatActivity {
 
     //Result button that appears when loading is done.
     Button b_Results;
+
+    // globalApplication retrieval, so we get access to the language files in this class
+    GlobalApplication globalApplication = a_Home.getGlobalApplication();
 
     // Android default constructor.
     @Override
@@ -116,8 +120,10 @@ public class a_Loading extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(getApplicationContext(), a_Results.class), PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        String finishedAnalysis = globalApplication.getLayoutMessages().get(11);
+
         NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "notifyUser", importance);
-        notificationChannel.setDescription("Your video has been processed");
+        notificationChannel.setDescription(finishedAnalysis);
         notificationChannel.getLockscreenVisibility();
         notificationChannel.enableLights(true);
         notificationChannel.enableVibration(true);
@@ -127,7 +133,7 @@ public class a_Loading extends AppCompatActivity {
 
         Notification notification = new NotificationCompat.Builder(this, "ForeGroundService")
                 .setContentTitle("Honest Mirror")
-                .setContentText("Neural Network is done.")
+                .setContentText(finishedAnalysis)
                 .setSmallIcon(R.drawable.testplaatje)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -142,7 +148,8 @@ public class a_Loading extends AppCompatActivity {
 
     //Starts the foreground service. Typically called when this activity starts.
     public void startService() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Started video analysis, this could take a while", Toast.LENGTH_LONG);
+        String string = globalApplication.getLayoutMessages().get(9);
+        Toast toast = Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG);
         toast.show();
         Intent serviceIntent = new Intent(this, ForegroundService.class);
         serviceIntent.setData(getIntent().getData());
