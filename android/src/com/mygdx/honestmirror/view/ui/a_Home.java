@@ -45,6 +45,12 @@ public class a_Home extends AppCompatActivity {
         b_help_app = findViewById(R.id.b_help_app);
         b_language = findViewById(R.id.languageButton);
 
+        try {
+            setFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         AAL.setTitleBar(getWindow());
 
         b_start.setOnClickListener(v -> launchIntent(a_VideoSelect.class));
