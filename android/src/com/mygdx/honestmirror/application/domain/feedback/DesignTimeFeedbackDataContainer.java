@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.view.ui.a_Home;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
 
     /**
-     * translates the estimated pose to its corsponding string info
+     * translates the estimated pose to its corresponding string info
      * @param pose estimated pose
      * @return the string information for the pose
      */
@@ -57,21 +58,14 @@ public class DesignTimeFeedbackDataContainer implements FeedbackDataContainer {
      * translates the esrimated pose to its corsponding detailt information
      * @param pose estimated pose that you want in detailt information on
      * @return detailt information for the pose information
-     * @throws IOException
      */
     @Override
-    public String getDescription(EstimatedPose pose) throws IOException {
+    public String getDescription(EstimatedPose pose) {
         String description = "";
 
-        Context context = GlobalApplication.getAppContext();
-        InputStream is = context.getAssets().open("feedbackmessages(NL).txt");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        ArrayList<String> feedbackmessages = new ArrayList<>();
-        String line;
-        while (reader.readLine() != null) {
-            line = reader.readLine();
-            feedbackmessages.add(line);
-        }
+        GlobalApplication globalApplication = a_Home.getGlobalApplication();
+        ArrayList<String> feedbackmessages = globalApplication.getFeedbackMessages();
+
         switch (pose) {
             case giving_the_back_to_the_audience:
                 description = feedbackmessages.get(0);

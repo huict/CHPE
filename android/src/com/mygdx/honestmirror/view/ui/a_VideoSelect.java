@@ -24,6 +24,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 
@@ -121,12 +122,21 @@ public class a_VideoSelect extends AppCompatActivity {
 
     //Shows the selected video confirmation dialog.
     public void showDialog() {
+        GlobalApplication globalApplication = a_Home.getGlobalApplication();
+
+        String Cancel = globalApplication.getLayoutMessages().get(5);
+        String Ok = globalApplication.getLayoutMessages().get(6);
+
         dialog.setContentView(R.layout.layout_dialog);
         videoView = dialog.findViewById(R.id.videoView2);
         Button b_OK = dialog.findViewById(R.id.ok_button);
         Button b_Cancel = dialog.findViewById(R.id.cancel_button);
         TextView textView = dialog.findViewById(R.id.textView4);
+
         textView.setText(filepath);
+        b_Cancel.setText(Cancel);
+        b_OK.setText(Ok);
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         b_OK.setOnClickListener(v -> {

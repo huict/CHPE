@@ -11,23 +11,33 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.view.service.ForegroundService;
 import com.mygdx.honestmirror.view.ui.FeedbackItemFragment;
+import com.mygdx.honestmirror.view.ui.a_Home;
 import com.mygdx.honestmirror.view.ui.adapter.FeedbackListItemAdapter;
 
 public class MediaControllerActivity extends AppCompatActivity {
     Uri uri = ForegroundService.getOtherUri();
     //String feedback_name = FeedbackListItemAdapter.getFeedbackName();
     String feedback_description = FeedbackListItemAdapter.getFeedbackDescription();
+    GlobalApplication globalApplication = a_Home.getGlobalApplication();
+    TextView videoInstruction;
+    VideoView videoView;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_feedback_item_details);
-        VideoView videoView = findViewById(R.id.videoView);
+
+        videoView = findViewById(R.id.videoView);
+        videoInstruction = findViewById(R.id.videoInstruction);
+
+        String videoText = globalApplication.getLayoutMessages().get(8);
+        videoInstruction.setText(videoText);
 
         //Set MediaController to enable play, pause, forward, etc options.
         MediaController mediaController= new MediaController(this);

@@ -170,6 +170,7 @@ public class VideoSplicerUri implements VideoSplicer {
 
         while(bitmapThread.isAlive()){
            // DebugLog.log("waiting...");
+
         }
         this.mediaMetadataRetriever.close();
         //DebugLog.log("BitmapThreads finished, starting analysis!");

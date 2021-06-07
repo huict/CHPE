@@ -2,11 +2,8 @@
 
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import com.mygdx.honestmirror.application.common.DebugLog
-import com.mygdx.honestmirror.application.domain.feedback.DesignTimeFeedbackDataContainer
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
@@ -196,33 +193,7 @@ class PoseNetHandler(
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
 
-//        val person1 = Person()
-//        val floatHeatmapArray = person1.readHeatmapFile(context)
-//        val floatOffsetArray = person1.readOffsetFile(context)
-//
-//        var i = 0
-//        var j = 0
-//        for(x in 0 until 9){
-//            for(y in 0 until 9){
-//                for(z in 0 until 17){
-//                    if(i < 1378){
-//                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
-//                        i++
-//                    }
-//                }
-//            }
-//        }
-//
-//        for(x in 0 until 9){
-//            for(y in 0 until 9){
-//                for(z in 0 until 34){
-//                    if(j < 2755){
-//                        offsets[0][x][y][z] = floatOffsetArray[j]
-//                        j++
-//                    }
-//                }
-//            }
-//        }
+        //useTestInfo(heatmaps, offsets, context)
 
         val sigmoidConversion = heatmaps
         for(x in 0 until 9){
@@ -293,5 +264,43 @@ class PoseNetHandler(
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
         return person
+    }
+
+    //This function is used for testing purposes
+    //This function overwrites the heatmaps and offsets with hardcoded data from the files
+    //Still requires a return function, giving back the updated heatmaps and offsets
+    //trueEstimation() contains a call to this function. It's at the time of writing commented
+    private fun useTestInfo(
+        heatmaps: Array<Array<Array<FloatArray>>>,
+        offsets: Array<Array<Array<FloatArray>>>,
+        context: Context){
+
+        val person1 = Person()
+        val floatHeatmapArray = person1.readHeatmapFile(context)
+        val floatOffsetArray = person1.readOffsetFile(context)
+
+        var i = 0
+        var j = 0
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 17){
+                    if(i < 1378){
+                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
+                        i++
+                    }
+                }
+            }
+        }
+
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 34){
+                    if(j < 2755){
+                        offsets[0][x][y][z] = floatOffsetArray[j]
+                        j++
+                    }
+                }
+            }
+        }
     }
 }
