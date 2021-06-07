@@ -13,14 +13,15 @@ import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
-import com.mygdx.honestmirror.view.ui.a_Loading;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
+import static com.mygdx.honestmirror.GlobalApplication.addToProgressBar;
+import static com.mygdx.honestmirror.GlobalApplication.getProgress;
 
 /**
  * The type Video splicer.
@@ -30,7 +31,6 @@ public class VideoSplicerUri implements VideoSplicer {
     private static final String TAG = VideoSplicerUri.class.getSimpleName();
     private static final int META_VIDEO_FRAME_COUNT = 24;
     private static final int META_VIDEO_DURATION = 9;
-
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
     //The length of the video
     long totalTimeInMs = 0;
@@ -68,10 +68,8 @@ public class VideoSplicerUri implements VideoSplicer {
     //Instantiates a new Video splicer uri.
     public VideoSplicerUri(MediaMetadataRetriever retriever){
         this.mediaMetadataRetriever = retriever;
-        //DebugLog.log("getVideoDuration " +  this.getVideoDuration());
         this.getVideoDuration();
         this.getAmountOfFrames();
-        //DebugLog.log("***getAmountOfFrames*** " +  this.frameCount);
     }
 
     public long getFrameCount() {
@@ -84,7 +82,6 @@ public class VideoSplicerUri implements VideoSplicer {
             this.totalTimeInMs = Long.parseLong(sTotalTime);
             return totalTimeInMs;
         } catch (NumberFormatException nfe) {
-            //DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
         }
     }
@@ -138,7 +135,6 @@ public class VideoSplicerUri implements VideoSplicer {
     @RequiresApi(api = Build.VERSION_CODES.P)
     public List<Person> performAnalyse(PoseNetHandler pnh) {
 
-        //DebugLog.log("currently on: "+ Thread.currentThread().getName());
         long startTime = System.nanoTime();
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
@@ -147,16 +143,10 @@ public class VideoSplicerUri implements VideoSplicer {
         getAmountOfFrames();
         DebugLog.log("framecount = " + this.frameCount);
         //andriod function needs timestamps in nanoseconds!
-        int numberOfframes = 0;
+
         for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
             integerQueue.add(i);
-            numberOfframes += 1;
         }
-
-        a_Loading proggresbar = ((a_Loading)getApplicationContext());
-        proggresbar.setProgressBar(50);
-
-        DebugLog.log("number of frames = " + numberOfframes);
 
         //get all the bitmaps
         //performs on 3 threads as of writing, Thread 7, 9 and 10.
@@ -179,7 +169,7 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         while(bitmapThread.isAlive()){
-            //DebugLog.log("waiting...");
+           // DebugLog.log("waiting...");
         }
         this.mediaMetadataRetriever.close();
         //DebugLog.log("BitmapThreads finished, starting analysis!");
@@ -192,7 +182,6 @@ public class VideoSplicerUri implements VideoSplicer {
         //currently only runs on one thread, being 10.5
         AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
         for(int i = 1; i < 2; i++){
-            //DebugLog.log("AnalyseThread " + i + " starts now");
             try{
                 analyseThread.start();
             }
@@ -201,9 +190,11 @@ public class VideoSplicerUri implements VideoSplicer {
             }
         }
 
-        long endTime = System.nanoTime();
-        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
 
+      //  long endTime = System.nanoTime();
+       // DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+        int finishingProgress = 10000 - getProgress();
+        addToProgressBar(finishingProgress);
         //receive all persons
         return analyseThread.getPersons();
     }
