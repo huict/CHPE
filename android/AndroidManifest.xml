@@ -11,21 +11,22 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-
     <application
+        android:name="com.mygdx.honestmirror.GlobalApplication"
         android:allowBackup="false"
         android:alwaysRetainTaskState="true"
         android:appCategory="productivity"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:isGame="false"
         android:label="Honest Mirror"
         android:screenOrientation="portrait"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.activity.HelpAppActivity"></activity>
         <activity
             android:name=".view.activity.MainFeedbackActivity"
             android:label="@string/title_activity_main_feeback"
-            android:theme="@style/AltTheme"/>
+            android:theme="@style/AltTheme" />
         <activity android:name=".view.ui.a_Results" />
         <activity android:name=".view.ui.a_Archive" />
         <activity android:name=".view.ui.a_VideoSelect" />
@@ -37,10 +38,7 @@
             android:name="android.test.mock"
             android:required="false" />
 
-        <activity android:name=".view.activity.ProcessingScreenActivity" />
-        <activity android:name=".view.activity.CurrentResultActivity" />
-        <activity android:name=".view.activity.PreviousResultActivity" />
-        <activity android:name=".view.activity.GalleryScreen" />
+        <activity android:name=".view.activity.MediaControllerActivity" />
         <activity
             android:name=".view.ui.a_Loading"
             android:launchMode="singleTask" />
@@ -60,9 +58,6 @@
             android:enabled="true"
             android:exported="true"
             android:grantUriPermissions="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <service
-            android:name=".view.service.NeuralService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 

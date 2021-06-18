@@ -6,20 +6,22 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+
 import androidx.annotation.RequiresApi;
+
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import com.mygdx.honestmirror.application.common.DebugLog;
-import com.mygdx.honestmirror.application.common.exceptions.InvalidFrameAccess;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+
+
+import static com.mygdx.honestmirror.GlobalApplication.addToProgressBar;
+import static com.mygdx.honestmirror.GlobalApplication.getProgress;
 
 /**
  * The type Video splicer.
@@ -27,24 +29,12 @@ import java.util.concurrent.LinkedBlockingDeque;
 @SuppressWarnings("CallToThreadRun")
 public class VideoSplicerUri implements VideoSplicer {
     private static final String TAG = VideoSplicerUri.class.getSimpleName();
-    private static final int META_VIDEO_FRAME_COUNT = 32;
+    private static final int META_VIDEO_FRAME_COUNT = 24;
     private static final int META_VIDEO_DURATION = 9;
-
-    /**
-     * The Media metadata retriever.
-     */
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-    /**
-     * The length of the video
-     */
+    //The length of the video
     long totalTimeInMs = 0;
-    /**
-     * The Frame count.
-     */
     long frameCount = -1;
-    /**
-     * The Frames processed.
-     */
     int framesProcessed = 0;
     int timeProcessed = 0;
 
@@ -63,12 +53,7 @@ public class VideoSplicerUri implements VideoSplicer {
     }
 
 
-    /**
-     * Instantiates a new Video splicer.
-     *
-     * @param uri     the uri
-     * @param context the context
-     */
+    //Instantiates a new Video splicer.
     public VideoSplicerUri(Uri uri, Context context) {
 
         // Accessing the file
@@ -80,50 +65,23 @@ public class VideoSplicerUri implements VideoSplicer {
         // Getting the amount of frames in video
     }
 
-    /**
-     * Instantiates a new Video splicer uri.
-     *
-     * @param retriever the retriever
-     */
+    //Instantiates a new Video splicer uri.
     public VideoSplicerUri(MediaMetadataRetriever retriever){
         this.mediaMetadataRetriever = retriever;
-
         this.getVideoDuration();
         this.getAmountOfFrames();
     }
 
-
-    /**
-     * Gets frame count.
-     *
-     * @return the frame count
-     */
     public long getFrameCount() {
         return this.frameCount;
     }
 
-    /**
-     * Gets frames processed.
-     *
-     * @return the frames processed
-     */
-    public long getFramesProcessed() {
-        return framesProcessed;
-    }
-
-    /**
-     * Gets video duration.
-     *
-     * @return the video duration
-     * @throws NumberFormatException the number format exception
-     */
     long getVideoDuration() throws NumberFormatException {
         try {
             String sTotalTime = this.mediaMetadataRetriever.extractMetadata(META_VIDEO_DURATION);
             this.totalTimeInMs = Long.parseLong(sTotalTime);
             return totalTimeInMs;
         } catch (NumberFormatException nfe) {
-            DebugLog.log("125: Line Exception" + nfe);
             throw new NumberFormatException();
         }
     }
@@ -137,11 +95,6 @@ public class VideoSplicerUri implements VideoSplicer {
         }
     }
 
-    /**
-     * Is next frame available boolean.
-     *
-     * @return the boolean
-     */
     public boolean isNextFrameAvailable() {
         return this.framesProcessed + 1 <= this.frameCount;
     }
@@ -150,24 +103,13 @@ public class VideoSplicerUri implements VideoSplicer {
         return this.timeProcessed + 1 <= (this.totalTimeInMs * 1000 );
     }
 
-    /**
-     * Gets next frame.
-     *
-     * @param frame the frame
-     * @return the next frame
-     */
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame(int frame) {
         return this.mediaMetadataRetriever.getFrameAtIndex(
                 frame);
     }
 
-    /**
-     * Gets next frame.
-     *
-     * @return the next frame
-     * @throws InvalidFrameAccess the invalid frame access
-     */
+    @Deprecated
     @RequiresApi(api = Build.VERSION_CODES.P)
     public Bitmap getNextFrame() throws InvalidFrameAccess {
 
@@ -188,16 +130,21 @@ public class VideoSplicerUri implements VideoSplicer {
         throw new InvalidFrameAccess("InvalidFrameAccess", new Throwable("Next Frame doesn't exist."));
     }
 
+    //the main function that handles the assignment of analysis and threading
+    //with defined video, obtain frames and perform Tensorflow per frame for results
     @RequiresApi(api = Build.VERSION_CODES.P)
-    //40 seconds for 11 seconds video
     public List<Person> performAnalyse(PoseNetHandler pnh) {
 
-        DebugLog.log("currently on: "+ Thread.currentThread().getName());
         long startTime = System.nanoTime();
         //create a queue to take all the frames you want to get (frame 0, frame 3, frame 6 etc)
         //24 frames per second makes 2.5 seconds per frame
         BlockingQueue<Integer> integerQueue = new LinkedBlockingDeque<>();
-        for(int i = 0; i < totalTimeInMs; i+= 67){
+        DebugLog.log("totalTimeInMs = " + this.totalTimeInMs*1000);
+        getAmountOfFrames();
+        DebugLog.log("framecount = " + this.frameCount);
+        //andriod function needs timestamps in nanoseconds!
+
+        for(int i = 0; i < totalTimeInMs * 1000; i+= (41666*3)){
             integerQueue.add(i);
         }
 
@@ -222,10 +169,11 @@ public class VideoSplicerUri implements VideoSplicer {
         }
 
         while(bitmapThread.isAlive()){
-            DebugLog.log("waiting...");
+           // DebugLog.log("waiting...");
+
         }
         this.mediaMetadataRetriever.close();
-        DebugLog.log("BitmapThreads finished, starting analysis!");
+        //DebugLog.log("BitmapThreads finished, starting analysis!");
 
         //create queue with all the bitmaps
         BlockingQueue<Bitmap> bitmapQueue = new LinkedBlockingDeque<>(bitmapList);
@@ -235,17 +183,19 @@ public class VideoSplicerUri implements VideoSplicer {
         //currently only runs on one thread, being 10.5
         AnalyseThread analyseThread = new AnalyseThread(bitmapQueue, pnh);
         for(int i = 1; i < 2; i++){
-            DebugLog.log("AnalyseThread " + i + " starts now");
             try{
                 analyseThread.start();
             }
             catch (IllegalThreadStateException e){
-                DebugLog.log("Further Threads have not been made");
+                //DebugLog.log("Further Threads have not been made");
             }
         }
 
-        long endTime = System.nanoTime();
-        DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+
+      //  long endTime = System.nanoTime();
+       // DebugLog.log("full analysis took: " + (endTime - startTime) / 1000000000 + " Seconds");
+        int finishingProgress = 10000 - getProgress();
+        addToProgressBar(finishingProgress);
         //receive all persons
         return analyseThread.getPersons();
     }

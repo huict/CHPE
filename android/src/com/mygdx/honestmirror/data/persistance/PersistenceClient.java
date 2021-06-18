@@ -2,18 +2,14 @@ package com.mygdx.honestmirror.data.persistance;
 
 import android.content.Context;
 
-import java.util.concurrent.Executors;
-
 import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.mygdx.honestmirror.data.persistance.AppDatabase;
+import java.util.concurrent.Executors;
 
-/**
- * The type Persistence client.
- */
+//The type Persistence client.
 public class PersistenceClient {
 
     private static PersistenceClient mInstance;
@@ -56,13 +52,7 @@ public class PersistenceClient {
     }
 
 
-    /**
-     * Gets instance.
-     *
-     * @param mCtx              the m ctx
-     * @param debugDatabaseName a database name
-     * @return the instance
-     */
+    //Gets instance.
     public static synchronized PersistenceClient getInstance(Context mCtx, String debugDatabaseName) {
         if (mInstance == null) {
             if (debugDatabaseName != null) {
@@ -73,12 +63,6 @@ public class PersistenceClient {
         return mInstance;
     }
 
-    /**
-     * Gets instance.
-     *
-     * @param mCtx the m ctx
-     * @return the instance
-     */
     public static synchronized PersistenceClient getInstance(Context mCtx) {
         if (mInstance == null) {
             mInstance = new PersistenceClient(mCtx);
@@ -86,11 +70,6 @@ public class PersistenceClient {
         return mInstance;
     }
 
-    /**
-     * Gets app database.
-     *
-     * @return the app database
-     */
     public AppDatabase getAppDatabase() {
         return appDatabase;
     }

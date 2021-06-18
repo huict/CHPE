@@ -1,8 +1,5 @@
 package com.mygdx.honestmirror.view.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -24,18 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.mygdx.honestmirror.application.common.DebugLog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.mygdx.honestmirror.GlobalApplication;
 import com.mygdx.honestmirror.R;
+import com.mygdx.honestmirror.application.common.DebugLog;
 
 import java.io.File;
 
-/**
- * This screen is used open the vieo gallery and select a video to process.
- */
+//This screen is used open the vieo gallery and select a video to process.
 public class a_VideoSelect extends AppCompatActivity {
-    /**
-     * Permission we need to proceed.
-     */
+    //Permission we need to proceed.
     public static final String[] allPermissions = new String[] {
             Manifest.permission.INTERNET,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -45,57 +42,37 @@ public class a_VideoSelect extends AppCompatActivity {
             Manifest.permission.VIBRATE
     };
 
-    /**
-     * Uuri to the selected video.
-     */
+    //Uuri to the selected video.
     Uri videoUri;
 
-    /**
-     * Dialog box to confirm the selected video.
-     */
+    //Dialog box to confirm the selected video.
     Dialog dialog;
 
-    /**
-     * Filepath retrieved from the Uri.
-     */
+    // Filepath retrieved from the Uri.
     String filepath;
 
-    /**
-     * Selected video played back to the user through this view.
-     */
+    // Selected video played back to the user through this view.
     VideoView videoView;
 
-    /**
-     * Button to return to the homescreen.
-     */
+    // Button to return to the homescreen.
     ImageButton b_Home;
 
-    /**
-     * Button to open the video gallery.
-     */
+    // Button to open the video gallery.
     ImageButton b_selectVideo;
 
-    /**
-     * Thing that shows the media controls.
-     */
+    //Thing that shows the media controls.
     MediaController mediaController;
 
-    /**
-     * Check to see if we've selected a video.
-     */
+    //Check to see if we've selected a video.
     boolean videoIsSelected = false;
 
-    /**
-     * Request code.
-     */
+    // Request code.
     final int SELECT_VIDEO_REQUEST = 1;
 
-    /**
-     * Android function override, asks for permissions of not granted already. Opens the video gallery after.
-     * @param requestCode random request code.
-     * @param permissions String array of permissions
-     * @param grantResults Results to see if permissions have been granted or not.
-     */
+    //Android function override, asks for permissions of not granted already. Opens the video gallery after.
+    // requestCode random request code.
+    //permissions String array of permissions
+    //grantResults Results to see if permissions have been granted or not.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -104,10 +81,7 @@ public class a_VideoSelect extends AppCompatActivity {
         }
     }
 
-    /**
-     * Default android constructor.
-     * @param savedInstanceState
-     */
+    //Default android constructor.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,12 +89,7 @@ public class a_VideoSelect extends AppCompatActivity {
         AAL.setTitleBar(getWindow());
 
         b_Home = findViewById(R.id.homeButton);
-        b_Home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        b_Home.setOnClickListener(v -> finish());
 
         dialog = new Dialog(this);
         mediaController = new MediaController(a_VideoSelect.this) {
@@ -138,83 +107,67 @@ public class a_VideoSelect extends AppCompatActivity {
         };
 
         b_selectVideo = findViewById(R.id.select_button);
-        b_selectVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // if all permissions were granted already we can just open the video gallery
-                // if not, request the missing permissions
-                if(AAL.permissionsGranted(getApplicationContext(), allPermissions)) {
-                    DebugLog.log("logger: Opening gallery");
-                    openVideoGallery();
-                } else {
-                    DebugLog.log("logger: Not opening gallery");
-                    AAL.requestPermissions(getApplicationContext(), a_VideoSelect.this, allPermissions);
-                }
+        b_selectVideo.setOnClickListener(v -> {
+            // if all permissions were granted already we can just open the video gallery
+            // if not, request the missing permissions
+            if(AAL.permissionsGranted(getApplicationContext(), allPermissions)) {
+                //DebugLog.log("logger: Opening gallery");
+                openVideoGallery();
+            } else {
+                //DebugLog.log("logger: Not opening gallery");
+                AAL.requestPermissions(getApplicationContext(), a_VideoSelect.this, allPermissions);
             }
         });
     }
 
-    /**
-     * Shows the selected video confirmation dialog.
-     */
+    //Shows the selected video confirmation dialog.
     public void showDialog() {
+        GlobalApplication globalApplication = a_Home.getGlobalApplication();
+
+        String Cancel = globalApplication.getLayoutMessages().get(5);
+        String Ok = globalApplication.getLayoutMessages().get(6);
+
         dialog.setContentView(R.layout.layout_dialog);
         videoView = dialog.findViewById(R.id.videoView2);
         Button b_OK = dialog.findViewById(R.id.ok_button);
         Button b_Cancel = dialog.findViewById(R.id.cancel_button);
         TextView textView = dialog.findViewById(R.id.textView4);
+
         textView.setText(filepath);
+        b_Cancel.setText(Cancel);
+        b_OK.setText(Ok);
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        b_OK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), a_Loading.class);
-                intent.setData(videoUri);
-                startActivity(intent);
-            }
+        b_OK.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(getApplicationContext(), a_Loading.class);
+            intent.setData(videoUri);
+            startActivity(intent);
         });
-        b_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        b_Cancel.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 
-    /**
-     * Initializes the video player used in the confirmation dialog.
-     * @param name String version of the video URI
-     */
+    // Initializes the video player used in the confirmation dialog.
+    // name String version of the video URI
     public void initializePlayer(String name) {
         videoUri = Uri.parse(name);
         videoView.setVideoURI(videoUri);
         videoIsSelected = true;
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
-                    @Override
-                    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-                        mediaController.hide();
-                        videoView.setMediaController(mediaController);
-                        mediaController.setAnchorView(videoView);
-                        ((ViewGroup) mediaController.getParent()).removeView(mediaController);
-                        ((FrameLayout) dialog.findViewById(R.id.framertje))
-                                .addView(mediaController);
-                    }
-                });
-            }
-        });
+        videoView.setOnPreparedListener(mp -> mp.setOnVideoSizeChangedListener((mp1, width, height) -> {
+            mediaController.hide();
+            videoView.setMediaController(mediaController);
+            mediaController.setAnchorView(videoView);
+            ((ViewGroup) mediaController.getParent()).removeView(mediaController);
+            ((FrameLayout) dialog.findViewById(R.id.framertje))
+                    .addView(mediaController);
+        }));
         videoView.setVideoURI(videoUri);
         videoView.start();
     }
 
-    /**
-     * Opens the device's default video gallery in order to select a video.
-     */
+    // Opens the device's default video gallery in order to select a video.
     public void openVideoGallery() {
         Intent intent;
         if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
@@ -257,12 +210,7 @@ public class a_VideoSelect extends AppCompatActivity {
         return result;
     }
 
-    /**
-     * Android function override, opens the confirmation dialog after selecting a video in the gallery.
-     * @param requestCode random request code.
-     * @param resultCode random result code.
-     * @param data Intent.
-     */
+    // Android function override, opens the confirmation dialog after selecting a video in the gallery.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -271,7 +219,7 @@ public class a_VideoSelect extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), data.getData().getPath(), Toast.LENGTH_LONG);
                 toast.show();
                 filepath = data.getData().getPath();
-                File f = new File(data.getData().getPath());
+                new File(data.getData().getPath());
                 filepath = getFileName(data.getData());
                 showDialog();
                 initializePlayer(data.getData().toString());

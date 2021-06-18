@@ -1,27 +1,23 @@
-@file:Suppress("SpellCheckingInspection", "PackageName")
+@file:Suppress("SpellCheckingInspection", "PackageName", "unused", "UNCHECKED_CAST")
 
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import com.mygdx.honestmirror.application.common.DebugLog
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.Resolution
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.gpu.GpuDelegate
 import java.io.FileInputStream
-import java.lang.Exception
+import java.math.RoundingMode
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import java.text.DecimalFormat
 import kotlin.math.abs
-import kotlin.math.exp
 
-
-@SuppressLint("NewApi")
 class PoseNetHandler(
         val context: Context,
         private val filename: String,
@@ -29,7 +25,7 @@ class PoseNetHandler(
         private val resolution: Resolution
 ) : AutoCloseable {
 
-    private var interpreter: Interpreter? = null
+    private var interpreter: Interpreter? = getInterpreter()
     //private var gpuDelegate: GpuDelegate? = null
 
     private fun getInterpreter(): Interpreter {
@@ -58,14 +54,13 @@ class PoseNetHandler(
         //gpuDelegate = null
     }
 
-    /** Returns value within [0,1].   */
+    // Returns value within [0,1].
     private fun sigmoid(x: Float): Float {
-        return (1.0f / (1.0f + exp(-x)))
+        // 1 / (1 + (-value)**2)
+        return (1 / (1 + (Math.pow(-x.toDouble(), 2.0)))).toFloat()
     }
 
-    /**
-     * Scale the image to a byteBuffer of [-1,1] values.
-     */
+    //Scale the image to a byteBuffer of [-1,1] values.
     private fun initInputArray(bitmap: Bitmap): ByteBuffer {
         val bytesPerChannel = 4
         val inputChannels = 3
@@ -89,7 +84,7 @@ class PoseNetHandler(
         return inputBuffer
     }
 
-    /** Preload and memory map the model file, returning a MappedByteBuffer containing the model. */
+    //Preload and memory map the model file, returning a MappedByteBuffer containing the model.
     private fun loadModelFile(path: String, context: Context): MappedByteBuffer {
         val fileDescriptor = context.assets.openFd(path)
         val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
@@ -98,9 +93,7 @@ class PoseNetHandler(
         )
     }
 
-    /**
-     * Initializes an outputMap of 1 * x * y * z FloatArrays for the model processing to populate.
-     */
+    //Initializes an outputMap of 1 * x * y * z FloatArrays for the model processing to populate.
     private fun initOutputMap(interpreter: Interpreter): HashMap<Int, Any> {
         val outputMap = HashMap<Int, Any>()
 
@@ -137,7 +130,7 @@ class PoseNetHandler(
         return outputMap
     }
 
-    /** Crop Bitmap to maintain aspect ratio of model input.   */
+    // Crop Bitmap to maintain aspect ratio of model input.
     private fun cropBitmap(bitmap: Bitmap): Bitmap {
         val bitmapRatio = bitmap.height.toFloat() / bitmap.width
         val modelInputRatio = resolution.modelHeight.toFloat() / resolution.modelWidth
@@ -174,39 +167,47 @@ class PoseNetHandler(
         return croppedBitmap
     }
 
-    /**
-     * Estimates the pose for a single person.
-     * args:
-     *      bitmap: image bitmap of frame that should be processed
-     * returns:
-     *      person: a Person object containing data about keypoint locations and confidence scores
-     */
-
+    //Estimates the pose for a single person.
     fun estimateSinglePose(bitmap: Bitmap): Person {
-        val person: Person
-        person = if(bitmap.height / bitmap.width != 1){
-            val croppedBitmap = cropBitmap(bitmap)
-            trueEstimation(croppedBitmap)
-        }
-        else{
-            trueEstimation(bitmap)
-        }
-        return person
+        //    person = if(bitmap.height / bitmap.width != 1){
+//            val croppedBitmap = cropBitmap(bitmap)
+//            trueEstimation(croppedBitmap)
+//        }
+//        else{
+//            trueEstimation(bitmap)
+//        }
+        return trueEstimation(bitmap)
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun trueEstimation(bitmap: Bitmap): Person{
         val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
         val inputArray = arrayOf(initInputArray(scaledBitmap))
-        val outputMap = initOutputMap(getInterpreter())
+        val outputMap = initOutputMap(interpreter!!)
         try{
-            getInterpreter().runForMultipleInputsOutputs(inputArray, outputMap)
+            interpreter!!.runForMultipleInputsOutputs(inputArray, outputMap)
         }
-        catch(e: Exception){
-            DebugLog.log("Exception: $e")
+        catch (e: Exception){
+            //DebugLog.log("Exception: $e")
         }
+
         val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
         val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
+
+        //useTestInfo(heatmaps, offsets, context)
+
+        val sigmoidConversion = heatmaps
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 17){
+                    val f = sigmoidConversion[0][x][y][z]
+                    val sigmoid = sigmoid(f)
+                    val df = DecimalFormat("#.########")
+                    df.roundingMode = RoundingMode.HALF_UP
+                    val sigmoidf = df.format(sigmoid)
+                    heatmaps[0][x][y][z] = sigmoidf.toFloat()
+                }
+            }
+        }
 
         val height = heatmaps[0].size
         val width = heatmaps[0][0].size
@@ -231,22 +232,19 @@ class PoseNetHandler(
         }
 
         // Calculating the x and y coordinates of the keyPoints with offset adjustment.
-        val xCoords = IntArray(numKeypoints)
-        val yCoords = IntArray(numKeypoints)
+        val xCoords = FloatArray(numKeypoints)
+        val yCoords = FloatArray(numKeypoints)
         val confidenceScores = FloatArray(numKeypoints)
         keypointPositions.forEachIndexed { idx, position ->
-            val positionY = keypointPositions[idx].first
-            val positionX = keypointPositions[idx].second
-            yCoords[idx] = (
-                    position.first / (height - 1).toFloat() * bitmap.height +
-                            offsets[0][positionY][positionX][idx]
-                    ).toInt()
-            xCoords[idx] = (
-                    position.second / (width - 1).toFloat() * bitmap.width +
-                            offsets[0][positionY]
-                                    [positionX][idx + numKeypoints]
-                    ).toInt()
-            confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
+            val positionY = keypointPositions[idx].second
+            val positionX = keypointPositions[idx].first
+            val hFirst = offsets[0][positionY][positionX][idx]
+            val hSecond = offsets[0][positionY][positionX][idx + numKeypoints]
+            val yCoord = (positionY * 32 + hSecond)
+            val xCoord = (positionX * 32 + hFirst)
+            yCoords[idx] = yCoord
+            xCoords[idx] = xCoord
+            confidenceScores[idx] = heatmaps[0][positionX][positionY][idx]
         }
 
         val person = Person()
@@ -266,5 +264,43 @@ class PoseNetHandler(
         person.keyPoints = keypointList.toList()
         person.score = totalScore / numKeypoints
         return person
+    }
+
+    //This function is used for testing purposes
+    //This function overwrites the heatmaps and offsets with hardcoded data from the files
+    //Still requires a return function, giving back the updated heatmaps and offsets
+    //trueEstimation() contains a call to this function. It's at the time of writing commented
+    private fun useTestInfo(
+        heatmaps: Array<Array<Array<FloatArray>>>,
+        offsets: Array<Array<Array<FloatArray>>>,
+        context: Context){
+
+        val person1 = Person()
+        val floatHeatmapArray = person1.readHeatmapFile(context)
+        val floatOffsetArray = person1.readOffsetFile(context)
+
+        var i = 0
+        var j = 0
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 17){
+                    if(i < 1378){
+                        heatmaps[0][x][y][z] = floatHeatmapArray[i]
+                        i++
+                    }
+                }
+            }
+        }
+
+        for(x in 0 until 9){
+            for(y in 0 until 9){
+                for(z in 0 until 34){
+                    if(j < 2755){
+                        offsets[0][x][y][z] = floatOffsetArray[j]
+                        j++
+                    }
+                }
+            }
+        }
     }
 }

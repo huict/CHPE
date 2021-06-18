@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">my-gdx-game</string>
-    <string name="Home_Screen">Home Screen</string>
-    <string name="Load_Video_Button">Load Video</string>
-    <string name="Previous_Results">Previous Results</string>
-    <string name="Video_Select">Video Select</string>
-    <string name="Start_Analysis">Start Analysis</string>
     <string name="progress_value">0%</string>
     <string name="btn_results">Resultaten</string>
     <string name="btn_archive">Archief</string>
@@ -14,11 +8,27 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">This is dummy text to give you an idea what this item would look like if it contained actual meaningful text.</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="press_the_video_for_pausing_and_the_video">Press the video for pausing and the video</string>
+    <string name="this_is_where_the_title_should_go">this is where the title should go</string>
+    <string name="help_page_app">HELP PAGE APPLICATION</string>
+    <string name="help_page_gloves">HELP PAGE GLOVES</string>
+    <string name="intro">With the "Honest Mirror" application, you are able to receive feedback from any presentation video you\'ve given. This feedback contains both positive and constructive feedback!</string>
+    <string name="step_3">3) Wait until the analysis is done and you shall get a list of feedback points, including a detail screen when pressed on.</string>
+    <string name="step_2">2) Select the video you want analyzed by the application.</string>
+    <string name="step_1">1) On the Home menu screen, click the "start" button.</string>
+    <string name="help_app">HELP</string>
+    <string name="help_gloves">HELP GLOVES</string>
+    <string name="start">START</string>
+    <string name="intro_gloves">Intro Gloves</string>
+    <string name="step_1_gloves">step 1 gloves</string>
+    <string name="step_2_gloves">step 2 gloves</string>
+    <string name="step_3_gloves">step 3 gloves</string>
+    <string name="honest_mirror">HONEST MIRROR</string>
+    <string name="arrow"><![CDATA[<]]></string>
+    <string name="switch_to_english_feedback">Switch to English Feedback</string>
     <!-- <string name="filepath">Your filepath is: </string>-->
 
 </resources>

@@ -4,7 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.*;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelCOCO;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -12,10 +16,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import static org.junit.Assert.assertEquals;
 
 
 /**

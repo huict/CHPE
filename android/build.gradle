@@ -21,7 +21,7 @@ android {
     }
     defaultConfig {
         applicationId "com.mygdx.game"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -56,37 +56,37 @@ android {
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
-task copyAndroidNatives {
-    doFirst {
-        file("libs/armeabi/").mkdirs()
-        file("libs/armeabi-v7a/").mkdirs()
-        file("libs/arm64-v8a/").mkdirs()
-        file("libs/x86_64/").mkdirs()
-        file("libs/x86/").mkdirs()
+//task copyAndroidNatives {
+//    doFirst {
+//        file("libs/armeabi/").mkdirs()
+//        file("libs/armeabi-v7a/").mkdirs()
+//        file("libs/arm64-v8a/").mkdirs()
+//        file("libs/x86_64/").mkdirs()
+//        file("libs/x86/").mkdirs()
+//
+//        configurations.natives.files.each { jar ->
+//            def outputDir = null
+//            if (jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
+//            if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+//            if (jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+//            if (jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
+//            if (jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+//            if (outputDir != null) {
+//                copy {
+//                    from zipTree(jar)
+//                    into outputDir
+//                    include "*.so"
+//                }
+//            }
+//        }
+//    }
+//}
 
-        configurations.natives.files.each { jar ->
-            def outputDir = null
-            if (jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
-            if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
-            if (jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
-            if (jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
-            if (jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
-            if (outputDir != null) {
-                copy {
-                    from zipTree(jar)
-                    into outputDir
-                    include "*.so"
-                }
-            }
-        }
-    }
-}
-
-tasks.whenTaskAdded { packageTask ->
-    if (packageTask.name.contains("package")) {
-        packageTask.dependsOn 'copyAndroidNatives'
-    }
-}
+//tasks.whenTaskAdded { packageTask ->
+//    if (packageTask.name.contains("package")) {
+//        packageTask.dependsOn 'copyAndroidNatives'
+//    }
+//}
 
 task run(type: Exec) {
     def path
@@ -115,33 +115,36 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "android.arch.persistence.room:runtime:2.2.0"
-    implementation 'androidx.navigation:navigation-fragment:2.2.2'
-    implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation 'androidx.navigation:navigation-fragment:2.3.5'
+    implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
 //    implementation group: 'org.tensorflow', name: 'tensorflow-lite-support', version: '0.1.0-rc1'
 //
 //    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
     annotationProcessor "android.arch.persistence.room:compiler:2.2.0"
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.room:room-runtime:2.2.5'
+    implementation 'androidx.annotation:annotation:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.room:room-runtime:2.2.6'
 
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 
     //noinspection GradleDynamicVersion
     implementation "org.tensorflow:tensorflow-lite:+"
-    testImplementation 'junit:junit:4.12'
-    implementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'junit:junit:4.13.2'
 
-    implementation 'org.mockito:mockito-core:2.7.22'
-    testImplementation 'org.mockito:mockito-core:2.7.22'
-    androidTestImplementation 'org.mockito:mockito-core:2.7.22'
+    implementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+    androidTestImplementation 'org.mockito:mockito-core:3.9.0'
 
-    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.6'
     // Core library
     implementation 'androidx.test:core:1.3.0'
 
@@ -152,7 +155,7 @@ dependencies {
     // Assertions
     implementation 'androidx.test.ext:junit:1.1.2'
     implementation 'androidx.test.ext:truth:1.3.0'
-    implementation 'com.google.truth:truth:1.0'
+    implementation 'com.google.truth:truth:1.1.2'
 
     // Espresso dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -170,16 +173,16 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'org.robolectric:robolectric:4.3'
-    implementation 'org.glassfish:javax.json:1.0.4'
+    testImplementation 'org.robolectric:robolectric:4.5.1'
+    implementation 'org.glassfish:javax.json:1.1.4'
 
     //implementation group: 'org.tensorflow', name: 'tensorflow-lite', version: '1.10.0'
 
-    implementation('org.tensorflow:tensorflow-lite:0.0.0-nightly') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite:2.4.0') { changing = true }
     implementation('org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly') { changing = true }
-    implementation('org.tensorflow:tensorflow-lite-support:0.0.0-nightly') { changing = true }
-    implementation('org.tensorflow:tensorflow-lite-metadata:0.0.0-nightly') { changing = true }
-    implementation 'org.tensorflow:tensorflow-lite:2.3.0'
+    implementation('org.tensorflow:tensorflow-lite-support:0.1.0') { changing = true }
+    implementation('org.tensorflow:tensorflow-lite-metadata:0.1.0') { changing = true }
+    implementation 'org.tensorflow:tensorflow-lite:2.4.0'
 
 
 apply plugin: 'kotlin-android'

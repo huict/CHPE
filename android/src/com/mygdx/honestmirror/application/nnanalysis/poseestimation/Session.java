@@ -5,25 +5,26 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 import android.content.Context;
 
+import com.mygdx.honestmirror.application.common.DebugLog;
+import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
 import com.mygdx.honestmirror.application.nnanalysis.feedback.FeedbackController;
-import com.mygdx.honestmirror.data.persistance.AppDatabase;
-import com.mygdx.honestmirror.data.persistance.PersistenceClient;
-import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
+import com.mygdx.honestmirror.application.nnanalysis.feedback.InterpreterController;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.ModelFactory;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.NNInterpreter;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.PoseNetHandler;
-import com.mygdx.honestmirror.application.nnanalysis.feedback.*;
-import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
+import com.mygdx.honestmirror.data.persistance.AppDatabase;
+import com.mygdx.honestmirror.data.persistance.PersistenceClient;
+import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 
-/**
- * The type Session.
- */
+//The type Session.
 @SuppressWarnings({"FieldMayBeFinal"})
 public class Session {
 
@@ -34,19 +35,10 @@ public class Session {
     private long videoId;
     private Resolution resolution;
     private NNInterpreter nnInterpreter = NNInterpreter.CPU;
-    List<Person> persons = new ArrayList<>();
-    JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-    private JsonArray jsonFrames = null;
-
     private InterpreterController interpreterController;
     private FeedbackController feedbackController;
 
-    /**
-     * Instantiates a new Session.
-     *
-     * @param context      the context
-     * @param videoSplicer the video splicer
-     */
+    //Instantiates a new Session.
     public Session(Context context, VideoSplicer videoSplicer){
         this(context, videoSplicer, null, null);
     }
@@ -65,7 +57,7 @@ public class Session {
     private void initialiseDatabase() {
 
         this.videoId = this.appDatabase.nnVideoDAO().insert(new NNVideo(
-                24.54f,
+                24.0f,
                 this.videoSplicer.getFrameCount(),
                 this.resolution.getScreenWidth(),
                 this.resolution.getScreenHeight()
@@ -73,29 +65,29 @@ public class Session {
         this.nnInsert = new NNInserts(this.appDatabase);
     }
 
-    /**
-     * Loops through a video and stores it continuously
-     */
+    //Loops through a video and stores it continuously
     public void runVideo() {
+        long startTime = System.nanoTime();
         PoseNetHandler pnh = this.chpe.givePoseNetHandler(this.nnInterpreter);
         List<Person> persons = this.videoSplicer.performAnalyse(pnh);
-
+        feedbackController.resetData();
         if (interpreterController != null){
             for(Person person: persons){
-                if (person == null)
-                    continue;
 
-                interpreterController.setJsonInput(person.toJson());
-                interpreterController.runNN();
-                feedbackController.addData(interpreterController.getOutput());
+                if (person != null){
+                    feedbackController.addData(interpreterController.runNN(person.toJson()));
+                }
             }
         }
+        long endTime = System.nanoTime();
+        //DebugLog.log("Time took " + ((endTime - startTime) / 1000000000) + " seconds");
+//        feedbackController.addData(interpreterController.testBodyWeightOneLeg());
+//        feedbackController.addData(interpreterController.testTouching_Hair());
+//        feedbackController.addData(interpreterController.testTouching_Hair());
+//      feedbackController.generateMockData();
     }
-    /**
-     * The NormaliseData query.
-     * Should run after the run video run to normalise the data.
-     */
-    public void normaliseData() {
-        this.nnInsert.normalise(this.videoId);
-    }
+    //The NormaliseData query.
+    //public void normaliseData() {
+        //this.nnInsert.normalise(this.videoId);
+    //}
 }

@@ -1,6 +1,11 @@
 package com.mygdx.honestmirror.data.persistance.Coordinate;
 
 
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.mygdx.honestmirror.data.persistance.AppDatabase;
+import com.mygdx.honestmirror.data.persistance.PersistenceClient;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
@@ -9,12 +14,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.runner.RunWith;
-
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.mygdx.honestmirror.data.persistance.AppDatabase;
-import com.mygdx.honestmirror.data.persistance.PersistenceClient;
 
 
 /**

@@ -8,9 +8,9 @@ import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.DebugLog;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
-import com.mygdx.honestmirror.R;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class VideoSplicerFactoryTest {
     @Before
     public void setUp() {
 
-        DebugLog.log(Integer.toString(defaultSDK));
+        //DebugLog.log(Integer.toString(defaultSDK));
         final AssetFileDescriptor afd = targetContext.getResources().openRawResourceFd(R.raw.example_video);
         MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
         metadataRetriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());

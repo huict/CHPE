@@ -6,39 +6,23 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-/**
- * The interface Nn video frame dao.
- */
+//The interface Nn video frame dao.
 @Dao
 public interface NNVideoFrameDAO {
 
-    /**
-     * Insert entity by entity
-     *
-     * @param nnVideoFrame the entity
-     */
+    //Insert entity by entity
     @Insert
     void insert(NNVideoFrame nnVideoFrame);
 
-    /**
-     * Update entity by entity
-     *
-     * @param nnVideoFrame the entity
-     */
+    //Update entity by entity
     @Update
     void update(NNVideoFrame nnVideoFrame);
 
-    /**
-     * Delete entity by entity
-     *
-     * @param nnVideoFrame the entity
-     */
+    //Delete entity by entity
     @Delete
     void delete(NNVideoFrame nnVideoFrame);
 
-    /**
-     * Nuke table.
-     */
+    // Nuke table.
     @Query("DELETE FROM video_frame")
     void nukeTable(); // Naming is about as clear as it can be.
 

@@ -3,34 +3,19 @@ package com.mygdx.honestmirror.application.common.exceptions;
 
 import androidx.annotation.NonNull;
 
-/**
- * The type Invalid model parse.
- * Thrown when an invalid ID is given to ModelFactory
- */
+//The type Invalid model parse.
+//Thrown when an invalid ID is given to ModelFactory
 public class InvalidModelParse extends Exception {
-
-    /**
-     * The Message.
-     */
     String message;
-    /**
-     * The Cause.
-     */
     Throwable cause;
 
-    /**
-     * Instantiates a new Invalid model parse.
-     */
-    public InvalidModelParse() {
+     //Instantiates a new Invalid model parse.
+     public InvalidModelParse() {
         super();
     }
 
-    /**
-     * Instantiates a new Invalid model parse.
-     *
-     * @param message the message
-     * @param cause   the cause
-     */
+
+    //Instantiates a new Invalid model parse.
     public InvalidModelParse(String message, Throwable cause) {
         super(message, cause);
 

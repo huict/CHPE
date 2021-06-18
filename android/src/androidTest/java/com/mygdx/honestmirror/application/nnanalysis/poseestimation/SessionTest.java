@@ -3,10 +3,10 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaMetadataRetriever;
-import com.mygdx.honestmirror.R;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.mygdx.honestmirror.R;
 import com.mygdx.honestmirror.application.common.exceptions.InvalidVideoSplicerType;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicer;
 import com.mygdx.honestmirror.application.common.videohandler.VideoSplicerFactory;
@@ -14,7 +14,6 @@ import com.mygdx.honestmirror.application.common.videohandler.VideoSplicerUriLeg
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.PersistenceClient;
 import com.mygdx.honestmirror.data.persistance.Video.NNVideo;
-
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,13 +1,9 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels;
 
-/**
- * The type Nn model posenet.
- */
+///The type Nn model posenet.
 public class NNModelPosenet implements PoseModel {
 
-    /**
-     * The Pose pairs.
-     */
+    //The Pose pairs.
     public final int[][] POSE_PAIRS = {
             {0, 1},
             {1, 2},
@@ -24,21 +20,13 @@ public class NNModelPosenet implements PoseModel {
             {14, 8},
             {14, 11},
     };
-    /**
-     * The Points.
-     */
+    //The Points.
     public final int points = 17;
-    /**
-     * The Protocol buffer.
-     */
+    //The Protocol buffer.
     public final String protocol_buffer = "";
-    /**
-     * The Model.
-     */
+    //The Model.
     public final String model = "posenet_model.tflite";
-    /**
-     * The Body parts.
-     */
+    //The Body parts.
     static public String[] bodyParts = new String[]{
             "nose",
             "left_eye",
@@ -59,9 +47,7 @@ public class NNModelPosenet implements PoseModel {
             "right_ankle"
     };
 
-    /**
-     * The enum Body part.
-     */
+    //The enum Body part.
     public enum bodyPart {
         nose,
         left_eye,
@@ -83,27 +69,8 @@ public class NNModelPosenet implements PoseModel {
     }
 
     @Override
-    public int[][] getPosePairs() {
-        return POSE_PAIRS;
-    }
-
-    @Override
-    public int getPoints() {
-        return points;
-    }
-
-    public String getProtocolBuffer() {
-        return protocol_buffer;
-    }
-
-    @Override
     public String getModel() {
         return model;
-    }
-
-    @Override
-    public String[] getBodyParts() {
-        return bodyParts;
     }
 
 }

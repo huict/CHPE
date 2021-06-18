@@ -6,31 +6,18 @@ import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModel
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelPosenet;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.PoseModel;
 
-/**
- * The type Model factory.
- */
+//The type Model factory.
 public class ModelFactory {
 
-    /**
-     * The constant COCO_MODEL.
-     */
+    //The constant COCO_MODEL.
     public final static int COCO_MODEL = 1;
-    /**
-     * The constant MPI_MODEL.
-     */
+    //The constant MPI_MODEL.
     public final static int MPI_MODEL = 2;
-    /**
-     * The constant POSENET_MODEL.
-     */
+    //The constant POSENET_MODEL.
+
     public final static int POSENET_MODEL = 3;
 
-    /**
-     * Gets model.
-     *
-     * @param modelId the model id
-     * @return the model
-     * @throws InvalidModelParse the invalid model parse
-     */
+    //Gets model
     public static PoseModel getModel(int modelId) throws InvalidModelParse {
         PoseModel model;
         switch (modelId) {

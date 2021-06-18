@@ -1,20 +1,12 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels;
 
-/**
- * The type Coco.
- */
+//The type Coco.
 public class NNModelCOCO implements PoseModel {
-    /**
-     * The Protocol buffer.
-     */
+    //The Protocol buffer.
     public final String protocol_buffer = "pose/coco/pose_deploy_linevec.prototxt";
-    /**
-     * The Model.
-     */
+    //The Model.
     public final String model = "pose/coco/pose_iter_440000.caffemodel";
-    /**
-     * The Pose pairs.
-     */
+    //The Pose pairs.
     public int[][] POSE_PAIRS =
             {
                     {1, 0},
@@ -36,39 +28,16 @@ public class NNModelCOCO implements PoseModel {
                     {15, 17}
             };
 
-    /**
-     * The Body parts.
-     */
+    //The Body parts.
     public String[] body_parts = new String[]{
     };
 
-    /**
-     * The Points.
-     */
+    //The Points.
     public int points = 18;
-
-    @Override
-    public int[][] getPosePairs() {
-        return POSE_PAIRS;
-    }
-
-    @Override
-    public int getPoints() {
-        return points;
-    }
-
-    public String getProtocolBuffer() {
-        return protocol_buffer;
-    }
 
     @Override
     public String getModel() {
         return model;
-    }
-
-    @Override
-    public String[] getBodyParts() {
-        return body_parts;
     }
 
 }

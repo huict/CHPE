@@ -12,10 +12,8 @@ import java.util.HashMap;
 
 import static com.mygdx.honestmirror.application.domain.simulation.HelperClass.vec3Subtraction;
 
-/**
- * The body class combines BodyPart and BodyLimb objects to create the layout of the human body into a singular object.
- * This class provides functionality to update the position of these arranged BodyParts and Limbs according to the provides data from the database.
- */
+//The body class combines BodyPart and BodyLimb objects to create the layout of the human body into a singular object.
+//This class provides functionality to update the position of these arranged BodyParts and Limbs according to the provides data from the database.
 public class Body {
     public float scale;
     public float limbDiameter = 1f;
@@ -33,12 +31,8 @@ public class Body {
     // Array to store joint coordinates from the data
     public Array<Vector3> jointCoords = new Array<>();
 
-    /**
-     * This function currently defines the object with its parameters.
-     * Will be replaced with a constructor in the future.
-     * @param scaleInstance
-     * @param data
-     */
+    //This function currently defines the object with its parameters.
+    //Will be replaced with a constructor in the future.
     public void create(float scaleInstance, Data data){
         scale = scaleInstance;
 
@@ -78,35 +72,7 @@ public class Body {
         }
     }
 
-    /**
-     * Returns all the BodyLimb objects as a ModelInstance Array.
-     * @return Array filled with ModelInstances.
-     */
-    public Array<ModelInstance> getLimbArray(){
-        Array<ModelInstance> result = new Array<>();
-        for(BodyLimb bl : limbArray){
-            result.add(bl.getInstance());
-        }
-        return result;
-    }
-
-    /**
-     * Returns all the BodyPart objects as a ModelInstance Array.
-     * @return Array filled with ModelInstances.
-     */
-    public Array<ModelInstance> getJointArray(){
-        Array<ModelInstance> result = new Array<>();
-        for(BodyPart jv : jointMap.values()){
-            result.add(jv.getInstance());
-        }
-        return result;
-    }
-
-    /**
-     * This update function updates al the BodyLimb and BodyPart object with the data for the given frame.
-     * @param frame
-     * @param data
-     */
+    //This update function updates al the BodyLimb and BodyPart object with the data for the given frame.
     public void update(int frame, Data data){
         //update joints -------------------------------------------------------------------------------------------------|
         for (int i = 0; i < jointCoords.size; i++){
@@ -125,7 +91,7 @@ public class Body {
                     new Vector2(jointCoords.get(pp[1]).x * -data_scale, jointCoords.get(pp[1]).y * data_scale), 0);
             index++;
         }
-        if(scaled == false){
+        if(!scaled){
             head_scale = (jointCoords.get(NNModelMPI.body_part.waist.ordinal()).y - jointCoords.get(NNModelMPI.body_part.neck.ordinal()).y);
             scaled = true;
             limbDiameter = limbDiameter * 0.7f;

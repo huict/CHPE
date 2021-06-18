@@ -2,82 +2,37 @@ package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 import android.graphics.Bitmap;
 
-/**
- * The type Resolution.
- */
+//The type Resolution.
 public class Resolution {
-    /**
-     * The Model width.
-     */
     private int modelWidth = 257;
-    /**
-     * The Model height.
-     */
     private int modelHeight = 257;
-    /**
-     * The Screen width.
-     */
     private final int screenWidth;
-    /**
-     * The Screen height.
-     */
     private final int screenHeight;
 
-    /**
-     * Gets model width.
-     *
-     * @return the model width
-     */
     public int getModelWidth() {
         return modelWidth;
     }
 
-    /**
-     * Gets model height.
-     *
-     * @return the model height
-     */
     public int getModelHeight() {
         return modelHeight;
     }
 
-    /**
-     * Gets screen width.
-     *
-     * @return the screen width
-     */
     public int getScreenWidth() {
         return screenWidth;
     }
 
-    /**
-     * Gets screen height.
-     *
-     * @return the screen height
-     */
     public int getScreenHeight() {
         return screenHeight;
     }
 
 
-    /**
-     * Instantiates a new Resolution.
-     *
-     * @param bitmap the bitmap
-     */
+    //Instantiates a new Resolution.
     public Resolution(Bitmap bitmap) {
         this.screenWidth = bitmap.getWidth();
         this.screenHeight = bitmap.getHeight();
     }
 
-    /**
-     * Instantiates a new Resolution.
-     *
-     * @param width       the width
-     * @param height      the height
-     * @param modelWidth  the model width
-     * @param modelHeight the model height
-     */
+    //Instantiates a new Resolution.
     public Resolution(int width, int height, int modelWidth, int modelHeight) {
         this.screenWidth = width;
         this.screenHeight = height;
@@ -85,13 +40,7 @@ public class Resolution {
         this.modelHeight = modelHeight;
     }
 
-    /**
-     * Instantiates a new Resolution.
-     *
-     * @param width    the width
-     * @param height   the height
-     * @param modelRes the model res
-     */
+    //Instantiates a new Resolution.
     Resolution(int width, int height, int modelRes) {
         this.screenWidth = width;
         this.screenHeight = height;
@@ -99,13 +48,6 @@ public class Resolution {
         this.modelHeight = modelRes;
     }
 
-    /**
-     * Gets width by a ratio.
-     *
-     * @param width the width
-     * @return the width by a ratio
-     * @throws NumberFormatException the number format exception
-     */
     int getWidthByRatio(float width) throws NumberFormatException {
 
         if (width > this.screenWidth) {
@@ -119,12 +61,6 @@ public class Resolution {
         return (int) (width * ((float) this.screenWidth / this.modelWidth));
     }
 
-    /**
-     * Gets height by a ratio.
-     *
-     * @param height the height
-     * @return the height by a ratio
-     */
     int getHeightByRatio(float height) {
         if (height > this.screenHeight) {
             throw new NumberFormatException("Height higher than image");

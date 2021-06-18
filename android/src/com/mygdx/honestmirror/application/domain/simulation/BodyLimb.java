@@ -10,26 +10,21 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * This class gives you a cylinder between two given coordinates.
- * The created BodyLimb objects in the Body class are used as body limbs for the representation of the body.
- */
+//This class gives you a cylinder between two given coordinates.
+//The created BodyLimb objects in the Body class are used as body limbs for the representation of the body.
 public class BodyLimb {
     Vector2 coords1_ , coords2_;
-    float limbDiameter_, length_, rotation_, z_, scale_, data_scale_;
+    float limbDiameter_;
+    float length_;
+    float rotation_;
+    float z_;
+    float scale_;
     Color color_;
     ModelInstance cylinder_;
     ModelBuilder modelBuilder_ = new ModelBuilder();
     Model model_;
 
-    /**
-     * This is the BodyLimb constructor.
-     * @param coords1
-     * @param coords2
-     * @param limbdiameter
-     * @param z
-     * @param color
-     */
+    //This is the BodyLimb constructor.
     public BodyLimb(Vector2 coords1, Vector2 coords2, float limbdiameter, float z, Color color){
         coords1_ = coords1;
         coords2_ = coords2;
@@ -47,30 +42,14 @@ public class BodyLimb {
         cylinder_.materials.get(0).set(ColorAttribute.createDiffuse(color_));
     }
 
-    /**
-     * This function can be used to change the BodyLimb object color.
-     * @param color
-     */
-    public void change_color(Color color){
-        color_ = color;
-        cylinder_.materials.get(0).set(ColorAttribute.createDiffuse(color_));
-    }
-
-    /**
-     * This function returns the actual ModelInstance of the BodyLimb object.
-     * @return Cylinder ModelInstance.
-     */
+    //This function returns the actual ModelInstance of the BodyLimb object.
+    //returns Cylinder ModelInstance.
     public ModelInstance getInstance(){
         return cylinder_;
     }
 
-    /**
-     * This function updates the BodyLimb object.
-     * The object (cylinder) will be translated, rotated and scaled according to the given coordinates.
-     * @param coords1
-     * @param coords2
-     * @param z
-     */
+    //This function updates the BodyLimb object.
+    // The object (cylinder) will be translated, rotated and scaled according to the given coordinates.
     public void update(Vector2 coords1, Vector2 coords2, float z){
         coords1_ = coords1;
         coords2_ = coords2;

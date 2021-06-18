@@ -3,31 +3,19 @@ package com.mygdx.honestmirror.application.domain.analysis;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseModels.NNModelMPI.body_part;
 
-/**
- * @author Nico van Bentum
- * This class handles checking the vector data for certain FUTURE: Actions
- * and FUTURE: Patterns. For now these are just single functions with descriptive names.
- * TODO: Implement more generic framework.
- */
+//This class handles checking the vector data for certain FUTURE: Actions
+//and FUTURE: Patterns. For now these are just single functions with descriptive names.
 class Detection {
-    /**
-     * Interface to the vector data.
-     */
+    //Interface to the vector data.
     private final Data data;
 
-    /**
-     * Constructor, initializes class fields.
-     * @param data Data interface object.
-     */
+    //Constructor, initializes class fields.
     Detection(final Data data) {
         this.data = data;
     }
 
-    /**
-     * Helper function for getting the absolute values of a Vector3.
-     * @param v Input vector.
-     * @return Vector with absolute values.
-     */
+    //Helper function for getting the absolute values of a Vector3.
+    //returns Vector with absolute values.
     private Vector3 abs(Vector3 v) {
         return new Vector3(
             Math.abs(v.x),
@@ -36,11 +24,9 @@ class Detection {
         );
     }
 
-    /**
-     * Checks if the person's hands can not be found for a given amount of time.
-     * @param dt Given amount of time for it to be true.
-     * @return if the Action was detected or not.
-     */
+    //Checks if the person's hands can not be found for a given amount of time.
+    // dt Given amount of time for it to be true.
+    //returns if the Action was detected or not.
     boolean handsFound(float dt) {
         boolean inAction = false;
         float action_time = 0;
@@ -70,11 +56,9 @@ class Detection {
         return false;
     }
 
-    /**
-     * Checks if the person keeps his/her hands still for too long.
-     * @param dt How long the condition has to be true for (in seconds).
-     * @return If the Action was detected or not.
-     */
+    //Checks if the person keeps his/her hands still for too long.
+    //dt How long the condition has to be true for (in seconds).
+    //returns If the Action was detected or not.
     boolean HandsIdle(float dt, double threshold) {
         boolean inAction = false;
         float actionTime = 0;
@@ -115,11 +99,9 @@ class Detection {
         return false;
     }
 
-    /**
-     * Checks if the person has his hand higher than his head for too long.
-     * @param dt How long the condition has to be true for (in seconds).
-     * @return If the Action was detected or not.
-     */
+    //Checks if the person has his hand higher than his head for too long.
+    //param dt How long the condition has to be true for (in seconds).
+    //returns If the Action was detected or not.
     boolean handsAboveHead(float dt) {
         boolean inAction = false;
         float action_time = 0;

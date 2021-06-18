@@ -1,19 +1,11 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn;
 
-/**
- * The enum Nn interpreter.
- */
+// The enum Nn interpreter.
 public enum NNInterpreter {
-    /**
-     * Cpu nn interpreter.
-     */
+    //Cpu nn interpreter.
     CPU,
-    /**
-     * Nnapi nn interpreter.
-     */
+    //Nnapi nn interpreter.
     NNAPI, // Android Neural Network API
-    /**
-     * Gpu nn interpreter.
-     */
+    //Gpu nn interpreter.
     GPU
 }

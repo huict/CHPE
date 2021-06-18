@@ -1,11 +1,8 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet;
 
-import com.mygdx.honestmirror.application.common.DebugLog;
-
-
 public class Position {
-    private int x = 0;
-    private int y = 0;
+    private float x = 0;
+    private float y = 0;
     public float rawX = 0;
     public float rawY = 0;
 
@@ -17,23 +14,23 @@ public class Position {
         return rawY;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public void setX(int x, int horizontalRes){
+    public void setX(float x, int horizontalRes){
         this.rawX = (float)x / (float) horizontalRes;
         setX(x);
 
@@ -41,11 +38,13 @@ public class Position {
 //            DebugLog.log((Float.toString(rawX)));
     }
 
-    public void setY(int y, int verticalRes){
+    public void setY(float y, int verticalRes){
         this.rawY = (float) y / (float) verticalRes;
         setY(y);
 
 //        if (this.rawY > 1)
 //            DebugLog.log((Float.toString(rawY)));
     }
+
+
 }

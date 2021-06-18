@@ -1,43 +1,31 @@
 package com.mygdx.honestmirror.application.nnanalysis.poseestimation;
 
 
-
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.KeyPoint;
+import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
 import com.mygdx.honestmirror.data.persistance.AppDatabase;
 import com.mygdx.honestmirror.data.persistance.Coordinate.NNCoordinate;
 import com.mygdx.honestmirror.data.persistance.Frame.NNFrame;
 import com.mygdx.honestmirror.data.persistance.Relations.NNFrameCoordinate;
 import com.mygdx.honestmirror.data.persistance.Relations.NNVideoFrame;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.KeyPoint;
-import com.mygdx.honestmirror.application.nnanalysis.poseestimation.nn.PoseNet.Person;
-
-// TODO: Convert sessionId to videoId
 
 
-/**
- * NNInsert is an example class used for inserting new videos to the database
- */
+
+//NNInsert is an example class used for inserting new videos to the database
 @SuppressWarnings("FieldMayBeFinal")
 public class NNInserts {
 
     private AppDatabase appDatabase;
     private final String TAG = "NNInserts";
 
-    /**
-     * Instantiates a new NN inserts.
-     *
-     * @param appDatabase the app database
-     */
+    //Instantiates a new NN inserts.
     NNInserts(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
 
     }
 
 
-    /**
-     * Normalise coordinates.
-     *
-     * @param sessionId the session id
-     */
+    //Normalise coordinates.
     private double[] setNormaliseCoordinates(long sessionId) {
         double y_limit = this.appDatabase.nnVideoDAO().getMaxValuesX(sessionId);
         double x_limit = this.appDatabase.nnVideoDAO().getMaxValuesY(sessionId);
@@ -48,13 +36,7 @@ public class NNInserts {
     }
 
 
-    /**
-     * Insert person.
-     *
-     * @param person     the Person object used to extract points from
-     * @param videoId    the video id based on the database insert
-     * @param frameCount the nth frame count to ensure it's placed in order.
-     */
+    //Insert person.
     public void insertPerson(Person person, long videoId, long frameCount) {
 
         // Creating new frame for the instance
@@ -62,24 +44,20 @@ public class NNInserts {
         long frameId = this.appDatabase.nnFrameDAO().insert(nnFrame);
         linkFrameIdToVideo(frameId, videoId);
 
-        for (KeyPoint keyPoint : person.getKeyPoints()) {
-            linkFrameToCoordinate(
-                    frameId,
-            this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
-                                            keyPoint.getPosition().getX(),
-                                            keyPoint.getPosition().getY()
-                                    )
-                            )
-            );
-        }
+//        for (KeyPoint keyPoint : person.getKeyPoints()) {
+//            linkFrameToCoordinate(
+//                    frameId,
+//            this.appDatabase.nnCoordinateDAO().insert(new NNCoordinate(
+//                                            keyPoint.getPosition().getX(),
+//                                            keyPoint.getPosition().getY()
+//                                    )
+//                            )
+//            );
+//        }
     }
 
 
-    /**
-     * Normalising the data.
-     *
-     * @param videoId the video id. The primary key inserted upon entry.
-     */
+    //Normalising the data.
     void normalise(long videoId) {
         double[] normalised = setNormaliseCoordinates(22);
         this.appDatabase
@@ -87,12 +65,7 @@ public class NNInserts {
                 .normaliseCoordinates(videoId, normalised[0], normalised[1]);
     }
 
-    /**
-     * Links a coordinate to a video.
-     *
-     * @param frameId      the frame id. The primary key inserted upon entry.
-     * @param coordinateId the video id. The primary key inserted upon entry.
-     */
+    //Links a coordinate to a video.
     private void linkFrameToCoordinate(long frameId, long coordinateId) {
         this.appDatabase
                 .nnFrameCoordinateDAO()
@@ -101,12 +74,7 @@ public class NNInserts {
                 );
     }
 
-    /**
-     * Links the frame to a video.
-     *
-     * @param frameId the frame id. The primary key inserted upon entry.
-     * @param videoId the video id. The primary key inserted upon entry.
-     */
+    //Links the frame to a video.
     private void linkFrameIdToVideo(long frameId, long videoId) {
         // Linking to the video
         this.appDatabase

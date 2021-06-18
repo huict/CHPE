@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hu_light_gray"
+    android:background="@color/hu_blue"
     tools:context=".view.ui.a_Home">
 
     <androidx.constraintlayout.widget.Guideline
@@ -20,36 +20,74 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="0dp"
+        app:layout_constraintGuide_begin="176dp"
         app:layout_constraintGuide_percent=".50" />
 
     <Button
-        android:id="@+id/b_archive"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="128dp"
-        android:background="@color/hu_blue"
-        android:text="@string/btn_archive"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/verticalCenterGuideline"
+        android:id="@+id/b_start"
+        android:layout_width="375dp"
+        android:layout_height="51dp"
+        android:background="@color/dark_blue"
+        android:shadowRadius="0"
+        android:text="@string/start"
+        android:textColor="@color/hu_blue"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/b_help_app"
+        app:layout_constraintEnd_toEndOf="@+id/b_help_app"
         app:layout_constraintHeight_percent=".06"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="@+id/b_help_app"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.246" />
 
     <Button
-        android:id="@+id/b_start"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="128dp"
-        android:background="@color/hu_blue"
-        android:shadowRadius="0"
-        android:text="START"
+        android:id="@+id/languageButton"
+        android:layout_width="373dp"
+        android:layout_height="52dp"
+        android:background="@color/dark_blue"
+        android:text="@string/switch_to_english_feedback"
+        android:textColor="@color/hu_blue"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/b_help_app"
+        android:layout_width="376dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="56dp"
+        android:background="@color/dark_blue"
+        android:text="@string/help_app"
+        android:textColor="@color/hu_blue"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".06"
-        app:layout_constraintStart_toStartOf="@id/verticalCenterGuideline" />
+        app:layout_constraintHorizontal_bias="0.705"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="253dp"
+        android:layout_height="303dp"
+        android:layout_marginTop="192dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hu_logo" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="@string/honest_mirror"
+        android:textSize="40sp"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
