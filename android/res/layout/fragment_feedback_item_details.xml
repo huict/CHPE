@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/hu_blue"
+    android:background="@color/hu_light_gray"
     tools:context=".view.activity.SecondFragment">
 
     <RelativeLayout
@@ -33,6 +33,7 @@
 
         <TextView
             android:id="@+id/videoInstruction"
+            android:textColor="@color/hu_blue"
             android:layout_width="267dp"
             android:layout_height="19dp"
             android:layout_alignParentStart="true"
@@ -45,6 +46,7 @@
 
         <TextView
             android:id="@+id/shortFeedbackView"
+            android:textColor="@color/hu_blue"
             android:layout_width="331dp"
             android:layout_height="278dp"
             android:layout_alignParentStart="true"

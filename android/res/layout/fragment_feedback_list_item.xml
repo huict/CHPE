@@ -11,16 +11,16 @@
         android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@color/hu_blue">
+        android:background="@color/hu_light_gray">
 
         <TextView
             android:id="@+id/item_number"
+            android:textColor="@color/hu_red"
             android:layout_width="315dp"
             android:layout_height="68dp"
             android:layout_margin="@dimen/text_margin"
             android:text="0:12 - 0:30"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -46,6 +46,7 @@
             android:id="@+id/description_textView"
             android:layout_width="362dp"
             android:layout_height="34dp"
+            android:textColor="@color/hu_blue"
             android:text="At this moment you were doing very badly"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
