@@ -33,15 +33,20 @@ public class GlobalApplication extends Application {
         return appContext;
     }
 
-
+    //adds given number to current progress of program
     public  static void addToProgressBar(int i)
     {
         progress += i;
     }
-
+    //retuurns current progress
     public static int getProgress()
     {
         return progress;
+    }
+    // resets currtent progress to 0
+    public static void resetProgress()
+    {
+        progress = 0;
     }
 
     public Language getLanguage() {

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mygdx.honestmirror.GlobalApplication.resetProgress;
+
 /**
  * runs the feedback network and adds the pose data
  * generates feedback items accordingly.
@@ -60,6 +62,7 @@ public class FeedbackController implements FeedbackProcessor {
         feedbackGenerated = false;
         framerate = 24;
         feedbackItemBuilder = new FeedbackItemBuilder(framerate);
+        resetProgress();
     }
 
     /**
