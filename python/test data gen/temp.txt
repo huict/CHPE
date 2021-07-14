@@ -1,0 +1,79 @@
+   private fun trueEstimation(bitmap: Bitmap): Person{
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, resolution.modelWidth, resolution.modelHeight, true)
+        val inputArray = arrayOf(initInputArray(scaledBitmap))
+        val outputMap = initOutputMap(interpreter!!)
+        try{
+            interpreter!!.runForMultipleInputsOutputs(inputArray, outputMap)
+        }
+        catch (e: Exception){
+            DebugLog.log("Exception: $e")
+        }
+        val heatmaps = outputMap[0] as Array<Array<Array<FloatArray>>>
+        val offsets = outputMap[1] as Array<Array<Array<FloatArray>>>
+
+        val height = heatmaps[0].size
+        val width = heatmaps[0][0].size
+        val numKeypoints = heatmaps[0][0][0].size
+        // Finds the (row, col) locations of where the keypoints are most likely to be.
+        val keypointPositions = Array(numKeypoints) { Pair(0, 0) }
+        for (keypoint in 0 until numKeypoints) {
+            var maxVal = heatmaps[0][0][0][keypoint]
+            var maxRow = 0
+            var maxCol = 0
+            for (row in 0 until height) {
+                for (col in 0 until width) {
+                    heatmaps[0][row][col][keypoint] = heatmaps[0][row][col][keypoint]
+                    if (heatmaps[0][row][col][keypoint] > maxVal) {
+                        maxVal = heatmaps[0][row][col][keypoint]
+                        maxRow = row
+                        maxCol = col
+                    }
+                }
+            }
+
+
+            keypointPositions[keypoint] = Pair(maxRow, maxCol)
+        }
+
+        // Calculating the x and y coordinates of the keyPoints with offset adjustment.
+        val xCoords = IntArray(numKeypoints)
+        val yCoords = IntArray(numKeypoints)
+        val confidenceScores = FloatArray(numKeypoints)
+        keypointPositions.forEachIndexed { idx, position ->
+            val positionY = keypointPositions[idx].first
+            val positionX = keypointPositions[idx].second
+            yCoords[idx] = (
+                    position.first / (height - 1).toFloat() * bitmap.height +
+                            offsets[0][positionY][positionX][idx]
+                    ).toInt()
+            xCoords[idx] = (
+                    position.second / (width - 1).toFloat() * bitmap.width +
+                            offsets[0][positionY]
+                                    [positionX][idx + numKeypoints]
+                    ).toInt()
+            confidenceScores[idx] = sigmoid(heatmaps[0][positionY][positionX][idx])
+        }
+
+        val person = Person()
+        val keypointList = Array(numKeypoints) { KeyPoint() }
+        var totalScore = 0.0f
+
+
+        enumValues<NNModelPosenet.bodyPart>().forEachIndexed { idx, it ->
+            keypointList[idx].bodyPart = it
+            keypointList[idx].position.setX(xCoords[idx], resolution.screenWidth)
+            keypointList[idx].position.setY(yCoords[idx], resolution.screenHeight)
+
+            keypointList[idx].score = confidenceScores[idx]
+            totalScore += confidenceScores[idx]
+        }
+
+        person.keyPoints = keypointList.toList()
+        person.score = totalScore / numKeypoints
+        return person
+    }
+}
+
+ private fun sigmoid(x: Float): Float {
+        return (1.0f / (1.0f + exp(-x)))
+    }
